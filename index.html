@@ -100,9 +100,7 @@
     }
     .category-btn.active { background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue); }
 
-    /* ======================================================== */
-    /* المنيو بنظام الشبكة (Grid) عمودين                         */
-    /* ======================================================== */
+    /* شبكة المنيو عمودين */
     .fish-grid-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -113,25 +111,29 @@
     }
 
     .fish-card {
-      background: var(--card-bg); border-radius: var(--radius); padding: 14px;
-      box-shadow: var(--shadow); border: 1px solid #e2edf5; display: flex; flex-direction: column;
-      justify-content: space-between; gap: 10px; position: relative; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      background: var(--card-bg); border-radius: 18px; padding: 16px;
+      box-shadow: 0 4px 15px rgba(11, 37, 69, 0.05); border: 1px solid #e2edf5; display: flex; flex-direction: column;
+      justify-content: space-between; gap: 12px; position: relative; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
     }
     .fish-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(11, 37, 69, 0.12); }
     .fish-card.sold-out { opacity: 0.55; background: #f1f5f9; border-style: dashed; cursor: not-allowed; }
     
-    .fish-name { font-weight: 800; font-size: 1.02rem; color: var(--ocean-blue); margin-bottom: 4px; }
-    .fish-category-badge { font-size: 0.72rem; background: #e0f2fe; color: #0369a1; padding: 2px 7px; border-radius: 6px; font-weight: 700; display: inline-block; margin-bottom: 6px; }
-    .fish-price { font-weight: 800; color: #0284c7; font-size: 0.95rem; background: #e0f2fe; padding: 4px 8px; border-radius: 8px; text-align: center; }
-    .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.72rem; font-weight: 800; padding: 2px 6px; border-radius: 6px; display: inline-block; }
-    .badge-status { font-size: 0.75rem; padding: 2px 6px; border-radius: 6px; font-weight: 700; display: inline-block; }
+    .fish-name { font-weight: 900; font-size: 1.15rem; color: var(--ocean-blue); margin-bottom: 4px; }
+    .fish-category-badge { font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 8px; font-weight: 800; display: inline-block; }
+    .fish-price { font-weight: 900; color: #0284c7; font-size: 1.05rem; background: #e0f2fe; padding: 8px 12px; border-radius: 12px; text-align: center; }
+    .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.75rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; display: inline-block; }
+    .badge-status { font-size: 0.78rem; padding: 3px 8px; border-radius: 8px; font-weight: 800; display: inline-block; }
 
-    .card-action-hint {
-      background: linear-gradient(135deg, var(--aqua-glow), #0284c7); color: white; border: none;
-      padding: 7px; border-radius: 10px; font-weight: 800; font-size: 0.8rem; text-align: center; margin-top: 4px;
+    /* زر اختيار الطهي والطلب المحدث (مطابق للصورة الأولى) */
+    .card-action-btn {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; border: none;
+      padding: 10px 14px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; text-align: center;
+      display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.35);
+      transition: transform 0.15s;
     }
+    .card-action-btn:active { transform: scale(0.96); }
 
-    /* نافذة اختيار تفاصيل الطهي المنبثقة (Popup Modal) */
+    /* نافذة منبثقة تفاعلية لاختيار التسوية والكمية */
     .cooking-modal-overlay {
       position: fixed; inset: 0; background: rgba(5, 22, 38, 0.75); backdrop-filter: blur(5px);
       z-index: 500; display: none; align-items: center; justify-content: center; padding: 16px;
@@ -144,7 +146,7 @@
     }
     @keyframes popModal { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-    .cooking-section-title { font-size: 0.92rem; font-weight: 800; color: var(--ocean-blue); margin-bottom: 8px; margin-top: 12px; }
+    .cooking-section-title { font-size: 0.95rem; font-weight: 900; color: var(--ocean-blue); margin-bottom: 8px; margin-top: 14px; }
     .cooking-options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
     .cooking-opt-btn {
       padding: 10px; border: 2px solid #cbd5e1; background: #f8fafc; border-radius: 12px;
@@ -152,7 +154,6 @@
     }
     .cooking-opt-btn.selected { border-color: var(--aqua-glow); background: #e0f2fe; color: #0284c7; }
 
-    /* زر الاتصال الهاتفي */
     .styled-phone-call-btn {
       position: fixed; left: 18px; bottom: 105px;
       background: linear-gradient(135deg, #0b2545 0%, #0369a1 100%);
@@ -169,7 +170,7 @@
     }
     .phone-num-text { color: #ffffff; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.5px; direction: ltr; }
 
-    /* شبكة الصيد العائمة (سلة الطلبات) */
+    /* شبكة الصيد العائمة (سلة الطلبات) مع أيقونة شبكة الصيد الحقيقية */
     .floating-net-basket {
       position: fixed; left: 20px; bottom: 24px; width: 68px; height: 68px;
       background: radial-gradient(circle at 35% 35%, #0ea5e9, #0369a1);
@@ -179,7 +180,7 @@
       transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
     }
     .floating-net-basket:active { transform: scale(0.92); }
-    .net-mesh-icon { font-size: 1.7rem; }
+    .net-mesh-icon { font-size: 1.8rem; }
     .net-count-badge {
       position: absolute; top: -4px; right: -4px; background: #ef4444; color: white;
       font-size: 0.78rem; font-weight: 900; width: 24px; height: 24px; border-radius: 50%;
@@ -386,8 +387,9 @@
     <span class="phone-num-text">01009204577</span>
   </a>
 
+  <!-- شبكة صيد حقيقية في أيقونة السلة العائمة -->
   <div class="floating-net-basket" id="floatingNetBasket" onclick="openCheckout()">
-    <span class="net-mesh-icon">🕸️</span>
+    <span class="net-mesh-icon">🥅</span>
     <span class="net-count-badge" id="netCartCount">0</span>
   </div>
 
@@ -397,11 +399,11 @@
     <div class="beach-surf-layer surf-foam-front"></div>
   </div>
 
-  <!-- نافذة منبثقة تفاعلية لاختيار التسوية عند الضغط على السمكة -->
+  <!-- نافذة منبثقة تفاعلية لاختيار الكمية ثم الطهي والتسوية -->
   <div class="cooking-modal-overlay" id="cookingPopupModal" onclick="closeCookingModalOnOutside(event)">
     <div class="cooking-modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h3 id="popupFishTitle" style="color:var(--ocean-blue); font-size:1.15rem; font-weight:900;">اختر طريقة الطهي والتسوية</h3>
+        <h3 id="popupFishTitle" style="color:var(--ocean-blue); font-size:1.15rem; font-weight:900;">اختر الكمية وطريقة الطهي</h3>
         <button onclick="closeCookingModal()" style="background:#f1f5f9; border:none; font-size:1.2rem; width:28px; height:28px; border-radius:50%; cursor:pointer;">&times;</button>
       </div>
       
@@ -414,7 +416,7 @@
           <button class="qty-btn" onclick="changePopupQty(0.5)">+</button>
         </div>
         <button class="add-to-net-btn" onclick="confirmPopupAddItem()" style="padding:10px 20px; font-size:0.9rem;">
-          إضافة للشبكة 🕸️
+          إضافة للشبكة 🥅
         </button>
       </div>
     </div>
@@ -821,7 +823,7 @@
     }
 
     // =======================================================
-    // نافذة نافذة الطهي والخيارات عند النقر على السمكة
+    // منطق النافذة المنبثقة لاختيار الكمية ثم الطهي والتسوية
     // =======================================================
     let activePopupFish = null;
     let popupSelectedMain = "";
@@ -949,19 +951,28 @@
         return;
       }
 
-      // إضافة الطلب للسلة
+      // إضافة الطلب للسلة بانتظام وتحديث العداد
       const item = cart[activePopupFish.id];
       item.qty = popupQty;
       item.mainCooking = popupSelectedMain;
       item.subCooking = popupSelectedSub;
 
       closeCookingModal();
+      updateNetCountBadge();
       animateFishToNetBasket(document.getElementById('floatingNetBasket'));
     }
 
     let adminAuthPassword = "";
     let cachedAdminPass = "";
     let adminInterval = null;
+
+    function cleanNormalize(val) {
+      if (!val) return "";
+      let str = val.toString().trim();
+      const arDigits = ["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
+      for (let i = 0; i < 10; i++) str = str.replace(new RegExp(arDigits[i], "g"), i.toString());
+      return str;
+    }
 
     async function promptAdminLogin(event) {
       if (event) event.stopPropagation();
@@ -982,40 +993,36 @@
       const pass = await showCustomPrompt("أدخل كلمة سر الإدارة للوصول للطلبات والتسليمات:", "تسجيل دخول الإدارة 🔒");
       if (!pass) return;
 
-      try {
-        const res = await fetch(`${SCRIPT_URL}?action=adminFetchOrders&password=${encodeURIComponent(pass.trim())}`);
-        const d = await res.json();
-        
-        if (d.status === "success") {
-          localStorage.removeItem("admin_failed_attempts");
-          localStorage.removeItem("admin_lock_until");
-          
-          adminAuthPassword = pass.trim();
-          openAdminPanel();
-          renderMarineOrders(d.orders.reverse());
-        } else {
-          let failedAttempts = Number(localStorage.getItem("admin_failed_attempts") || 0) + 1;
-          localStorage.setItem("admin_failed_attempts", failedAttempts);
+      const inputNormalized = cleanNormalize(pass);
+      const targetNormalized = cleanNormalize(cachedAdminPass);
 
-          if (failedAttempts >= 5) {
-            const oneHourLock = Date.now() + 60 * 60 * 1000;
-            localStorage.setItem("admin_lock_until", oneHourLock);
-            await showCustomAlert(
-              "كلمة السر خطأ! لقد استنفدت 5 محاولات، تم قفل إمكانية الدخول لمدة ساعة كاملة.",
-              "كلمة السر خطأ 🔒",
-              "🚫"
-            );
-          } else {
-            const remainTries = 5 - failedAttempts;
-            await showCustomAlert(
-              `كلمة السر خطأ! متبقي لك ${remainTries} محاولات قبل قفل الصفحة لمدة ساعة.`,
-              "كلمة السر خطأ",
-              "❌"
-            );
-          }
+      if (targetNormalized && inputNormalized === targetNormalized) {
+        localStorage.removeItem("admin_failed_attempts");
+        localStorage.removeItem("admin_lock_until");
+        
+        adminAuthPassword = pass.trim();
+        openAdminPanel();
+        fetchAdminLiveOrders();
+      } else {
+        let failedAttempts = Number(localStorage.getItem("admin_failed_attempts") || 0) + 1;
+        localStorage.setItem("admin_failed_attempts", failedAttempts);
+
+        if (failedAttempts >= 5) {
+          const oneHourLock = Date.now() + 60 * 60 * 1000;
+          localStorage.setItem("admin_lock_until", oneHourLock);
+          await showCustomAlert(
+            "كلمة السر خطأ! لقد استنفدت 5 محاولات، تم قفل إمكانية الدخول لمدة ساعة كاملة.",
+            "كلمة السر خطأ 🔒",
+            "🚫"
+          );
+        } else {
+          const remainTries = 5 - failedAttempts;
+          await showCustomAlert(
+            `كلمة السر خطأ! متبقي لك ${remainTries} محاولات قبل قفل الصفحة لمدة ساعة.`,
+            "كلمة السر خطأ",
+            "❌"
+          );
         }
-      } catch (err) {
-        await showCustomAlert("تعذر الاتصال بالخادم للتأكد من كلمة السر! تأكد من اتصال الإنترنت.", "خطأ في الاتصال ⚠️", "📶");
       }
     }
 
@@ -1163,7 +1170,7 @@
       renderMenu(filtered);
     }
 
-    // عرض المنيو بنظام Grid عمودين
+    // عرض المنيو بنظام Grid عمودين مع زر إضافة المحدث
     function renderMenu(items) {
       const container = document.getElementById('fishList');
       container.innerHTML = '';
@@ -1191,19 +1198,20 @@
 
         const card = document.createElement('div');
         card.className = `fish-card ${isDisabled ? 'sold-out' : ''}`;
-        card.onclick = () => { if (!isDisabled) openCookingModal(fish.id); };
 
         card.innerHTML = `
           <div>
-            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
               <span class="fish-category-badge">${fish.category}</span>
               <div>${statusBadgeHtml}</div>
             </div>
             <div class="fish-name">${fish.name}</div>
           </div>
           <div>
-            <div class="fish-price" style="margin-bottom:8px;">${fish.price} ج.م ${isSandwich ? '/ سندوتش' : '/ ك'}</div>
-            <button class="card-action-hint" ${isDisabled ? 'disabled' : ''}>اختيار الطهي والطلب 🛒</button>
+            <div class="fish-price" style="margin-bottom:10px;">${fish.price} ج.م ${isSandwich ? '/ سندوتش' : '/ ك'}</div>
+            <button class="card-action-btn" ${isDisabled ? 'disabled' : ''} onclick="openCookingModal(${fish.id})">
+              🛒 اختيار الطهي والطلب
+            </button>
           </div>
         `;
         container.appendChild(card);
@@ -1249,7 +1257,7 @@
       for (let idx in selectedExtras) {
         if (selectedExtras[idx].count > 0) count++;
       }
-      document.getElementById('netCountBadge').innerText = count; // تم التعديل لتتوافق مع البادج الحقيقي
+      document.getElementById('netCartCount').innerText = count;
     }
 
     function calculateTotal() {
