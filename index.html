@@ -300,7 +300,7 @@
     <span class="phone-num-text">01009204577</span>
   </a>
 
-  <!-- شبكة صيد حقيقية في أيقونة السلة العائمة -->
+  <!-- شبكة صيد السمك الحقيقية للسلة -->
   <div class="floating-net-basket" id="floatingNetBasket" onclick="openCheckout()">
     <span class="net-mesh-icon">🕸️</span>
     <span class="net-count-badge" id="netCartCount">0</span>
@@ -323,7 +323,7 @@
       <div class="cooking-section-title">1. الكمية المطلوبة:</div>
       <div style="display:flex; align-items:center; justify-content:center; gap:14px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; padding:8px; margin-bottom:12px;">
         <button class="card-qty-btn" onclick="changePopupQty(-0.5)" style="width:36px; height:36px; font-size:1.2rem;">-</button>
-        <span id="popupQtyDisplay" style="font-size:1.2rem; font-weight:900; color:var(--ocean-blue); min-width:40px; text-align:center;">1</span>
+        <span id="popupQtyDisplay" style="font-size:1.2rem; font-weight:900; color:var(--ocean-blue); min-width:80px; text-align:center;">1 كيلو</span>
         <button class="card-qty-btn" onclick="changePopupQty(0.5)" style="width:36px; height:36px; font-size:1.2rem;">+</button>
       </div>
       
@@ -567,7 +567,7 @@
       });
     }
 
-    function showCustomPrompt(message, title = "إدخال كلمة السر 🔒", inputType = "password", icon = "🔑") {
+    function showCustomPrompt(message, title = "إدخال 📝", inputType = "text", icon = "✍️") {
       return new Promise((resolve) => {
         const dialog = document.getElementById('customDialog');
         const input = document.getElementById('dialogInput');
@@ -577,12 +577,12 @@
 
         input.type = inputType;
         input.value = '';
-        input.placeholder = 'اكتب كلمة السر هنا...';
+        input.placeholder = 'اكتب هنا...';
         input.style.display = 'block';
 
         const actions = document.getElementById('dialogActions');
         actions.innerHTML = `
-          <button class="dialog-btn dialog-btn-primary" id="dialogSubmit">دخول 🔓</button>
+          <button class="dialog-btn dialog-btn-primary" id="dialogSubmit">موافق</button>
           <button class="dialog-btn dialog-btn-cancel" id="dialogDismiss">إلغاء</button>
         `;
         dialog.style.display = 'flex';
@@ -715,7 +715,7 @@
     }
 
     // =======================================================
-    // النافذة المنبثقة لاختيار الطهي مع عرض وحدة (كيلو)
+    // النافذة المنبثقة لاختيار الكمية ثم الطهي
     // =======================================================
     let activePopupFish = null;
     let popupSelectedMain = "";
@@ -850,7 +850,7 @@
     }
 
     // =======================================================
-    // لوحة إدارة الطلبات (بدون طلب كلمة سر عند العميل)
+    // لوحة الإدارة
     // =======================================================
     let adminAuthPassword = "";
     let cachedAdminPass = "";
@@ -928,7 +928,6 @@
       const grid = document.getElementById('marineOrdersGrid');
       grid.innerHTML = '';
 
-      // إخفاء الطلبات التي تم تسليمها تلقائياً
       const activeOrders = orders.filter(ord => !ord.status.includes("تم التسليم"));
 
       if (activeOrders.length === 0) {
@@ -968,7 +967,6 @@
 
     async function updateOrderStatusByAdmin(orderId, newStatus) {
       playBubbleSound();
-      // استجابة لحظية بإخفاء الأوردر من الواجهة فوراً
       const cardNodes = document.querySelectorAll('.marine-order-card');
       cardNodes.forEach(card => {
         if (card.innerHTML.includes(`#${orderId}`)) {
@@ -1273,7 +1271,6 @@
       document.getElementById('receiptBox').style.display = 'block';
     }
 
-    // إرسال الطلب مع الاستجابة الفورية اللحظية (Optimistic UI)
     async function sendOrder() {
       const name = document.getElementById('custName').value.trim();
       const phone = document.getElementById('custPhone').value.trim();
@@ -1374,7 +1371,7 @@
       }).catch(()=>{});
     }
 
-    // مسح الطلب بدون كلمة سر خلال 10 دقائق
+    // مسح الطلب بدون كلمة سر خلال الـ 10 دقائق الأولى
     async function requestCancelOrder() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
@@ -1385,14 +1382,13 @@
       }
     }
 
-    // تعديل الطلب القائم بدون كلمة سر داخل الـ 10 دقائق الأولى وإشعار الإدارة فوراً بتنبيه معدل
+    // تعديل الطلب بدون كلمة سر خلال الـ 10 دقائق الأولى وإشعار الإدارة فوراً
     async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
       const newNotes = await showCustomPrompt("اكتب تفاصيل التعديل المطلوب على طلبك:", "تعديل الطلب ✏️", "text", "📝");
       if (!newNotes) return;
 
-      // إرسال طلب إلغاء القديم وإعادة تسجيله بالملاحظات المعدلة مع علامة (معدل) لتنبيه الإدارة
       fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems }) }).catch(()=>{});
       
       saved.itemsDetails += ` | [تعديل العميل: ${newNotes}]`;
