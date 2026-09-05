@@ -25,7 +25,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-    body { background-color: var(--bg); color: var(--text-main); padding-bottom: 120px; overflow-x: hidden; position: relative; }
+    body { background-color: var(--bg); color: var(--text-main); padding-bottom: 140px; overflow-x: hidden; position: relative; }
 
     /* تأثير نقرة الماء */
     .click-water-ripple {
@@ -89,67 +89,27 @@
     }
     .category-btn.active { background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue); }
 
-    /* شبكة الصيد العائمة (السلة) في أسفل اليسار */
+    /* شبكة الصيد العائمة */
     .floating-net-basket {
-      position: fixed;
-      left: 20px;
-      bottom: 24px;
-      width: 68px;
-      height: 68px;
+      position: fixed; left: 20px; bottom: 24px; width: 68px; height: 68px;
       background: radial-gradient(circle at 35% 35%, #0ea5e9, #0369a1);
-      border: 2.5px solid #38bdf8;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 25px rgba(2, 132, 199, 0.45), 0 0 15px rgba(56, 189, 248, 0.4);
-      cursor: pointer;
-      z-index: 180;
+      border: 2.5px solid #38bdf8; border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 8px 25px rgba(2, 132, 199, 0.45); cursor: pointer; z-index: 180;
       transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
     }
     .floating-net-basket:active { transform: scale(0.92); }
-    .net-mesh-icon {
-      font-size: 1.7rem;
-      transition: transform 0.3s ease;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }
+    .net-mesh-icon { font-size: 1.7rem; }
     .net-count-badge {
-      position: absolute;
-      top: -4px;
-      right: -4px;
-      background: #ef4444;
-      color: white;
-      font-size: 0.78rem;
-      font-weight: 900;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      position: absolute; top: -4px; right: -4px; background: #ef4444; color: white;
+      font-size: 0.78rem; font-weight: 900; width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; border: 2px solid white;
     }
-    .net-open {
-      transform: scale(1.22);
-      box-shadow: 0 0 30px #38bdf8;
-      border-color: #fef08a;
-    }
-    .net-open .net-mesh-icon {
-      transform: rotate(-25deg) scale(1.15);
-    }
+    .net-open { transform: scale(1.22); box-shadow: 0 0 30px #38bdf8; border-color: #fef08a; }
 
-    /* سمكة 3D واقعية متحركة نحو الشبكة */
     .swimming-3d-fish {
-      position: fixed;
-      width: 44px;
-      height: 32px;
-      pointer-events: none;
-      z-index: 9998;
-      font-size: 2rem;
-      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.35));
-      transition: all 0.85s cubic-bezier(0.2, 0.8, 0.25, 1);
+      position: fixed; width: 44px; height: 32px; pointer-events: none; z-index: 9998; font-size: 2rem;
+      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.35)); transition: all 0.85s cubic-bezier(0.2, 0.8, 0.25, 1);
       animation: fishTailWiggle 0.18s infinite alternate ease-in-out;
     }
     @keyframes fishTailWiggle {
@@ -171,13 +131,18 @@
     .dev-badge-name { font-size: 0.82rem; font-weight: 800; color: #f8fafc; }
     .dev-badge-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; background: #0b2545; }
 
-    /* نقطة الإدارة السرية */
-    .admin-secret-trigger {
-      position: fixed; right: 6px; bottom: 6px; width: 14px; height: 14px; border-radius: 50%;
-      background: rgba(14, 165, 233, 0.2); cursor: pointer; z-index: 999; opacity: 0.4;
+    /* ======================================================== */
+    /* زر الإدارة المباشر (أسفل اليمين فوق شارة المطور)         */
+    /* ======================================================== */
+    .admin-access-btn {
+      position: fixed; right: 16px; bottom: 74px;
+      background: rgba(11, 37, 69, 0.9); border: 1.5px solid rgba(56, 189, 248, 0.5);
+      color: #38bdf8; padding: 4px 10px; border-radius: 18px; font-size: 0.72rem; font-weight: 800;
+      cursor: pointer; z-index: 150; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
+    .admin-access-btn:hover { background: #0b2545; color: white; border-color: #38bdf8; }
 
-    /* موجة تسونامي ثلاثية الأبعاد 3D Tsunami Wave */
+    /* تسونامي المطور ثلاثي الأبعاد */
     .tsunami-3d-wrap {
       position: fixed; inset: 0; pointer-events: none; z-index: 9990; display: none; overflow: hidden; perspective: 1000px;
     }
@@ -185,13 +150,10 @@
       position: absolute; bottom: -120%; left: -10%; width: 120%; height: 220%;
       background: linear-gradient(0deg, #051626 0%, #0b2545 40%, #0284c7 75%, #38bdf8 92%, #ffffff 100%);
       border-top-left-radius: 40% 25%; border-top-right-radius: 50% 30%;
-      box-shadow: 0 -30px 80px rgba(56, 189, 248, 0.8), inset 0 20px 40px rgba(255,255,255,0.7);
-      transform-style: preserve-3d;
+      box-shadow: 0 -30px 80px rgba(56, 189, 248, 0.8); transform-style: preserve-3d;
     }
     .tsunami-active { display: block; }
-    .tsunami-active .tsunami-3d-wave {
-      animation: tsunamiRoll 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
+    .tsunami-active .tsunami-3d-wave { animation: tsunamiRoll 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
     @keyframes tsunamiRoll {
       0% { transform: translateY(0) rotateX(25deg) scaleY(0.6); opacity: 0; }
       25% { opacity: 1; }
@@ -248,6 +210,20 @@
     }
     .add-to-net-btn:active { transform: scale(0.95); }
 
+    /* كروت السلة التفاعلية لتعديل وحذف الكميات */
+    .cart-item-row {
+      display: flex; justify-content: space-between; align-items: center; background: white;
+      border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px;
+    }
+    .cart-item-title { font-weight: 800; font-size: 0.9rem; color: var(--ocean-blue); }
+    .cart-item-desc { font-size: 0.78rem; color: var(--text-muted); }
+    .cart-item-controls { display: flex; align-items: center; gap: 6px; }
+    .cart-sm-btn {
+      width: 28px; height: 28px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc;
+      font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .cart-del-btn { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
+
     /* الإضافات والمقبلات */
     .extras-section {
       background: #ffffff; border-radius: var(--radius); padding: 16px; margin: 18px 0;
@@ -262,7 +238,7 @@
     .extra-name { font-weight: 700; font-size: 0.9rem; color: var(--ocean-blue); }
     .extra-price { font-size: 0.85rem; color: #0284c7; font-weight: 800; margin-top: 4px; }
 
-    /* المودال الخاص بإتمام الطلب */
+    /* نافذة المودال */
     .modal {
       display: none; position: fixed; inset: 0; background: rgba(5, 22, 38, 0.65);
       backdrop-filter: blur(4px); z-index: 200; align-items: flex-end; justify-content: center;
@@ -292,9 +268,7 @@
 
     .submit-order-btn { width: 100%; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 13px; border-radius: 12px; font-size: 1.15rem; font-weight: 800; margin-top: 12px; cursor: pointer; }
 
-    /* ======================================================== */
-    /* لوحة إدارة الطلبات الحية (طبق الأصل من كافيه حبيبة)     */
-    /* ======================================================== */
+    /* لوحة إدارة الطلبات الحية (كافيه حبيبة) */
     .habiba-admin-screen {
       position: fixed; inset: 0; background: #1a120b; color: #fff; z-index: 99999;
       display: none; flex-direction: column; overflow-y: auto; font-family: 'Cairo', sans-serif;
@@ -305,12 +279,8 @@
     }
     .habiba-admin-title { font-size: 1.4rem; font-weight: 900; color: #f59e0b; }
     .habiba-top-btns { display: flex; gap: 10px; }
-    .habiba-btn-refresh {
-      background: #0284c7; color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 800; cursor: pointer;
-    }
-    .habiba-btn-logout {
-      background: #b91c1c; color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 800; cursor: pointer;
-    }
+    .habiba-btn-refresh { background: #0284c7; color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+    .habiba-btn-logout { background: #b91c1c; color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 800; cursor: pointer; }
 
     .habiba-orders-grid {
       display: flex; flex-wrap: wrap; gap: 20px; padding: 24px 20px; justify-content: flex-start;
@@ -319,12 +289,8 @@
       background: #261a12; border: 1px solid #4a3323; border-radius: 16px; padding: 18px;
       width: 100%; max-width: 360px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 8px;
     }
-    .habiba-card-header {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;
-    }
-    .habiba-status-pill {
-      background: #3d2b1f; color: #f3f4f6; font-size: 0.78rem; font-weight: 700; padding: 3px 10px; border-radius: 14px;
-    }
+    .habiba-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .habiba-status-pill { background: #3d2b1f; color: #f3f4f6; font-size: 0.78rem; font-weight: 700; padding: 3px 10px; border-radius: 14px; }
     .habiba-order-num { font-size: 1.3rem; font-weight: 900; color: #f59e0b; }
     .habiba-info-row { font-size: 0.92rem; color: #e5e7eb; }
     .habiba-info-row strong { color: #f59e0b; }
@@ -332,9 +298,7 @@
       background: #19100a; border-radius: 10px; padding: 10px; font-size: 0.88rem; color: #f3f4f6; line-height: 1.6; margin: 6px 0;
     }
     .habiba-total-price { font-size: 1.05rem; font-weight: 900; color: #f59e0b; text-align: left; }
-    .habiba-action-row {
-      display: flex; gap: 10px; margin-top: 8px;
-    }
+    .habiba-action-row { display: flex; gap: 10px; margin-top: 8px; }
     .habiba-act-btn {
       flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: 800; font-size: 0.88rem; cursor: pointer;
       display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -351,10 +315,16 @@
     <span>01009204577</span>
   </a>
 
-  <!-- شبكة الصيد العائمة (سلة الطلبات التفاعلية) -->
+  <!-- شبكة الصيد العائمة (سلة الطلبات) -->
   <div class="floating-net-basket" id="floatingNetBasket" onclick="openCheckout()">
     <span class="net-mesh-icon">🕸️</span>
     <span class="net-count-badge" id="netCartCount">0</span>
+  </div>
+
+  <!-- زر لوحة الإدارة الواضح لأصحاب المحل (فوق شارة المطور مباشرة) -->
+  <div class="admin-access-btn" onclick="promptAdminLogin()">
+    <span>⚙️</span>
+    <span>إدارة الطلبات</span>
   </div>
 
   <!-- شارة المطور -->
@@ -366,9 +336,6 @@
     </div>
     <img src="Screenshot 2026-09-03 134855.png" alt="Abdallah Hussein" class="dev-badge-avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=Abdallah';">
   </div>
-
-  <!-- نقطة الإدارة السرية -->
-  <div class="admin-secret-trigger" onclick="promptAdminLogin()"></div>
 
   <!-- موجة تسونامي ثلاثية الأبعاد -->
   <div class="tsunami-3d-wrap" id="tsunami3DWrap">
@@ -390,7 +357,7 @@
     </div>
   </div>
 
-  <!-- لوحة إدارة الطلبات الحية (مثل كافيه حبيبة بالضبط) -->
+  <!-- لوحة إدارة الطلبات الحية (مثل كافيه حبيبة) -->
   <div class="habiba-admin-screen" id="habibaAdminPanel">
     <div class="habiba-admin-topbar">
       <div class="habiba-top-btns">
@@ -423,7 +390,6 @@
   </header>
 
   <div class="container">
-    <!-- شاشة قفل الصفحة وتتبع الطلب الحالي -->
     <div class="order-lock-screen" id="orderLockCard" style="display:none; background:white; border-radius:16px; border:2px solid #38bdf8; padding:20px; margin-bottom:20px;">
       <div class="lock-badge" style="display:inline-flex; align-items:center; gap:6px; background:#e0f2fe; color:#0369a1; padding:4px 12px; border-radius:20px; font-weight:800; font-size:0.85rem; margin-bottom:12px;">
         <span style="width:10px; height:10px; background:#10b981; border-radius:50%;"></span> طلبك جاري تجهيزه بالمحل
@@ -439,14 +405,12 @@
       <button onclick="requestCancelOrder()" style="width:100%; background:#ef4444; color:white; border:none; padding:10px; border-radius:10px; font-weight:800; margin-top:10px; cursor:pointer;">مسح وإلغاء الطلب 🗑️</button>
     </div>
 
-    <!-- القائمة الرئيسية -->
     <div id="menuMainArea">
       <div class="search-box-wrapper">
         <span class="search-icon">🔍</span>
         <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن سمك، جمبري، سندوتشات، شوربة..." oninput="filterMenu()">
       </div>
 
-      <!-- التصنيفات الديناميكية تشمل السندوتشات -->
       <div class="categories-bar" id="categoriesBar">
         <button class="category-btn active" onclick="selectCategory('all', this)">الكل 🌊</button>
       </div>
@@ -455,7 +419,6 @@
         <div style="text-align:center; padding:40px; color:#64748b;">جاري تحميل الأسماك والسندوتشات الطازجة... 🐟</div>
       </div>
 
-      <!-- الإضافات والمقبلات -->
       <div class="extras-section" id="extrasArea" style="display:none;">
         <h3 style="color:var(--ocean-blue); font-size:1.1rem; font-weight:800;">🥗 إضافات ومقبلات مميزة</h3>
         <div class="extras-grid" id="extrasGrid"></div>
@@ -463,7 +426,7 @@
     </div>
   </div>
 
-  <!-- نافذة إتمام الطلب -->
+  <!-- نافذة مراجعة السلة مع إمكانية تعديل وحذف الأصناف -->
   <div class="modal" id="checkoutModal">
     <div class="modal-content">
       <div class="modal-title">
@@ -471,7 +434,8 @@
         <button class="close-modal" onclick="closeCheckout()">&times;</button>
       </div>
 
-      <div id="orderSummaryReview" style="background:#f0f7fb; border:1px solid #bae6fd; padding:12px; border-radius:10px; margin-bottom:14px; font-size:0.9rem; line-height:1.6;"></div>
+      <!-- قائمة الأصناف التفاعلية في السلة -->
+      <div id="orderItemsInteractiveList" style="background:#f0f7fb; border:1px solid #bae6fd; padding:12px; border-radius:10px; margin-bottom:14px;"></div>
 
       <div class="form-group">
         <label>الاسم بالكامل:</label>
@@ -521,6 +485,7 @@
   </div>
 
   <script>
+    // رابط Web App المحدث الخاص بك
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPdFJzHQFe1_q-wKYm8dzoMesp02kbPAAgLVKzLVjJb0Xa1fuv16F62rV9LO08nNeaFw/exec";
     const WHATSAPP_NUM = "201009204577";
 
@@ -583,9 +548,7 @@
       } catch(e) {}
     }
 
-    // =======================================================
-    // أنيميشن السمكة 3D التي تسبح إلى شبكة الصيد وتنفتح وتغلق
-    // =======================================================
+    // سباحة السمكة 3D ودخولها شبكة الصيد
     function animateFishToNetBasket(sourceElement) {
       playWaterSplash();
       const rect = sourceElement.getBoundingClientRect();
@@ -599,19 +562,14 @@
       fish.style.top = rect.top + 'px';
       document.body.appendChild(fish);
 
-      // مسار سباحة انسيابي نحو الشبكة
       requestAnimationFrame(() => {
         fish.style.left = (netRect.left + 12) + 'px';
         fish.style.top = (netRect.top + 10) + 'px';
         fish.style.transform = 'scale(0.7) rotate(-45deg)';
       });
 
-      // فتح الشبكة قبل وصول السمكة
-      setTimeout(() => {
-        net.classList.add('net-open');
-      }, 550);
+      setTimeout(() => { net.classList.add('net-open'); }, 550);
 
-      // دخول السمكة وإغلاق الشبكة مع طرطشة
       setTimeout(() => {
         fish.remove();
         net.classList.remove('net-open');
@@ -620,7 +578,6 @@
       }, 900);
     }
 
-    // تسونامي المطور ثلاثي الأبعاد
     function trigger3DTsunamiModal() {
       playTsunamiRoarSound();
       const wrap = document.getElementById('tsunami3DWrap');
@@ -628,13 +585,8 @@
       void wrap.offsetWidth;
       wrap.classList.add('tsunami-active');
 
-      setTimeout(() => {
-        document.getElementById('devModal').style.display = 'flex';
-      }, 700);
-
-      setTimeout(() => {
-        wrap.classList.remove('tsunami-active');
-      }, 1400);
+      setTimeout(() => { document.getElementById('devModal').style.display = 'flex'; }, 700);
+      setTimeout(() => { wrap.classList.remove('tsunami-active'); }, 1400);
     }
 
     function closeDevModal() {
@@ -642,9 +594,7 @@
       document.getElementById('devModal').style.display = 'none';
     }
 
-    // =======================================================
-    // شاشة إدارة الطلبات الحية (كافيه حبيبة)
-    // =======================================================
+    // لوحة إدارة الطلبات الحية (كافيه حبيبة)
     let adminAuthPassword = localStorage.getItem("kheir_admin_auth") || "";
     let adminInterval = null;
 
@@ -737,9 +687,7 @@
       } catch(e) {}
     }
 
-    // =======================================================
-    // محرك المنيو والسندوتشات والسلة
-    // =======================================================
+    // محرك المنيو والسلة
     let allMenuItems = [];
     let cart = {};
     let selectedExtras = {};
@@ -762,7 +710,6 @@
           soupTypesList = data.soupTypes || ["مخلية", "بريميوم"];
           document.getElementById('instapayTargetText').innerText = data.instapayTarget || "";
 
-          // تهيئة السلة
           allMenuItems.forEach(fish => {
             const isUnavailable = fish.status === "غير متوفر";
             const isSoldOut = fish.status === "خلص" || (!isUnavailable && fish.remainingQty <= 0);
@@ -896,14 +843,16 @@
       let newQty = item.qty + delta;
       if (newQty < 0) newQty = 0;
       item.qty = newQty;
-      document.getElementById(`qty-${id}`).innerText = newQty;
+      const d = document.getElementById(`qty-${id}`);
+      if (d) d.innerText = newQty;
     }
 
     function addItemToNet(btnElement, fishId) {
       const item = cart[fishId];
       if (item.qty === 0) {
-        item.qty = 1; // إضافة 1 ك أو 1 سندوتش كافتراضي لو نسى العميل الضغط على +
-        document.getElementById(`qty-${fishId}`).innerText = 1;
+        item.qty = 1;
+        const d = document.getElementById(`qty-${fishId}`);
+        if (d) d.innerText = 1;
       }
       animateFishToNetBasket(btnElement);
     }
@@ -971,30 +920,98 @@
       return total;
     }
 
+    // =======================================================
+    // عرض السلة التفاعلية مع إمكانية زيادة ونقص وحذف الأصناف
+    // =======================================================
+    function renderInteractiveCartModal() {
+      const container = document.getElementById('orderItemsInteractiveList');
+      container.innerHTML = '';
+      let hasItems = false;
+
+      // الأسماك والسندوتشات
+      for (let id in cart) {
+        const item = cart[id];
+        if (item.qty > 0) {
+          hasItems = true;
+          const cook = item.subCooking ? `${item.mainCooking} (${item.subCooking})` : item.mainCooking;
+          const rowTotal = item.qty * item.data.price;
+
+          const row = document.createElement('div');
+          row.className = 'cart-item-row';
+          row.innerHTML = `
+            <div>
+              <div class="cart-item-title">${item.data.name} [${cook}]</div>
+              <div class="cart-item-desc">${item.qty} × ${item.data.price} = ${rowTotal} ج.م</div>
+            </div>
+            <div class="cart-item-controls">
+              <button class="cart-sm-btn" onclick="modifyCartItemQty(${id}, -0.5)">-</button>
+              <span style="font-weight:800; font-size:0.9rem; min-width:20px; text-align:center;">${item.qty}</span>
+              <button class="cart-sm-btn" onclick="modifyCartItemQty(${id}, 0.5)">+</button>
+              <button class="cart-sm-btn cart-del-btn" title="حذف" onclick="removeCartItem(${id})">🗑️</button>
+            </div>
+          `;
+          container.appendChild(row);
+        }
+      }
+
+      // المقبلات
+      for (let idx in selectedExtras) {
+        const ext = selectedExtras[idx];
+        if (ext.count > 0) {
+          hasItems = true;
+          const row = document.createElement('div');
+          row.className = 'cart-item-row';
+          row.innerHTML = `
+            <div>
+              <div class="cart-item-title">إضافة: ${ext.data.name}</div>
+              <div class="cart-item-desc">${ext.data.price} ج.م</div>
+            </div>
+            <div class="cart-item-controls">
+              <button class="cart-sm-btn cart-del-btn" title="حذف" onclick="removeExtraItem(${idx})">🗑️</button>
+            </div>
+          `;
+          container.appendChild(row);
+        }
+      }
+
+      const total = calculateTotal();
+      document.getElementById('totalAmountModal').innerText = `الإجمالي: ${total} ج.م`;
+      updateNetCountBadge();
+
+      if (!hasItems) {
+        container.innerHTML = '<div style="text-align:center; padding:15px; color:#64748b;">شبكة الصيد فارغة الآن 🕸️</div>';
+      }
+    }
+
+    function modifyCartItemQty(id, delta) {
+      playBubbleSound();
+      const item = cart[id];
+      item.qty += delta;
+      if (item.qty <= 0) item.qty = 0;
+      const d = document.getElementById(`qty-${id}`);
+      if (d) d.innerText = item.qty;
+      renderInteractiveCartModal();
+    }
+
+    function removeCartItem(id) {
+      playBubbleSound();
+      cart[id].qty = 0;
+      const d = document.getElementById(`qty-${id}`);
+      if (d) d.innerText = 0;
+      renderInteractiveCartModal();
+    }
+
+    function removeExtraItem(idx) {
+      playBubbleSound();
+      selectedExtras[idx].count = 0;
+      const card = document.getElementById(`extra-${idx}`);
+      if (card) card.classList.remove('selected');
+      renderInteractiveCartModal();
+    }
+
     function openCheckout() {
       playBubbleSound();
-      const total = calculateTotal();
-      if (total === 0) {
-        alert("شبكة الصيد فارغة! اختر بعض الأسماك أو السندوتشات أولاً.");
-        return;
-      }
-
-      let summaryHtml = "<strong>الأصناف في الشبكة:</strong><br>";
-      for (let id in cart) {
-        if (cart[id].qty > 0) {
-          const c = cart[id];
-          const cook = c.subCooking ? `${c.mainCooking} (${c.subCooking})` : c.mainCooking;
-          summaryHtml += `• ${c.qty} × ${c.data.name} [${cook}]<br>`;
-        }
-      }
-      for (let idx in selectedExtras) {
-        if (selectedExtras[idx].count > 0) {
-          summaryHtml += `• إضافة: ${selectedExtras[idx].data.name} (${selectedExtras[idx].data.price} ج.م)<br>`;
-        }
-      }
-
-      document.getElementById('orderSummaryReview').innerHTML = summaryHtml;
-      document.getElementById('totalAmountModal').innerText = `الإجمالي: ${total} ج.م`;
+      renderInteractiveCartModal();
       document.getElementById('checkoutModal').style.display = 'flex';
     }
 
@@ -1025,6 +1042,11 @@
       const phone = document.getElementById('custPhone').value.trim();
       const notes = document.getElementById('custNotes').value.trim();
       const total = calculateTotal();
+
+      if (total === 0) {
+        alert("شبكة الصيد فارغة! اختر بعض الأصناف أولاً.");
+        return;
+      }
 
       if (!name || !phone) {
         alert("يرجى إدخال الاسم ورقم الهاتف!");
@@ -1081,7 +1103,7 @@
           checkLockState();
         }
       } catch(e) {
-        alert("حدث خطأ، يرجى المحاولة ثانية.");
+        alert("حدث خطأ أثناء إرسال الطلب، يرجى المحاولة ثانية.");
       } finally {
         btn.innerText = "تأكيد وإرسال الطلب للمحل ✅";
         btn.disabled = false;
