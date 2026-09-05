@@ -53,7 +53,6 @@
     .container { max-width: 650px; margin: auto; padding: 16px 14px; }
     .section-title { font-size: 1.25rem; font-weight: 800; color: var(--ocean-blue); margin-bottom: 12px; }
 
-    /* كروت الأسماك */
     .fish-card {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -109,7 +108,6 @@
     .qty-btn:disabled { cursor: not-allowed; opacity: 0.4; }
     .qty-display { font-weight: 800; min-width: 30px; text-align: center; }
 
-    /* شريط السلة العائم */
     .cart-bar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -135,7 +133,6 @@
       cursor: pointer;
     }
 
-    /* نافذة المودال */
     .modal {
       display: none;
       position: fixed;
@@ -215,21 +212,39 @@
       background: #faf5ff;
       border: 1px dashed var(--instapay-purple);
       border-radius: 10px;
-      padding: 12px;
+      padding: 14px;
       margin-top: 10px;
       text-align: center;
     }
 
+    .instapay-step-title {
+      font-weight: 800;
+      color: var(--instapay-purple);
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+
     .instapay-go-btn {
       display: inline-block;
-      margin-top: 8px;
+      margin: 8px 0;
       background: var(--instapay-purple);
       color: white;
       text-decoration: none;
-      padding: 8px 16px;
+      padding: 9px 18px;
       border-radius: 8px;
       font-weight: 700;
       font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .receipt-upload-box {
+      display: none;
+      margin-top: 12px;
+      background: #ffffff;
+      border: 1px solid #d8b4fe;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: right;
     }
 
     .submit-order-btn {
@@ -311,6 +326,7 @@
         <input type="tel" id="custPhone" placeholder="010XXXXXXXX" required>
       </div>
 
+      <!-- موعد الاستلام المطور (وقت فقط) -->
       <div class="form-group">
         <label>موعد الاستلام:</label>
         <div class="time-toggle-box">
@@ -323,11 +339,15 @@
         </div>
 
         <div id="laterInputBox" style="display:none;">
-          <input type="datetime-local" id="custCustomTime">
-          <span style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:3px;">* أقل موعد متاح هو بعد ساعة من الآن لضمان جودة الطهي والتسوية.</span>
+          <label style="font-size:0.85rem; font-weight:700; color:#0b2545;">اختر وقت الاستلام (اليوم):</label>
+          <input type="time" id="custCustomTime">
+          <span id="timeConstraintHint" style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:3px;">
+            * يجب أن يكون موعد الاستلام بعد ساعة على الأقل من وقت الطلب لضمان التسوية والطهي بعناية.
+          </span>
         </div>
       </div>
 
+      <!-- طريقة الدفع مع مرحلتين لإنستاباي -->
       <div class="form-group">
         <label>طريقة الدفع:</label>
         <div class="payment-box">
@@ -336,20 +356,24 @@
         </div>
 
         <div class="instapay-action-card" id="instapayCard">
-          <div style="font-weight:700; color:var(--instapay-purple); font-size:0.95rem;">الدفع عبر تطبيق إنستاباي 📲</div>
+          <div class="instapay-step-title">خطوة 1: التحويل عبر إنستاباي 📲</div>
           <div style="font-size:0.85rem; margin-top:4px;">
             حول المبلغ على حساب / رقم المحل: <strong id="instapayTargetText" style="color:#0f172a; background:#e9d5ff; padding:2px 8px; border-radius:6px;"></strong>
           </div>
-          <div style="margin-top:10px;">
-            <a href="instapay://" id="instapayAppUrl" target="_blank" class="instapay-go-btn">فتح تطبيق إنستاباي للتحويل ↗️</a>
-          </div>
-          <div style="margin-top:14px; background:#ffffff; border:1px dashed #a855f7; border-radius:8px; padding:10px; text-align:right;">
+          
+          <a href="instapay://" id="instapayAppUrl" target="_blank" class="instapay-go-btn" onclick="showReceiptStep()">
+            فتح تطبيق إنستاباي للتحويل الآن ↗️
+          </a>
+
+          <!-- خانة إرفاق السكرين شوت تفتح في المرحلة التالية بعد التحويل -->
+          <div class="receipt-upload-box" id="receiptBox">
+            <div class="instapay-step-title" style="text-align:right;">خطوة 2: تأكيد الدفع وإرفاق الإشعار 📸</div>
             <label style="font-size:0.85rem; font-weight:700; color:#6b21a8; display:block; margin-bottom:4px;">
-              📸 صورة إشعار التحويل (سكرين شوت):
+              أرفق سكرين شوت عملية التحويل الناجحة:
             </label>
             <input type="file" id="instapayReceiptFile" accept="image/*" style="font-size:0.8rem; padding:6px; background:#fdf4ff; border:1px solid #d8b4fe; border-radius:6px; width:100%;">
             <span style="font-size:0.75rem; color:#7e22ce; display:block; margin-top:4px;">
-              * يرجى إرسال صورة التحويل أيضاً في محادثة الواتساب للتأكيد السريع.
+              * سيتم أيضاً تحويلك للواتساب لإرسال صورة التحويل والتأكيد الفوري مع الكاشير.
             </span>
           </div>
         </div>
@@ -365,9 +389,8 @@
   </div>
 
   <script>
-    // الرابط المحدث الأخير
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuJ9LD3NmmwcUCmUO9gs4YGRBRmN8u__Cyb83zNiTPF8EkzpvhmbCqCLWJbkMmTPUQIw/exec";
-    const WHATSAPP_NUM = "201XXXXXXXXX"; // ضع رقم هاتف المحل للواتساب هنا (مثال: 201012345678)
+    const WHATSAPP_NUM = "201XXXXXXXXX"; // اكتب رقم هاتف المحل للواتساب هنا
 
     let cart = {};
     let dynamicCookingOptions = [];
@@ -376,6 +399,7 @@
     let paymentMethod = "cash";
     let currentActiveOrderId = localStorage.getItem("kheir_active_order_id") || null;
     let isEditingMode = false;
+    let minAllowedDeliveryDate = null;
 
     async function loadMenu() {
       const container = document.getElementById('fishList');
@@ -502,11 +526,24 @@
         nowNotice.style.display = 'none';
         laterBox.style.display = 'block';
 
-        const minAllowed = new Date(Date.now() + 60 * 60 * 1000);
-        const minIso = new Date(minAllowed.getTime() - minAllowed.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-        timeInput.min = minIso;
-        if (!timeInput.value) timeInput.value = minIso;
+        // حساب وقت بعد 60 دقيقة من الآن بالظبط
+        minAllowedDeliveryDate = new Date(Date.now() + 60 * 60 * 1000);
+        const hours = String(minAllowedDeliveryDate.getHours()).padStart(2, '0');
+        const minutes = String(minAllowedDeliveryDate.getMinutes()).padStart(2, '0');
+        const minTimeString = `${hours}:${minutes}`;
+
+        timeInput.min = minTimeString;
+        if (!timeInput.value) {
+          timeInput.value = minTimeString;
+        }
+
+        document.getElementById('timeConstraintHint').innerText = 
+          `* أقل موعد متاح للاستلام اليوم هو الساعة ${formatTimeAmPm(minAllowedDeliveryDate)} لضمان جودة الطهي.`;
       }
+    }
+
+    function formatTimeAmPm(dateObj) {
+      return dateObj.toLocaleTimeString("ar-EG", { hour: '2-digit', minute: '2-digit' });
     }
 
     function setPaymentMethod(method) {
@@ -524,6 +561,11 @@
         cashBtn.classList.remove('active');
         instaCard.style.display = 'block';
       }
+    }
+
+    // إظهار خانة رفع الإشعار بعد النقر على التحويل
+    function showReceiptStep() {
+      document.getElementById('receiptBox').style.display = 'block';
     }
 
     function openCheckout() {
@@ -558,26 +600,40 @@
         return;
       }
 
+      // التحقق من إرفاق السكرين شوت عند الدفع بإنستاباي
       const receiptInput = document.getElementById('instapayReceiptFile');
-      if (paymentMethod === 'instapay' && receiptInput.files.length === 0) {
-        const proceedWithout = confirm("لم تقم بإرفاق سكرين التحويل هنا! هل تريد المتابعة وإرسال صورة التحويل عبر الواتساب مباشرة؟");
-        if (!proceedWithout) return;
+      if (paymentMethod === 'instapay') {
+        if (document.getElementById('receiptBox').style.display === 'none') {
+          showReceiptStep();
+        }
+        if (receiptInput.files.length === 0) {
+          const confirmWithout = confirm("لم تقم بإرفاق سكرين التحويل هنا حتى الآن! هل تريد الاستمرار وإرسال صورة التحويل عبر الواتساب مباشرة؟");
+          if (!confirmWithout) return;
+        }
       }
 
+      // التحقق الصارم من وقت الاستلام (وقت فقط)
       let deliveryTimeText = "في أقرب وقت (الآن)";
       if (timeMode === "later") {
-        const selectedTimeVal = document.getElementById('custCustomTime').value;
-        if (!selectedTimeVal) {
-          alert("من فضلك حدد موعد الاستلام المطلوب!");
+        const timeVal = document.getElementById('custCustomTime').value;
+        if (!timeVal) {
+          alert("من فضلك حدد وقت الاستلام المطلوب اليوم!");
           return;
         }
-        const chosenDate = new Date(selectedTimeVal);
-        const minAllowed = new Date(Date.now() + 55 * 60 * 1000);
-        if (chosenDate < minAllowed) {
-          alert("عفواً، أقل موعد يمكن اختياره هو بعد ساعة من الآن لتجهيز الأسماك بعناية.");
+
+        const [chosenH, chosenM] = timeVal.split(':').map(Number);
+        const chosenTimeToday = new Date();
+        chosenTimeToday.setHours(chosenH, chosenM, 0, 0);
+
+        // الحد الأدنى هو بعد 55 دقيقة للمرونة
+        const minTimeAllowed = new Date(Date.now() + 55 * 60 * 1000);
+
+        if (chosenTimeToday < minTimeAllowed) {
+          alert(`عفواً، لا يمكن تحديد وقت سابق أو قبل مرور ساعة من الآن! أقل وقت متاح للاستلام هو: ${formatTimeAmPm(new Date(Date.now() + 60 * 60 * 1000))}`);
           return;
         }
-        deliveryTimeText = new Date(selectedTimeVal).toLocaleString("ar-EG", { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' });
+
+        deliveryTimeText = `اليوم الساعة ${formatTimeAmPm(chosenTimeToday)}`;
       }
 
       let itemsDetailsList = [];
@@ -624,7 +680,7 @@
 
           alert(
             paymentMethod === 'instapay'
-              ? `تم تسجيل طلبك رقم #${assignedId}! سيتم تحويلك للواتساب الآن، يرجى إرسال سكرين شوت التحويل لتأكيد الحجز فوراً.`
+              ? `تم تسجيل طلبك رقم #${assignedId}! سيتم تحويلك للواتساب الآن، يرجى إرسال صورة التحويل لتأكيد الحجز فوراً.`
               : `تم تأكيد طلبك بنجاح برقم #${assignedId}!`
           );
           
