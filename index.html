@@ -6,14 +6,7 @@
   <title>خير البحر | للأسماك الطازجة وفواكه البحر بالسويس</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <style><!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>خير البحر | للأسماك الطازجة وفواكه البحر بالسويس</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
   <style>
     :root {
       --deep-ocean: #051626;
@@ -142,7 +135,7 @@
       cursor: pointer;
     }
 
-    /* شاشة المودال */
+    /* نافذة المودال */
     .modal {
       display: none;
       position: fixed;
@@ -170,7 +163,7 @@
 
     .form-group { margin-bottom: 13px; }
     .form-group label { display: block; font-weight: 700; margin-bottom: 5px; font-size: 0.9rem; color: #334155; }
-    .form-group input, .form-group textarea, .form-group select {
+    .form-group input, .form-group textarea {
       width: 100%;
       padding: 10px 12px;
       border-radius: 10px;
@@ -178,13 +171,7 @@
       font-size: 0.95rem;
     }
 
-    /* موعد الاستلام */
-    .time-toggle-box {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
+    .time-toggle-box { display: flex; gap: 10px; margin-bottom: 10px; }
     .time-pill {
       flex: 1;
       padding: 10px;
@@ -195,12 +182,7 @@
       font-weight: 700;
       font-size: 0.9rem;
     }
-
-    .time-pill.active {
-      border-color: #0284c7;
-      background: #e0f2fe;
-      color: #0284c7;
-    }
+    .time-pill.active { border-color: #0284c7; background: #e0f2fe; color: #0284c7; }
 
     .live-status-notice {
       background: #ecfdf5;
@@ -214,13 +196,7 @@
       margin-bottom: 10px;
     }
 
-    /* خيارات الدفع */
-    .payment-box {
-      display: flex;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
+    .payment-box { display: flex; gap: 10px; margin-top: 6px; }
     .pay-btn-opt {
       flex: 1;
       padding: 10px;
@@ -231,18 +207,8 @@
       cursor: pointer;
       font-size: 0.9rem;
     }
-
-    .pay-btn-opt.active {
-      border-color: var(--accent-green);
-      background: #ecfdf5;
-      color: var(--accent-green);
-    }
-
-    .pay-btn-opt.instapay.active {
-      border-color: var(--instapay-purple);
-      background: #f3e8ff;
-      color: var(--instapay-purple);
-    }
+    .pay-btn-opt.active { border-color: var(--accent-green); background: #ecfdf5; color: var(--accent-green); }
+    .pay-btn-opt.instapay.active { border-color: var(--instapay-purple); background: #f3e8ff; color: var(--instapay-purple); }
 
     .instapay-action-card {
       display: none;
@@ -279,7 +245,6 @@
       cursor: pointer;
     }
 
-    /* تتبع الطلب */
     .active-order-tracking {
       display: none;
       background: #ffffff;
@@ -289,39 +254,10 @@
       margin-bottom: 16px;
       box-shadow: var(--shadow);
     }
-
-    .tracking-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 800;
-      font-size: 1rem;
-      color: var(--ocean-blue);
-    }
-
-    .live-pulse {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      background: #10b981;
-      border-radius: 50%;
-      animation: blink 1.5s infinite;
-      margin-left: 6px;
-    }
-
+    .tracking-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 1rem; color: var(--ocean-blue); }
+    .live-pulse { display: inline-block; width: 10px; height: 10px; background: #10b981; border-radius: 50%; animation: blink 1.5s infinite; margin-left: 6px; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-    .modify-order-btn {
-      background: #f59e0b;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
-      margin-top: 8px;
-    }
+    .modify-order-btn { background: #f59e0b; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; margin-top: 8px; }
   </style>
 </head>
 <body>
@@ -333,7 +269,6 @@
   </header>
 
   <div class="container">
-    <!-- كارت متابعة الطلب الحالي النشط -->
     <div class="active-order-tracking" id="activeOrderCard">
       <div class="tracking-header">
         <span><span class="live-pulse"></span> طلبك رقم <span id="trackOrderId">#</span> قيد المتابعة</span>
@@ -357,7 +292,6 @@
     <button class="checkout-btn" onclick="openCheckout()">إتمام الطلب 🛒</button>
   </div>
 
-  <!-- نافذة إتمام وتعديل الطلب -->
   <div class="modal" id="checkoutModal">
     <div class="modal-content">
       <div class="modal-title">
@@ -377,7 +311,6 @@
         <input type="tel" id="custPhone" placeholder="010XXXXXXXX" required>
       </div>
 
-      <!-- موعد الاستلام -->
       <div class="form-group">
         <label>موعد الاستلام:</label>
         <div class="time-toggle-box">
@@ -395,7 +328,6 @@
         </div>
       </div>
 
-      <!-- طريقة الدفع مع إرفاق السكرين -->
       <div class="form-group">
         <label>طريقة الدفع:</label>
         <div class="payment-box">
@@ -408,11 +340,9 @@
           <div style="font-size:0.85rem; margin-top:4px;">
             حول المبلغ على حساب / رقم المحل: <strong id="instapayTargetText" style="color:#0f172a; background:#e9d5ff; padding:2px 8px; border-radius:6px;"></strong>
           </div>
-          
           <div style="margin-top:10px;">
             <a href="instapay://" id="instapayAppUrl" target="_blank" class="instapay-go-btn">فتح تطبيق إنستاباي للتحويل ↗️</a>
           </div>
-
           <div style="margin-top:14px; background:#ffffff; border:1px dashed #a855f7; border-radius:8px; padding:10px; text-align:right;">
             <label style="font-size:0.85rem; font-weight:700; color:#6b21a8; display:block; margin-bottom:4px;">
               📸 صورة إشعار التحويل (سكرين شوت):
@@ -435,9 +365,8 @@
   </div>
 
   <script>
-    // تم إدراج الرابط الجديد الخاص بك
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyD970RcKDhtjnXNhWyCfZoADNVN3IBAioKzgZsAofwWX1uuO8_Fpkn09_u8SRdBIFxWg/exec";
-    const WHATSAPP_NUM = "201XXXXXXXXX"; // اكتب رقم هاتف المحل للواتساب هنا (مثال: 201012345678)
+    const WHATSAPP_NUM = "201XXXXXXXXX";
 
     let cart = {};
     let dynamicCookingOptions = [];
@@ -455,7 +384,7 @@
         
         if (data.status === "success" && data.menu.length > 0) {
           dynamicCookingOptions = data.cookingOptions || ["مشوي ردة بالخلطة", "مشوي زيت وليمون", "مقلي", "سنجاري"];
-          instapayAccount = data.instapayTarget || "رقم إنستاباي المسجل بالشيت";
+          instapayAccount = data.instapayTarget || "رقم إنستاباي المحل";
           
           document.getElementById('instapayTargetText').innerText = instapayAccount;
           document.getElementById('instapayAppUrl').href = `instapay://`;
@@ -497,752 +426,6 @@
         } else if (isSoldOut) {
           statusBadgeHtml = `<span class="badge-status" style="background:#fee2e2; color:#ef4444;">نفد لليوم ❌</span>`;
         } else if (fish.remainingQty <= 5 && fish.remainingQty > 0) {
-          statusBadgeHtml = `<div class="stock-badge-low">⚠️ متبقي ${fish.remainingQty} كجم فقط لليوم!</div>`;
-        }
-
-        card.innerHTML = `
-          <div class="fish-header">
-            <div>
-              <span class="fish-name">${fish.name}</span>
-              <div>${statusBadgeHtml}</div>
-            </div>
-            <div class="fish-price">${fish.price} ج.م / ك</div>
-          </div>
-          <div class="fish-controls">
-            <select class="cooking-select" ${isDisabled ? 'disabled' : ''} onchange="updateCooking(${fish.id}, this.value)">
-              ${dynamicCookingOptions.map(opt => `<option value="${opt}" ${opt === fish.defaultCooking ? 'selected' : ''}>${opt}</option>`).join('')}
-            </select>
-            <div class="qty-controls">
-              <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, -0.5)">-</button>
-              <span class="qty-display" id="qty-${fish.id}">0</span>
-              <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, 0.5)">+</button>
-            </div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function changeQty(id, delta) {
-      const item = cart[id];
-      if (!item.isAvailable) return;
-
-      let newQty = item.qty + delta;
-      if (newQty < 0) newQty = 0;
-
-      if (newQty > item.maxAvailable) {
-        alert(`عفواً، الكمية المتبقية لليوم من [${item.data.name}] هي ${item.maxAvailable} كجم فقط!`);
-        return;
-      }
-
-      item.qty = newQty;
-      document.getElementById(`qty-${id}`).innerText = newQty > 0 ? newQty + " ك" : "0";
-      calculateTotal();
-    }
-
-    function updateCooking(id, method) {
-      cart[id].cooking = method;
-    }
-
-    function calculateTotal() {
-      let total = 0;
-      for (let id in cart) {
-        total += cart[id].qty * cart[id].data.price;
-      }
-      document.getElementById('totalAmount').innerText = `${total} ج.م`;
-      return total;
-    }
-
-    function setTimeMode(mode) {
-      timeMode = mode;
-      const pillNow = document.getElementById('pillNow');
-      const pillLater = document.getElementById('pillLater');
-      const nowNotice = document.getElementById('nowNotice');
-      const laterBox = document.getElementById('laterInputBox');
-      const timeInput = document.getElementById('custCustomTime');
-
-      if (mode === 'now') {
-        pillNow.classList.add('active');
-        pillLater.classList.remove('active');
-        nowNotice.style.display = 'block';
-        laterBox.style.display = 'none';
-      } else {
-        pillLater.classList.add('active');
-        pillNow.classList.remove('active');
-        nowNotice.style.display = 'none';
-        laterBox.style.display = 'block';
-
-        const minAllowed = new Date(Date.now() + 60 * 60 * 1000);
-        const minIso = new Date(minAllowed.getTime() - minAllowed.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-        timeInput.min = minIso;
-        if (!timeInput.value) timeInput.value = minIso;
-      }
-    }
-
-    function setPaymentMethod(method) {
-      paymentMethod = method;
-      const cashBtn = document.getElementById('payCash');
-      const instaBtn = document.getElementById('payInstapay');
-      const instaCard = document.getElementById('instapayCard');
-
-      if (method === 'cash') {
-        cashBtn.classList.add('active');
-        instaBtn.classList.remove('active');
-        instaCard.style.display = 'none';
-      } else {
-        instaBtn.classList.add('active');
-        cashBtn.classList.remove('active');
-        instaCard.style.display = 'block';
-      }
-    }
-
-    function openCheckout() {
-      if (calculateTotal() === 0) {
-        alert("من فضلك اختر بعض الأسماك أولاً!");
-        return;
-      }
-
-      let summaryHtml = "<strong>الأصناف المختارة:</strong><br>";
-      for (let id in cart) {
-        if (cart[id].qty > 0) {
-          summaryHtml += `• ${cart[id].qty} كجم ${cart[id].data.name} (${cart[id].cooking})<br>`;
-        }
-      }
-      document.getElementById('orderSummaryReview').innerHTML = summaryHtml;
-      document.getElementById('modalHeaderTitle').innerText = isEditingMode ? "تعديل الطلب الحالي ✏️" : "تأكيد بيانات الاستلام 📋";
-      document.getElementById('checkoutModal').style.display = 'flex';
-    }
-
-    function closeCheckout() {
-      document.getElementById('checkoutModal').style.display = 'none';
-    }
-
-    async function sendOrder() {
-      const name = document.getElementById('custName').value.trim();
-      const phone = document.getElementById('custPhone').value.trim();
-      const notes = document.getElementById('custNotes').value.trim();
-      const total = calculateTotal();
-
-      if (!name || !phone) {
-        alert("يرجى إدخال الاسم ورقم الهاتف!");
-        return;
-      }
-
-      const receiptInput = document.getElementById('instapayReceiptFile');
-      if (paymentMethod === 'instapay' && receiptInput.files.length === 0) {
-        const proceedWithout = confirm("لم تقم بإرفاق سكرين التحويل هنا! هل تريد المتابعة وإرسال صورة التحويل عبر الواتساب مباشرة؟");
-        if (!proceedWithout) return;
-      }
-
-      let deliveryTimeText = "في أقرب وقت (الآن)";
-      if (timeMode === "later") {
-        const selectedTimeVal = document.getElementById('custCustomTime').value;
-        if (!selectedTimeVal) {
-          alert("من فضلك حدد موعد الاستلام المطلوب!");
-          return;
-        }
-        const chosenDate = new Date(selectedTimeVal);
-        const minAllowed = new Date(Date.now() + 55 * 60 * 1000);
-        if (chosenDate < minAllowed) {
-          alert("عفواً، أقل موعد يمكن اختياره هو بعد ساعة من الآن لتجهيز الأسماك بعناية.");
-          return;
-        }
-        deliveryTimeText = new Date(selectedTimeVal).toLocaleString("ar-EG", { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' });
-      }
-
-      let itemsDetailsList = [];
-      let cartItems = [];
-
-      for (let id in cart) {
-        if (cart[id].qty > 0) {
-          itemsDetailsList.push(`${cart[id].qty} كجم ${cart[id].data.name} (${cart[id].cooking})`);
-          cartItems.push({
-            id: cart[id].data.id,
-            name: cart[id].data.name,
-            qty: cart[id].qty
-          });
-        }
-      }
-
-      const payload = {
-        action: isEditingMode ? "updateOrder" : "newOrder",
-        orderId: isEditingMode ? currentActiveOrderId : null,
-        name: name,
-        phone: phone,
-        deliveryTime: deliveryTimeText,
-        itemsDetails: itemsDetailsList.join(" + "),
-        cartItems: cartItems,
-        paymentMethod: paymentMethod,
-        notes: notes
-      };
-
-      const btn = document.getElementById('submitBtn');
-      btn.innerText = "جاري الإرسال...";
-      btn.disabled = true;
-
-      try {
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify(payload)
-        });
-        const resData = await response.json();
-
-        if (resData.result === "success") {
-          const assignedId = resData.orderId || currentActiveOrderId;
-          localStorage.setItem("kheir_active_order_id", assignedId);
-          currentActiveOrderId = assignedId;
-
-          alert(
-            paymentMethod === 'instapay'
-              ? `تم تسجيل طلبك رقم #${assignedId}! سيتم تحويلك للواتساب الآن، يرجى إرسال سكرين شوت التحويل لتأكيد الحجز فوراً.`
-              : `تم تأكيد طلبك بنجاح برقم #${assignedId}!`
-          );
-          
-          closeCheckout();
-          isEditingMode = false;
-          checkExistingActiveOrder();
-
-          let waPaymentNotice = paymentMethod === 'instapay'
-            ? `\n\n📸 *تنبيه الدفع (إنستاباي):* تم التحويل عبر إنستاباي ومرفق سكرين شوت التحويل للتأكيد.`
-            : `\n*طريقة الدفع:* كاش عند الاستلام`;
-
-          const waText = encodeURIComponent(
-            `*${isEditingMode ? 'تعديل طلب' : 'طلب جديد'} - خير البحر 🐟*\n` +
-            `*رقم الطلب:* #${assignedId}\n` +
-            `*الاسم:* ${name}\n` +
-            `*الهاتف:* ${phone}\n` +
-            `*موعد الاستلام:* ${deliveryTimeText}\n` +
-            `*الطلب:* \n${itemsDetailsList.join("\n")}\n` +
-            `*الإجمالي:* ${total} ج.م` +
-            waPaymentNotice +
-            `\n*ملاحظات:* ${notes || 'لا يوجد'}`
-          );
-
-          window.open(`https://wa.me/${WHATSAPP_NUM}?text=${waText}`, '_blank');
-        }
-      } catch (err) {
-        alert("تم إرسال الطلب، وسيتم توجيهك للواتساب.");
-        closeCheckout();
-      } finally {
-        btn.innerText = "تأكيد وإرسال الطلب للمحل ✅";
-        btn.disabled = false;
-      }
-    }
-
-    function checkExistingActiveOrder() {
-      if (!currentActiveOrderId) return;
-
-      const trackCard = document.getElementById('activeOrderCard');
-      trackCard.style.display = 'block';
-      document.getElementById('trackOrderId').innerText = currentActiveOrderId;
-
-      fetch(`${SCRIPT_URL}?action=checkStatus&orderId=${currentActiveOrderId}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === "success") {
-            const statusElem = document.getElementById('trackOrderStatus');
-            statusElem.innerText = data.orderStatus;
-            if (data.orderStatus.includes("جاهز")) {
-              statusElem.style.color = "#10b981";
-              statusElem.innerText = "جاهز للاستلام الآن! 🟢";
-            }
-          }
-        }).catch(() => {});
-    }
-
-    setInterval(checkExistingActiveOrder, 25000);
-
-    function openModifyOrder() {
-      isEditingMode = true;
-      openCheckout();
-    }
-
-    loadMenu();
-  </script>
-</body>
-</html>
-    :root {
-      --deep-ocean: #051626;
-      --ocean-blue: #0b2545;
-      --sea-cyan: #38bdf8;
-      --aqua-glow: #0ea5e9;
-      --bg: #f0f7fb;
-      --card-bg: #ffffff;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --accent-green: #10b981;
-      --danger-red: #ef4444;
-      --warning-orange: #f97316;
-      --instapay-purple: #7928ca;
-      --radius: 16px;
-      --shadow: 0 4px 20px -2px rgba(11, 37, 69, 0.08);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-    body { background-color: var(--bg); color: var(--text-main); padding-bottom: 110px; }
-
-    header {
-      background: radial-gradient(circle at center, #0e3860 0%, var(--deep-ocean) 100%);
-      color: white;
-      text-align: center;
-      padding: 24px 16px 20px;
-      border-bottom-left-radius: 28px;
-      border-bottom-right-radius: 28px;
-      box-shadow: 0 8px 30px rgba(5, 22, 38, 0.4);
-    }
-
-    .logo-img {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 22px;
-      border: 3px solid rgba(56, 189, 248, 0.5);
-      margin-bottom: 8px;
-    }
-
-    header h1 { font-size: 1.8rem; font-weight: 900; }
-    .sub-slogan { font-size: 0.9rem; color: var(--sea-cyan); font-weight: 700; }
-
-    .container { max-width: 650px; margin: auto; padding: 16px 14px; }
-    .section-title { font-size: 1.25rem; font-weight: 800; color: var(--ocean-blue); margin-bottom: 12px; }
-
-    /* كروت الأسماك */
-    .fish-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow);
-      border: 1px solid #e2edf5;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      transition: all 0.2s;
-    }
-
-    .fish-card.sold-out { opacity: 0.55; background: #f1f5f9; border-style: dashed; }
-    .fish-header { display: flex; justify-content: space-between; align-items: flex-start; }
-    .fish-name { font-weight: 800; font-size: 1.1rem; color: var(--ocean-blue); }
-    .fish-price { font-weight: 800; color: #0284c7; font-size: 1rem; background: #e0f2fe; padding: 4px 10px; border-radius: 8px; }
-    .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-top: 4px; display: inline-block; }
-    .badge-status { font-size: 0.8rem; padding: 3px 8px; border-radius: 6px; font-weight: 700; display: inline-block; margin-top: 4px; }
-
-    .fish-controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      border-top: 1px dashed #e2edf5;
-      padding-top: 12px;
-    }
-
-    .cooking-select {
-      flex: 1;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      font-size: 0.85rem;
-      background: #f8fafc;
-      font-weight: 600;
-      outline: none;
-    }
-
-    .qty-controls { display: flex; align-items: center; gap: 8px; }
-    .qty-btn {
-      width: 36px;
-      height: 36px;
-      background: #e2edf5;
-      color: var(--ocean-blue);
-      border: none;
-      border-radius: 10px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .qty-btn:disabled { cursor: not-allowed; opacity: 0.4; }
-    .qty-display { font-weight: 800; min-width: 30px; text-align: center; }
-
-    /* شريط السلة العائم */
-    .cart-bar {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(10px);
-      border-top: 2px solid #e2edf5;
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-      z-index: 100;
-    }
-
-    .cart-total { font-size: 1.3rem; font-weight: 900; color: var(--ocean-blue); }
-    .checkout-btn {
-      background: linear-gradient(135deg, var(--aqua-glow), #0284c7);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    /* شاشة المودال */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(5, 22, 38, 0.65);
-      backdrop-filter: blur(4px);
-      z-index: 200;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .modal-content {
-      background: white;
-      width: 100%;
-      max-width: 650px;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-      padding: 22px;
-      max-height: 88vh;
-      overflow-y: auto;
-    }
-
-    .modal-title { font-size: 1.25rem; font-weight: 800; color: var(--ocean-blue); margin-bottom: 14px; display: flex; justify-content: space-between; }
-    .close-modal { background: #f1f5f9; border: none; font-size: 1.3rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
-
-    .form-group { margin-bottom: 13px; }
-    .form-group label { display: block; font-weight: 700; margin-bottom: 5px; font-size: 0.9rem; color: #334155; }
-    .form-group input, .form-group textarea, .form-group select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      font-size: 0.95rem;
-    }
-
-    /* موعد الاستلام */
-    .time-toggle-box {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .time-pill {
-      flex: 1;
-      padding: 10px;
-      text-align: center;
-      border: 2px solid #cbd5e1;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
-
-    .time-pill.active {
-      border-color: #0284c7;
-      background: #e0f2fe;
-      color: #0284c7;
-    }
-
-    .live-status-notice {
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      color: #065f46;
-      font-size: 0.85rem;
-      padding: 10px;
-      border-radius: 8px;
-      line-height: 1.5;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    /* خيارات الدفع */
-    .payment-box {
-      display: flex;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .pay-btn-opt {
-      flex: 1;
-      padding: 10px;
-      border-radius: 10px;
-      border: 2px solid #cbd5e1;
-      text-align: center;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .pay-btn-opt.active {
-      border-color: var(--accent-green);
-      background: #ecfdf5;
-      color: var(--accent-green);
-    }
-
-    .pay-btn-opt.instapay.active {
-      border-color: var(--instapay-purple);
-      background: #f3e8ff;
-      color: var(--instapay-purple);
-    }
-
-    .instapay-action-card {
-      display: none;
-      background: #faf5ff;
-      border: 1px dashed var(--instapay-purple);
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: 10px;
-      text-align: center;
-    }
-
-    .instapay-go-btn {
-      display: inline-block;
-      margin-top: 8px;
-      background: var(--instapay-purple);
-      color: white;
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
-
-    .submit-order-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-      border: none;
-      padding: 13px;
-      border-radius: 12px;
-      font-size: 1.15rem;
-      font-weight: 800;
-      margin-top: 12px;
-      cursor: pointer;
-    }
-
-    /* تتبع الطلب */
-    .active-order-tracking {
-      display: none;
-      background: #ffffff;
-      border: 2px solid #38bdf8;
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow);
-    }
-
-    .tracking-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 800;
-      font-size: 1rem;
-      color: var(--ocean-blue);
-    }
-
-    .live-pulse {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      background: #10b981;
-      border-radius: 50%;
-      animation: blink 1.5s infinite;
-      margin-left: 6px;
-    }
-
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-    .modify-order-btn {
-      background: #f59e0b;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-  </style>
-</head>
-<body>
-
-  <header>
-    <img src="logo.png" alt="خير البحر" class="logo-img" onerror="this.style.display='none'">
-    <h1>خَيْر البَحْر</h1>
-    <div class="sub-slogan">للأسماك الطازجة وفواكه البحر</div>
-  </header>
-
-  <div class="container">
-    <!-- كارت متابعة الطلب الحالي النشط -->
-    <div class="active-order-tracking" id="activeOrderCard">
-      <div class="tracking-header">
-        <span><span class="live-pulse"></span> طلبك رقم <span id="trackOrderId">#</span> قيد المتابعة</span>
-        <span id="trackOrderStatus" style="color:#0284c7;">جاري التجهيز...</span>
-      </div>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-top:5px;" id="trackOrderDesc"></p>
-      <button class="modify-order-btn" onclick="openModifyOrder()">✏️ تعديل الطلب أو إضافة أصناف</button>
-    </div>
-
-    <div class="section-title">قائمة الأسماك المتاحة لليوم</div>
-    <div id="fishList">
-      <div style="text-align:center; padding:40px; color:#64748b;">جاري تحميل الأسعار والكميات من المحل... 🐟</div>
-    </div>
-  </div>
-
-  <div class="cart-bar">
-    <div>
-      <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">الإجمالي:</span>
-      <div class="cart-total" id="totalAmount">0 ج.م</div>
-    </div>
-    <button class="checkout-btn" onclick="openCheckout()">إتمام الطلب 🛒</button>
-  </div>
-
-  <!-- نافذة إتمام وتعديل الطلب -->
-  <div class="modal" id="checkoutModal">
-    <div class="modal-content">
-      <div class="modal-title">
-        <span id="modalHeaderTitle">تأكيد بيانات الاستلام 📋</span>
-        <button class="close-modal" onclick="closeCheckout()">&times;</button>
-      </div>
-
-      <div id="orderSummaryReview" style="background:#f0f7fb; border:1px solid #bae6fd; padding:12px; border-radius:10px; margin-bottom:14px; font-size:0.9rem; line-height:1.6;"></div>
-
-      <div class="form-group">
-        <label>الاسم بالكامل:</label>
-        <input type="text" id="custName" placeholder="مثال: أحمد محمود" required>
-      </div>
-
-      <div class="form-group">
-        <label>رقم التليفون:</label>
-        <input type="tel" id="custPhone" placeholder="010XXXXXXXX" required>
-      </div>
-
-      <!-- موعد الاستلام -->
-      <div class="form-group">
-        <label>موعد الاستلام:</label>
-        <div class="time-toggle-box">
-          <div class="time-pill active" id="pillNow" onclick="setTimeMode('now')">⚡ الآن (في أقرب وقت)</div>
-          <div class="time-pill" id="pillLater" onclick="setTimeMode('later')">🕒 تحديد موعد لاحق</div>
-        </div>
-
-        <div id="nowNotice" class="live-status-notice">
-          ℹ️ سيتم تجهيز طلبك فوراً، وستتحدث حالة الطلب تلقائياً في صفحتك إلى (جاهز للتسليم) بمجرد انتهاء الشوي أو القلي دون الحاجة لتحديث الصفحة.
-        </div>
-
-        <div id="laterInputBox" style="display:none;">
-          <input type="datetime-local" id="custCustomTime">
-          <span style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:3px;">* أقل موعد متاح هو بعد ساعة من الآن لضمان جودة الطهي والتسوية.</span>
-        </div>
-      </div>
-
-      <!-- طريقة الدفع مع إرفاق السكرين -->
-      <div class="form-group">
-        <label>طريقة الدفع:</label>
-        <div class="payment-box">
-          <div class="pay-btn-opt active" id="payCash" onclick="setPaymentMethod('cash')">💵 كاش عند الاستلام</div>
-          <div class="pay-btn-opt instapay" id="payInstapay" onclick="setPaymentMethod('instapay')">⚡ إنستاباي (InstaPay)</div>
-        </div>
-
-        <div class="instapay-action-card" id="instapayCard">
-          <div style="font-weight:700; color:var(--instapay-purple); font-size:0.95rem;">الدفع عبر تطبيق إنستاباي 📲</div>
-          <div style="font-size:0.85rem; margin-top:4px;">
-            حول المبلغ على حساب / رقم المحل: <strong id="instapayTargetText" style="color:#0f172a; background:#e9d5ff; padding:2px 8px; border-radius:6px;"></strong>
-          </div>
-          
-          <div style="margin-top:10px;">
-            <a href="instapay://" id="instapayAppUrl" target="_blank" class="instapay-go-btn">فتح تطبيق إنستاباي للتحويل ↗️</a>
-          </div>
-
-          <div style="margin-top:14px; background:#ffffff; border:1px dashed #a855f7; border-radius:8px; padding:10px; text-align:right;">
-            <label style="font-size:0.85rem; font-weight:700; color:#6b21a8; display:block; margin-bottom:4px;">
-              📸 صورة إشعار التحويل (سكرين شوت):
-            </label>
-            <input type="file" id="instapayReceiptFile" accept="image/*" style="font-size:0.8rem; padding:6px; background:#fdf4ff; border:1px solid #d8b4fe; border-radius:6px; width:100%;">
-            <span style="font-size:0.75rem; color:#7e22ce; display:block; margin-top:4px;">
-              * يرجى إرسال صورة التحويل أيضاً في محادثة الواتساب للتأكيد السريع.
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>ملاحظات إضافية:</label>
-        <textarea id="custNotes" rows="2" placeholder="عيش زيادة، تسوية زيادة، توابل محددة..."></textarea>
-      </div>
-
-      <button class="submit-order-btn" id="submitBtn" onclick="sendOrder()">تأكيد وإرسال الطلب للمحل ✅</button>
-    </div>
-  </div>
-
-  <script>
-    // الرابط المباشر للـ Web App الخاص بك
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAwV4tQBskdBj9eNMY-pm-q4LKlGsGnklWlVBtRMkNBq808HdlLUunnPwHTB5avOAJ4A/exec";
-    const WHATSAPP_NUM = "201XXXXXXXXX"; // ضع رقم واتساب المحل هنا
-
-    let cart = {};
-    let dynamicCookingOptions = [];
-    let instapayAccount = "";
-    let timeMode = "now";
-    let paymentMethod = "cash";
-    let currentActiveOrderId = localStorage.getItem("kheir_active_order_id") || null;
-    let isEditingMode = false;
-
-    async function loadMenu() {
-      const container = document.getElementById('fishList');
-      try {
-        const res = await fetch(SCRIPT_URL);
-        const data = await res.json();
-        
-        if (data.status === "success" && data.menu.length > 0) {
-          dynamicCookingOptions = data.cookingOptions || ["مشوي ردة بالخلطة", "مشوي زيت وليمون", "مقلي", "سنجاري"];
-          instapayAccount = data.instapayTarget || "رقم إنستاباي المسجل بالشيت";
-          
-          document.getElementById('instapayTargetText').innerText = instapayAccount;
-          document.getElementById('instapayAppUrl').href = `instapay://`;
-
-          renderMenu(data.menu);
-          checkExistingActiveOrder();
-        } else {
-          container.innerHTML = `<div style="text-align:center; padding:20px; color:red;">تعذر تحميل الأصناف. تأكد من إدخال البيانات في شيت المنيو اليومي.</div>`;
-        }
-      } catch (err) {
-        container.innerHTML = `<div style="text-align:center; padding:20px; color:red;">حدث خطأ في الاتصال بالشيت.</div>`;
-      }
-    }
-
-    function renderMenu(menuItems) {
-      const container = document.getElementById('fishList');
-      container.innerHTML = '';
-      cart = {};
-
-      menuItems.forEach(fish => {
-        const isUnavailable = fish.status === "غير متوفر";
-        const isSoldOut = fish.status === "خلص" || (!isUnavailable && fish.remainingQty <= 0);
-        const isDisabled = isSoldOut || isUnavailable;
-
-        cart[fish.id] = {
-          qty: 0,
-          cooking: fish.defaultCooking,
-          data: fish,
-          maxAvailable: fish.remainingQty,
-          isAvailable: !isDisabled
-        };
-
-        const card = document.createElement('div');
-        card.className = `fish-card ${isDisabled ? 'sold-out' : ''}`;
-        
-        let statusBadgeHtml = '';
-        if (isUnavailable) {
-          statusBadgeHtml = `<span class="badge-status" style="background:#f1f5f9; color:#64748b;">غير متوفر اليوم 🚫</span>`;
-        } else if (isSoldOut) {
-          statusBadgeHtml = `<span class="badge-status" style="background:#fee2e2; color:#ef4444;">نفد لليوم ❌</span>`;
-        } else if (fish.remainingQty <= 5) {
           statusBadgeHtml = `<div class="stock-badge-low">⚠️ متبقي ${fish.remainingQty} كجم فقط لليوم!</div>`;
         }
 
