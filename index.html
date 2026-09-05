@@ -26,27 +26,45 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-    body { background-color: var(--bg); color: var(--text-main); padding-bottom: 110px; }
+    body { background-color: var(--bg); color: var(--text-main); padding-bottom: 110px; overflow-x: hidden; }
 
     header {
       background: radial-gradient(circle at center, #0e3860 0%, var(--deep-ocean) 100%);
       color: white;
       text-align: center;
-      padding: 24px 16px 20px;
+      padding: 26px 16px 22px;
       border-bottom-left-radius: 28px;
       border-bottom-right-radius: 28px;
       box-shadow: 0 8px 30px rgba(5, 22, 38, 0.4);
+      position: relative;
+      overflow: hidden;
     }
 
-    .logo-img {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 22px;
-      border: 3px solid rgba(56, 189, 248, 0.5);
-      margin-bottom: 8px;
+    .bg-fish { position: absolute; opacity: 0.35; pointer-events: none; z-index: 1; animation: swim linear infinite; }
+    .fish-1 { font-size: 26px; top: 15%; animation-duration: 16s; }
+    .fish-2 { font-size: 20px; top: 45%; animation-duration: 22s; animation-delay: 3s; }
+    .fish-3 { font-size: 24px; top: 75%; animation-duration: 18s; animation-delay: 7s; }
+    .fish-4 { font-size: 18px; top: 30%; animation-duration: 25s; animation-delay: 11s; }
+
+    @keyframes swim {
+      0% { transform: translateX(120vw) scaleX(1); }
+      50% { transform: translateX(50vw) scaleX(1) translateY(-10px); }
+      100% { transform: translateX(-20vw) scaleX(1); }
     }
 
+    .bubble {
+      position: absolute; bottom: -15px; background: rgba(255, 255, 255, 0.18);
+      border-radius: 50%; pointer-events: none; animation: rise linear infinite; z-index: 1;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(0.6); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-160px) scale(1.2); opacity: 0; }
+    }
+
+    .header-content { position: relative; z-index: 2; }
+    .logo-img { width: 120px; height: 120px; object-fit: cover; border-radius: 22px; border: 3px solid rgba(56, 189, 248, 0.5); margin-bottom: 8px; }
     header h1 { font-size: 1.8rem; font-weight: 900; }
     .sub-slogan { font-size: 0.9rem; color: var(--sea-cyan); font-weight: 700; }
 
@@ -54,16 +72,9 @@
     .section-title { font-size: 1.25rem; font-weight: 800; color: var(--ocean-blue); margin-bottom: 12px; }
 
     .fish-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow);
-      border: 1px solid #e2edf5;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      transition: all 0.2s;
+      background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 14px;
+      box-shadow: var(--shadow); border: 1px solid #e2edf5; display: flex; flex-direction: column; gap: 12px;
+      position: relative;
     }
 
     .fish-card.sold-out { opacity: 0.55; background: #f1f5f9; border-style: dashed; }
@@ -73,233 +84,139 @@
     .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-top: 4px; display: inline-block; }
     .badge-status { font-size: 0.8rem; padding: 3px 8px; border-radius: 6px; font-weight: 700; display: inline-block; margin-top: 4px; }
 
-    .fish-controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      border-top: 1px dashed #e2edf5;
-      padding-top: 12px;
-    }
-
-    .cooking-select {
-      flex: 1;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      font-size: 0.85rem;
-      background: #f8fafc;
-      font-weight: 600;
-      outline: none;
-    }
-
-    .qty-controls { display: flex; align-items: center; gap: 8px; }
-    .qty-btn {
-      width: 36px;
-      height: 36px;
-      background: #e2edf5;
-      color: var(--ocean-blue);
-      border: none;
-      border-radius: 10px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
+    .fish-controls { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px dashed #e2edf5; padding-top: 12px; position: relative; }
+    .cooking-select { flex: 1; padding: 8px 10px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 0.85rem; background: #f8fafc; font-weight: 600; outline: none; }
+    .qty-controls { display: flex; align-items: center; gap: 8px; position: relative; }
+    .qty-btn { width: 36px; height: 36px; background: #e2edf5; color: var(--ocean-blue); border: none; border-radius: 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
     .qty-btn:disabled { cursor: not-allowed; opacity: 0.4; }
     .qty-display { font-weight: 800; min-width: 30px; text-align: center; }
 
-    .cart-bar {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(10px);
-      border-top: 2px solid #e2edf5;
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-      z-index: 100;
+    .jumping-fish { position: absolute; font-size: 26px; pointer-events: none; z-index: 99; animation: fishJump 0.75s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+    @keyframes fishJump {
+      0% { transform: translate(0, 0) scale(0.4) rotate(20deg); opacity: 1; }
+      45% { transform: translate(-10px, -65px) scale(1.3) rotate(-25deg); opacity: 1; }
+      85% { transform: translate(-15px, 5px) scale(1) rotate(60deg); opacity: 0.9; }
+      100% { transform: translate(-15px, 15px) scale(0.2); opacity: 0; }
     }
 
-    .cart-total { font-size: 1.3rem; font-weight: 900; color: var(--ocean-blue); }
-    .checkout-btn {
-      background: linear-gradient(135deg, var(--aqua-glow), #0284c7);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-weight: 800;
-      cursor: pointer;
+    .water-splash-ring { position: absolute; border: 3px solid #38bdf8; border-radius: 50%; pointer-events: none; z-index: 98; animation: splashExpand 0.6s ease-out forwards; }
+    @keyframes splashExpand {
+      0% { width: 4px; height: 4px; opacity: 1; transform: translate(-50%, -50%); }
+      100% { width: 55px; height: 25px; opacity: 0; transform: translate(-50%, -50%); }
     }
+
+    .cart-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px); border-top: 2px solid #e2edf5; padding: 12px 20px;
+      display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 100;
+    }
+    .cart-total { font-size: 1.3rem; font-weight: 900; color: var(--ocean-blue); }
+    .checkout-btn { background: linear-gradient(135deg, var(--aqua-glow), #0284c7); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+
+    .order-lock-screen {
+      display: none; background: white; border-radius: var(--radius); border: 2px solid #38bdf8;
+      padding: 22px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 25px;
+    }
+    .lock-badge { display: inline-flex; align-items: center; gap: 6px; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.85rem; margin-bottom: 12px; }
+    .pulse-dot { width: 10px; height: 10px; background: #10b981; border-radius: 50%; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .cancel-box {
+      margin-top: 16px; padding: 14px; background: #fef2f2; border: 1px dashed #f87171;
+      border-radius: 12px; text-align: center;
+    }
+    .cancel-btn {
+      background: #ef4444; color: white; border: none; padding: 9px 18px; border-radius: 8px;
+      font-weight: 800; font-size: 0.9rem; cursor: pointer; margin-top: 8px;
+    }
+    .cancel-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
 
     .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(5, 22, 38, 0.65);
-      backdrop-filter: blur(4px);
-      z-index: 200;
-      align-items: flex-end;
-      justify-content: center;
+      display: none; position: fixed; inset: 0; background: rgba(5, 22, 38, 0.65);
+      backdrop-filter: blur(4px); z-index: 200; align-items: flex-end; justify-content: center;
     }
-
     .modal-content {
-      background: white;
-      width: 100%;
-      max-width: 650px;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-      padding: 22px;
-      max-height: 88vh;
-      overflow-y: auto;
+      background: white; width: 100%; max-width: 650px; border-top-left-radius: 24px;
+      border-top-right-radius: 24px; padding: 22px; max-height: 88vh; overflow-y: auto;
     }
-
     .modal-title { font-size: 1.25rem; font-weight: 800; color: var(--ocean-blue); margin-bottom: 14px; display: flex; justify-content: space-between; }
     .close-modal { background: #f1f5f9; border: none; font-size: 1.3rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
-
     .form-group { margin-bottom: 13px; }
     .form-group label { display: block; font-weight: 700; margin-bottom: 5px; font-size: 0.9rem; color: #334155; }
-    .form-group input, .form-group textarea {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      font-size: 0.95rem;
-    }
+    .form-group input, .form-group textarea { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 0.95rem; }
 
     .time-toggle-box { display: flex; gap: 10px; margin-bottom: 10px; }
-    .time-pill {
-      flex: 1;
-      padding: 10px;
-      text-align: center;
-      border: 2px solid #cbd5e1;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
+    .time-pill { flex: 1; padding: 10px; text-align: center; border: 2px solid #cbd5e1; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.9rem; }
     .time-pill.active { border-color: #0284c7; background: #e0f2fe; color: #0284c7; }
 
-    .live-status-notice {
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      color: #065f46;
-      font-size: 0.85rem;
-      padding: 10px;
-      border-radius: 8px;
-      line-height: 1.5;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
     .payment-box { display: flex; gap: 10px; margin-top: 6px; }
-    .pay-btn-opt {
-      flex: 1;
-      padding: 10px;
-      border-radius: 10px;
-      border: 2px solid #cbd5e1;
-      text-align: center;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
+    .pay-btn-opt { flex: 1; padding: 10px; border-radius: 10px; border: 2px solid #cbd5e1; text-align: center; font-weight: 700; cursor: pointer; font-size: 0.9rem; }
     .pay-btn-opt.active { border-color: var(--accent-green); background: #ecfdf5; color: var(--accent-green); }
     .pay-btn-opt.instapay.active { border-color: var(--instapay-purple); background: #f3e8ff; color: var(--instapay-purple); }
 
-    .instapay-action-card {
-      display: none;
-      background: #faf5ff;
-      border: 1px dashed var(--instapay-purple);
-      border-radius: 10px;
-      padding: 14px;
-      margin-top: 10px;
-      text-align: center;
-    }
+    .instapay-action-card { display: none; background: #faf5ff; border: 1px dashed var(--instapay-purple); border-radius: 10px; padding: 14px; margin-top: 10px; text-align: center; }
+    .instapay-go-btn { display: inline-block; margin: 8px 0; background: var(--instapay-purple); color: white; text-decoration: none; padding: 9px 18px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
+    .receipt-upload-box { display: none; margin-top: 12px; background: #ffffff; border: 1px solid #d8b4fe; border-radius: 8px; padding: 12px; text-align: right; }
 
-    .instapay-step-title {
-      font-weight: 800;
-      color: var(--instapay-purple);
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-    }
-
-    .instapay-go-btn {
-      display: inline-block;
-      margin: 8px 0;
-      background: var(--instapay-purple);
-      color: white;
-      text-decoration: none;
-      padding: 9px 18px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-
-    .receipt-upload-box {
-      display: none;
-      margin-top: 12px;
-      background: #ffffff;
-      border: 1px solid #d8b4fe;
-      border-radius: 8px;
-      padding: 12px;
-      text-align: right;
-    }
-
-    .submit-order-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-      border: none;
-      padding: 13px;
-      border-radius: 12px;
-      font-size: 1.15rem;
-      font-weight: 800;
-      margin-top: 12px;
-      cursor: pointer;
-    }
-
-    .active-order-tracking {
-      display: none;
-      background: #ffffff;
-      border: 2px solid #38bdf8;
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow);
-    }
-    .tracking-header { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 1rem; color: var(--ocean-blue); }
-    .live-pulse { display: inline-block; width: 10px; height: 10px; background: #10b981; border-radius: 50%; animation: blink 1.5s infinite; margin-left: 6px; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-    .modify-order-btn { background: #f59e0b; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; margin-top: 8px; }
+    .submit-order-btn { width: 100%; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 13px; border-radius: 12px; font-size: 1.15rem; font-weight: 800; margin-top: 12px; cursor: pointer; }
   </style>
 </head>
 <body>
 
   <header>
-    <img src="logo.png" alt="خير البحر" class="logo-img" onerror="this.style.display='none'">
-    <h1>خَيْر البَحْر</h1>
-    <div class="sub-slogan">للأسماك الطازجة وفواكه البحر</div>
+    <div class="bg-fish fish-1">🐠</div>
+    <div class="bg-fish fish-2">🐟</div>
+    <div class="bg-fish fish-3">🐡</div>
+    <div class="bg-fish fish-4">🐬</div>
+
+    <div class="bubble" style="left: 15%; width: 14px; height: 14px; animation-duration: 4s;"></div>
+    <div class="bubble" style="left: 35%; width: 18px; height: 18px; animation-duration: 5.5s; animation-delay: 1.5s;"></div>
+    <div class="bubble" style="left: 65%; width: 10px; height: 10px; animation-duration: 4.8s; animation-delay: 2.5s;"></div>
+    <div class="bubble" style="left: 82%; width: 16px; height: 16px; animation-duration: 6s; animation-delay: 0.8s;"></div>
+
+    <div class="header-content">
+      <img src="logo.png" alt="خير البحر" class="logo-img" onerror="this.style.display='none'">
+      <h1>خَيْر البَحْر</h1>
+      <div class="sub-slogan">للأسماك الطازجة وفواكه البحر</div>
+    </div>
   </header>
 
   <div class="container">
-    <div class="active-order-tracking" id="activeOrderCard">
-      <div class="tracking-header">
-        <span><span class="live-pulse"></span> طلبك رقم <span id="trackOrderId">#</span> قيد المتابعة</span>
-        <span id="trackOrderStatus" style="color:#0284c7;">جاري التجهيز...</span>
+    <!-- شاشة قفل الصفحة وتتبع الطلب -->
+    <div class="order-lock-screen" id="orderLockCard">
+      <div class="lock-badge">
+        <span class="pulse-dot"></span> طلبك جاري تجهيزه بالمحل
       </div>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-top:5px;" id="trackOrderDesc"></p>
-      <button class="modify-order-btn" onclick="openModifyOrder()">✏️ تعديل الطلب أو إضافة أصناف</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h3 style="color:var(--ocean-blue); font-size:1.2rem;">طلب رقم <span id="lockedOrderId">#</span></h3>
+        <span id="lockedOrderStatus" style="font-weight:800; font-size:1rem; color:#0284c7;">طلب جديد</span>
+      </div>
+
+      <div id="lockedOrderDetails" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:0.92rem; line-height:1.6; margin-bottom:12px;"></div>
+
+      <div style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+        🔒 تم قفل شاشة الطلبات مؤقتاً لحين الانتهاء وتسليم هذا الطلب. يتم تحديث حالة طلبك من المطبخ والشواية تلقائياً دون الحاجة لتحديث الصفحة.
+      </div>
+
+      <!-- خانة الإلغاء مع عداد الـ 10 دقائق -->
+      <div class="cancel-box" id="cancelControlBox">
+        <div id="countdownTimerText" style="font-weight:800; color:#dc2626; font-size:0.95rem;">
+          متاح مسح / إلغاء الطلب خلال: <span id="cancelTimer">10:00</span>
+        </div>
+        <button class="cancel-btn" id="cancelOrderActionBtn" onclick="requestCancelOrder()">مسح وإلغاء الطلب 🗑️</button>
+      </div>
     </div>
 
-    <div class="section-title">قائمة الأسماك المتاحة لليوم</div>
-    <div id="fishList">
-      <div style="text-align:center; padding:40px; color:#64748b;">جاري تحميل الأسعار والكميات من المحل... 🐟</div>
+    <!-- قائمة المنيو العادية -->
+    <div id="menuMainArea">
+      <div class="section-title">قائمة الأسماك المتاحة لليوم</div>
+      <div id="fishList">
+        <div style="text-align:center; padding:40px; color:#64748b;">جاري تحميل الأسعار والكميات من المحل... 🐟</div>
+      </div>
     </div>
   </div>
 
-  <div class="cart-bar">
+  <div class="cart-bar" id="cartBar">
     <div>
       <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">الإجمالي:</span>
       <div class="cart-total" id="totalAmount">0 ج.م</div>
@@ -310,7 +227,7 @@
   <div class="modal" id="checkoutModal">
     <div class="modal-content">
       <div class="modal-title">
-        <span id="modalHeaderTitle">تأكيد بيانات الاستلام 📋</span>
+        <span>تأكيد بيانات الاستلام 📋</span>
         <button class="close-modal" onclick="closeCheckout()">&times;</button>
       </div>
 
@@ -326,7 +243,6 @@
         <input type="tel" id="custPhone" placeholder="010XXXXXXXX" required>
       </div>
 
-      <!-- موعد الاستلام المطور (وقت فقط) -->
       <div class="form-group">
         <label>موعد الاستلام:</label>
         <div class="time-toggle-box">
@@ -334,20 +250,19 @@
           <div class="time-pill" id="pillLater" onclick="setTimeMode('later')">🕒 تحديد موعد لاحق</div>
         </div>
 
-        <div id="nowNotice" class="live-status-notice">
-          ℹ️ سيتم تجهيز طلبك فوراً، وستتحدث حالة الطلب تلقائياً في صفحتك إلى (جاهز للتسليم) بمجرد انتهاء الشوي أو القلي دون الحاجة لتحديث الصفحة.
+        <div id="nowNotice" style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; font-size:0.85rem; padding:10px; border-radius:8px; line-height:1.5; font-weight:600;">
+          ℹ️ سيتم تجهيز طلبك فوراً، وستتحدث الحالة مباشرة إلى (جاهز للتسليم).
         </div>
 
         <div id="laterInputBox" style="display:none;">
           <label style="font-size:0.85rem; font-weight:700; color:#0b2545;">اختر وقت الاستلام (اليوم):</label>
           <input type="time" id="custCustomTime">
           <span id="timeConstraintHint" style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:3px;">
-            * يجب أن يكون موعد الاستلام بعد ساعة على الأقل من وقت الطلب لضمان التسوية والطهي بعناية.
+            * يجب أن يكون موعد الاستلام بعد ساعة على الأقل من وقت الطلب.
           </span>
         </div>
       </div>
 
-      <!-- طريقة الدفع مع مرحلتين لإنستاباي -->
       <div class="form-group">
         <label>طريقة الدفع:</label>
         <div class="payment-box">
@@ -356,25 +271,17 @@
         </div>
 
         <div class="instapay-action-card" id="instapayCard">
-          <div class="instapay-step-title">خطوة 1: التحويل عبر إنستاباي 📲</div>
+          <div style="font-weight:800; color:var(--instapay-purple); font-size:0.95rem;">خطوة 1: التحويل عبر إنستاباي 📲</div>
           <div style="font-size:0.85rem; margin-top:4px;">
-            حول المبلغ على حساب / رقم المحل: <strong id="instapayTargetText" style="color:#0f172a; background:#e9d5ff; padding:2px 8px; border-radius:6px;"></strong>
+            حساب المحل: <strong id="instapayTargetText" style="color:#0f172a; background:#e9d5ff; padding:2px 8px; border-radius:6px;"></strong>
           </div>
-          
           <a href="instapay://" id="instapayAppUrl" target="_blank" class="instapay-go-btn" onclick="showReceiptStep()">
             فتح تطبيق إنستاباي للتحويل الآن ↗️
           </a>
 
-          <!-- خانة إرفاق السكرين شوت تفتح في المرحلة التالية بعد التحويل -->
           <div class="receipt-upload-box" id="receiptBox">
-            <div class="instapay-step-title" style="text-align:right;">خطوة 2: تأكيد الدفع وإرفاق الإشعار 📸</div>
-            <label style="font-size:0.85rem; font-weight:700; color:#6b21a8; display:block; margin-bottom:4px;">
-              أرفق سكرين شوت عملية التحويل الناجحة:
-            </label>
+            <div style="font-weight:800; color:var(--instapay-purple); text-align:right;">خطوة 2: إرفاق الإشعار 📸</div>
             <input type="file" id="instapayReceiptFile" accept="image/*" style="font-size:0.8rem; padding:6px; background:#fdf4ff; border:1px solid #d8b4fe; border-radius:6px; width:100%;">
-            <span style="font-size:0.75rem; color:#7e22ce; display:block; margin-top:4px;">
-              * سيتم أيضاً تحويلك للواتساب لإرسال صورة التحويل والتأكيد الفوري مع الكاشير.
-            </span>
           </div>
         </div>
       </div>
@@ -389,19 +296,218 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuJ9LD3NmmwcUCmUO9gs4YGRBRmN8u__Cyb83zNiTPF8EkzpvhmbCqCLWJbkMmTPUQIw/exec";
-    const WHATSAPP_NUM = "201XXXXXXXXX"; // اكتب رقم هاتف المحل للواتساب هنا
+    // تم إدراج الرابط الجديد الخاص بك
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtntIdM_riEZn1NaSGFhLzqfBvHHA8jjMDrAyg04snDHsJvC8vjyqmkONis3FNOs4KmQ/exec";
+    const WHATSAPP_NUM = "201XXXXXXXXX";
+
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playWaterSplash() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(650, now);
+        osc.frequency.exponentialRampToValueAtTime(140, now + 0.28);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.28);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.3);
+      } catch(e) {}
+    }
+
+    function playBubbleSound() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(780, now + 0.12);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.13);
+      } catch(e) {}
+    }
+
+    function playOceanWave() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.exponentialRampToValueAtTime(520, now + 0.35);
+        osc.frequency.exponentialRampToValueAtTime(260, now + 0.7);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.45, now + 0.35);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.75);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 0.8);
+      } catch(e) {}
+    }
+
+    function triggerFishJumpAnimation(targetBtn) {
+      const parent = targetBtn.closest('.qty-controls');
+      if (!parent) return;
+      const fish = document.createElement('div');
+      fish.className = 'jumping-fish';
+      fish.innerText = ['🐟', '🐠', '🦐', '🐡'][Math.floor(Math.random() * 4)];
+      fish.style.right = '10px'; fish.style.bottom = '15px';
+      parent.appendChild(fish);
+
+      setTimeout(() => {
+        const ring = document.createElement('div');
+        ring.className = 'water-splash-ring';
+        ring.style.right = '10px'; ring.style.bottom = '8px';
+        parent.appendChild(ring);
+        setTimeout(() => ring.remove(), 600);
+      }, 400);
+
+      setTimeout(() => fish.remove(), 750);
+    }
 
     let cart = {};
     let dynamicCookingOptions = [];
     let instapayAccount = "";
     let timeMode = "now";
     let paymentMethod = "cash";
-    let currentActiveOrderId = localStorage.getItem("kheir_active_order_id") || null;
-    let isEditingMode = false;
-    let minAllowedDeliveryDate = null;
+    let cancelTimerInterval = null;
+
+    function checkLockState() {
+      const savedOrder = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
+      if (!savedOrder) return false;
+
+      const now = Date.now();
+      const elapsedHours = (now - savedOrder.timestamp) / (1000 * 60 * 60);
+
+      if (elapsedHours >= 10) {
+        clearActiveOrder();
+        return false;
+      }
+
+      document.getElementById('orderLockCard').style.display = 'block';
+      document.getElementById('menuMainArea').style.display = 'none';
+      document.getElementById('cartBar').style.display = 'none';
+
+      document.getElementById('lockedOrderId').innerText = `#${savedOrder.orderId}`;
+      document.getElementById('lockedOrderDetails').innerHTML = `
+        <strong>بيانات الطلب:</strong><br>
+        • الاسم: ${savedOrder.name}<br>
+        • موعد الاستلام: ${savedOrder.deliveryTime}<br>
+        • الأصناف: ${savedOrder.itemsDetails}<br>
+        • الإجمالي: ${savedOrder.total} ج.م
+      `;
+
+      startCancelTimer(savedOrder.timestamp);
+      trackLiveStatus(savedOrder.orderId);
+      return true;
+    }
+
+    function startCancelTimer(timestamp) {
+      clearInterval(cancelTimerInterval);
+      const limitMs = 10 * 60 * 1000;
+
+      function updateTimer() {
+        const passed = Date.now() - timestamp;
+        const remain = limitMs - passed;
+
+        if (remain <= 0) {
+          clearInterval(cancelTimerInterval);
+          document.getElementById('countdownTimerText').innerText = "⏳ انتهت مهلة الإلغاء (10 دقائق) - بدأ الطهي والشوي بالفعل.";
+          document.getElementById('cancelOrderActionBtn').disabled = true;
+          document.getElementById('cancelOrderActionBtn').style.display = 'none';
+        } else {
+          const m = Math.floor(remain / 60000);
+          const s = Math.floor((remain % 60000) / 1000);
+          document.getElementById('cancelTimer').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }
+      }
+
+      updateTimer();
+      cancelTimerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function trackLiveStatus(orderId) {
+      fetch(`${SCRIPT_URL}?action=checkStatus&orderId=${orderId}`)
+        .then(r => r.json())
+        .then(d => {
+          if (d.status === "success") {
+            const statusBox = document.getElementById('lockedOrderStatus');
+            statusBox.innerText = d.orderStatus;
+
+            if (d.orderStatus.includes("جاهز")) {
+              statusBox.style.color = "#10b981";
+              statusBox.innerText = "جاهز للاستلام الآن! 🟢";
+            } else if (d.orderStatus.includes("تم التسليم")) {
+              statusBox.style.color = "#64748b";
+              statusBox.innerText = "تم التسليم بنجاح ✅";
+              alert("بالهناء والشفاء! تم تسليم طلبك بنجاح. شكراً لثقتك في خير البحر.");
+              clearActiveOrder();
+              location.reload();
+            } else if (d.orderStatus.includes("إلغاء")) {
+              alert("تم إلغاء هذا الطلب.");
+              clearActiveOrder();
+              location.reload();
+            }
+          }
+        }).catch(()=>{});
+    }
+
+    function clearActiveOrder() {
+      localStorage.removeItem("kheir_locked_order");
+      clearInterval(cancelTimerInterval);
+    }
+
+    async function requestCancelOrder() {
+      const savedOrder = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
+      if (!savedOrder) return;
+
+      const passed = Date.now() - savedOrder.timestamp;
+      if (passed > 10 * 60 * 1000) {
+        alert("عفواً، لا يمكن مسح الطلب بعد مرور 10 دقائق من تأكيده!");
+        return;
+      }
+
+      if (!confirm("هل أنت متأكد من مسح وإلغاء الطلب نهائياً وإرجاع الكميات للمحل؟")) return;
+
+      const btn = document.getElementById('cancelOrderActionBtn');
+      btn.innerText = "جاري الإلغاء...";
+      btn.disabled = true;
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: "cancelOrder",
+            orderId: savedOrder.orderId,
+            cartItems: savedOrder.cartItems
+          })
+        });
+
+        alert("تم إلغاء ومسح طلبك وإرجاع الكميات بنجاح. يمكنك عمل طلب جديد الآن.");
+        clearActiveOrder();
+        location.reload();
+      } catch(e) {
+        alert("حدث خطأ أثناء الإلغاء، يرجى التواصل هاتفياً مع المحل.");
+        btn.disabled = false;
+        btn.innerText = "مسح وإلغاء الطلب 🗑️";
+      }
+    }
 
     async function loadMenu() {
+      if (checkLockState()) return;
+
       const container = document.getElementById('fishList');
       try {
         const res = await fetch(SCRIPT_URL);
@@ -412,12 +518,9 @@
           instapayAccount = data.instapayTarget || "رقم إنستاباي المحل";
           
           document.getElementById('instapayTargetText').innerText = instapayAccount;
-          document.getElementById('instapayAppUrl').href = `instapay://`;
-
           renderMenu(data.menu);
-          checkExistingActiveOrder();
         } else {
-          container.innerHTML = `<div style="text-align:center; padding:20px; color:red;">تعذر تحميل الأصناف. تأكد من إدخال البيانات في شيت المنيو اليومي.</div>`;
+          container.innerHTML = `<div style="text-align:center; padding:20px; color:red;">تعذر تحميل الأصناف. تأكد من شيت المنيو.</div>`;
         }
       } catch (err) {
         container.innerHTML = `<div style="text-align:center; padding:20px; color:red;">حدث خطأ في الاتصال بالشيت.</div>`;
@@ -463,13 +566,13 @@
             <div class="fish-price">${fish.price} ج.م / ك</div>
           </div>
           <div class="fish-controls">
-            <select class="cooking-select" ${isDisabled ? 'disabled' : ''} onchange="updateCooking(${fish.id}, this.value)">
+            <select class="cooking-select" ${isDisabled ? 'disabled' : ''} onchange="playBubbleSound(); updateCooking(${fish.id}, this.value)">
               ${dynamicCookingOptions.map(opt => `<option value="${opt}" ${opt === fish.defaultCooking ? 'selected' : ''}>${opt}</option>`).join('')}
             </select>
             <div class="qty-controls">
-              <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, -0.5)">-</button>
+              <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, -0.5, this)">-</button>
               <span class="qty-display" id="qty-${fish.id}">0</span>
-              <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, 0.5)">+</button>
+              <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, 0.5, this)">+</button>
             </div>
           </div>
         `;
@@ -477,7 +580,7 @@
       });
     }
 
-    function changeQty(id, delta) {
+    function changeQty(id, delta, btnElement) {
       const item = cart[id];
       if (!item.isAvailable) return;
 
@@ -487,6 +590,13 @@
       if (newQty > item.maxAvailable) {
         alert(`عفواً، الكمية المتبقية لليوم من [${item.data.name}] هي ${item.maxAvailable} كجم فقط!`);
         return;
+      }
+
+      if (delta > 0) {
+        playWaterSplash();
+        triggerFishJumpAnimation(btnElement);
+      } else {
+        playBubbleSound();
       }
 
       item.qty = newQty;
@@ -508,6 +618,7 @@
     }
 
     function setTimeMode(mode) {
+      playBubbleSound();
       timeMode = mode;
       const pillNow = document.getElementById('pillNow');
       const pillLater = document.getElementById('pillLater');
@@ -526,27 +637,16 @@
         nowNotice.style.display = 'none';
         laterBox.style.display = 'block';
 
-        // حساب وقت بعد 60 دقيقة من الآن بالظبط
-        minAllowedDeliveryDate = new Date(Date.now() + 60 * 60 * 1000);
-        const hours = String(minAllowedDeliveryDate.getHours()).padStart(2, '0');
-        const minutes = String(minAllowedDeliveryDate.getMinutes()).padStart(2, '0');
-        const minTimeString = `${hours}:${minutes}`;
-
-        timeInput.min = minTimeString;
-        if (!timeInput.value) {
-          timeInput.value = minTimeString;
-        }
-
-        document.getElementById('timeConstraintHint').innerText = 
-          `* أقل موعد متاح للاستلام اليوم هو الساعة ${formatTimeAmPm(minAllowedDeliveryDate)} لضمان جودة الطهي.`;
+        const minAllowed = new Date(Date.now() + 60 * 60 * 1000);
+        const hours = String(minAllowed.getHours()).padStart(2, '0');
+        const minutes = String(minAllowed.getMinutes()).padStart(2, '0');
+        timeInput.min = `${hours}:${minutes}`;
+        if (!timeInput.value) timeInput.value = `${hours}:${minutes}`;
       }
     }
 
-    function formatTimeAmPm(dateObj) {
-      return dateObj.toLocaleTimeString("ar-EG", { hour: '2-digit', minute: '2-digit' });
-    }
-
     function setPaymentMethod(method) {
+      playBubbleSound();
       paymentMethod = method;
       const cashBtn = document.getElementById('payCash');
       const instaBtn = document.getElementById('payInstapay');
@@ -563,12 +663,13 @@
       }
     }
 
-    // إظهار خانة رفع الإشعار بعد النقر على التحويل
     function showReceiptStep() {
+      playBubbleSound();
       document.getElementById('receiptBox').style.display = 'block';
     }
 
     function openCheckout() {
+      playBubbleSound();
       if (calculateTotal() === 0) {
         alert("من فضلك اختر بعض الأسماك أولاً!");
         return;
@@ -581,11 +682,11 @@
         }
       }
       document.getElementById('orderSummaryReview').innerHTML = summaryHtml;
-      document.getElementById('modalHeaderTitle').innerText = isEditingMode ? "تعديل الطلب الحالي ✏️" : "تأكيد بيانات الاستلام 📋";
       document.getElementById('checkoutModal').style.display = 'flex';
     }
 
     function closeCheckout() {
+      playBubbleSound();
       document.getElementById('checkoutModal').style.display = 'none';
     }
 
@@ -600,19 +701,6 @@
         return;
       }
 
-      // التحقق من إرفاق السكرين شوت عند الدفع بإنستاباي
-      const receiptInput = document.getElementById('instapayReceiptFile');
-      if (paymentMethod === 'instapay') {
-        if (document.getElementById('receiptBox').style.display === 'none') {
-          showReceiptStep();
-        }
-        if (receiptInput.files.length === 0) {
-          const confirmWithout = confirm("لم تقم بإرفاق سكرين التحويل هنا حتى الآن! هل تريد الاستمرار وإرسال صورة التحويل عبر الواتساب مباشرة؟");
-          if (!confirmWithout) return;
-        }
-      }
-
-      // التحقق الصارم من وقت الاستلام (وقت فقط)
       let deliveryTimeText = "في أقرب وقت (الآن)";
       if (timeMode === "later") {
         const timeVal = document.getElementById('custCustomTime').value;
@@ -625,15 +713,12 @@
         const chosenTimeToday = new Date();
         chosenTimeToday.setHours(chosenH, chosenM, 0, 0);
 
-        // الحد الأدنى هو بعد 55 دقيقة للمرونة
         const minTimeAllowed = new Date(Date.now() + 55 * 60 * 1000);
-
         if (chosenTimeToday < minTimeAllowed) {
-          alert(`عفواً، لا يمكن تحديد وقت سابق أو قبل مرور ساعة من الآن! أقل وقت متاح للاستلام هو: ${formatTimeAmPm(new Date(Date.now() + 60 * 60 * 1000))}`);
+          alert(`عفواً، لا يمكن تحديد وقت سابق أو قبل مرور ساعة من الآن!`);
           return;
         }
-
-        deliveryTimeText = `اليوم الساعة ${formatTimeAmPm(chosenTimeToday)}`;
+        deliveryTimeText = `اليوم الساعة ${chosenTimeToday.toLocaleTimeString("ar-EG", { hour: '2-digit', minute: '2-digit' })}`;
       }
 
       let itemsDetailsList = [];
@@ -651,8 +736,6 @@
       }
 
       const payload = {
-        action: isEditingMode ? "updateOrder" : "newOrder",
-        orderId: isEditingMode ? currentActiveOrderId : null,
         name: name,
         phone: phone,
         deliveryTime: deliveryTimeText,
@@ -674,26 +757,29 @@
         const resData = await response.json();
 
         if (resData.result === "success") {
-          const assignedId = resData.orderId || currentActiveOrderId;
-          localStorage.setItem("kheir_active_order_id", assignedId);
-          currentActiveOrderId = assignedId;
+          playOceanWave();
+          const assignedId = resData.orderId;
 
-          alert(
-            paymentMethod === 'instapay'
-              ? `تم تسجيل طلبك رقم #${assignedId}! سيتم تحويلك للواتساب الآن، يرجى إرسال صورة التحويل لتأكيد الحجز فوراً.`
-              : `تم تأكيد طلبك بنجاح برقم #${assignedId}!`
-          );
-          
+          const orderSnapshot = {
+            orderId: assignedId,
+            timestamp: Date.now(),
+            name: name,
+            deliveryTime: deliveryTimeText,
+            itemsDetails: itemsDetailsList.join(" | "),
+            total: total,
+            cartItems: cartItems
+          };
+          localStorage.setItem("kheir_locked_order", JSON.stringify(orderSnapshot));
+
+          alert(`تم تأكيد طلبك بنجاح برقم #${assignedId}!`);
           closeCheckout();
-          isEditingMode = false;
-          checkExistingActiveOrder();
 
           let waPaymentNotice = paymentMethod === 'instapay'
             ? `\n\n📸 *تنبيه الدفع (إنستاباي):* تم التحويل عبر إنستاباي ومرفق سكرين شوت التحويل للتأكيد.`
             : `\n*طريقة الدفع:* كاش عند الاستلام`;
 
           const waText = encodeURIComponent(
-            `*${isEditingMode ? 'تعديل طلب' : 'طلب جديد'} - خير البحر 🐟*\n` +
+            `*طلب جديد - خير البحر 🐟*\n` +
             `*رقم الطلب:* #${assignedId}\n` +
             `*الاسم:* ${name}\n` +
             `*الهاتف:* ${phone}\n` +
@@ -705,43 +791,20 @@
           );
 
           window.open(`https://wa.me/${WHATSAPP_NUM}?text=${waText}`, '_blank');
+          checkLockState();
         }
       } catch (err) {
-        alert("تم إرسال الطلب، وسيتم توجيهك للواتساب.");
-        closeCheckout();
+        alert("حدث خطأ أثناء الاتصال بالخادم، يرجى المحاولة مرة أخرى.");
       } finally {
         btn.innerText = "تأكيد وإرسال الطلب للمحل ✅";
         btn.disabled = false;
       }
     }
 
-    function checkExistingActiveOrder() {
-      if (!currentActiveOrderId) return;
-
-      const trackCard = document.getElementById('activeOrderCard');
-      trackCard.style.display = 'block';
-      document.getElementById('trackOrderId').innerText = currentActiveOrderId;
-
-      fetch(`${SCRIPT_URL}?action=checkStatus&orderId=${currentActiveOrderId}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === "success") {
-            const statusElem = document.getElementById('trackOrderStatus');
-            statusElem.innerText = data.orderStatus;
-            if (data.orderStatus.includes("جاهز")) {
-              statusElem.style.color = "#10b981";
-              statusElem.innerText = "جاهز للاستلام الآن! 🟢";
-            }
-          }
-        }).catch(() => {});
-    }
-
-    setInterval(checkExistingActiveOrder, 25000);
-
-    function openModifyOrder() {
-      isEditingMode = true;
-      openCheckout();
-    }
+    setInterval(() => {
+      const savedOrder = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
+      if (savedOrder) trackLiveStatus(savedOrder.orderId);
+    }, 20000);
 
     loadMenu();
   </script>
