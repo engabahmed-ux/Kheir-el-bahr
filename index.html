@@ -82,7 +82,7 @@
     header h1 { font-size: 1.8rem; font-weight: 900; }
     .sub-slogan { font-size: 0.9rem; color: var(--sea-cyan); font-weight: 700; }
 
-    .container { max-width: 650px; margin: auto; padding: 16px 14px; }
+    .container { max-width: 680px; margin: auto; padding: 16px 14px; }
     .search-box-wrapper { position: relative; margin-bottom: 14px; }
     .search-input {
       width: 100%; padding: 12px 42px 12px 14px; border-radius: 14px; border: 1px solid #cbd5e1;
@@ -100,6 +100,59 @@
     }
     .category-btn.active { background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue); }
 
+    /* ======================================================== */
+    /* المنيو بنظام الشبكة (Grid) عمودين                         */
+    /* ======================================================== */
+    .fish-grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 480px) {
+      .fish-grid-container { grid-template-columns: 1fr; }
+    }
+
+    .fish-card {
+      background: var(--card-bg); border-radius: var(--radius); padding: 14px;
+      box-shadow: var(--shadow); border: 1px solid #e2edf5; display: flex; flex-direction: column;
+      justify-content: space-between; gap: 10px; position: relative; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .fish-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(11, 37, 69, 0.12); }
+    .fish-card.sold-out { opacity: 0.55; background: #f1f5f9; border-style: dashed; cursor: not-allowed; }
+    
+    .fish-name { font-weight: 800; font-size: 1.02rem; color: var(--ocean-blue); margin-bottom: 4px; }
+    .fish-category-badge { font-size: 0.72rem; background: #e0f2fe; color: #0369a1; padding: 2px 7px; border-radius: 6px; font-weight: 700; display: inline-block; margin-bottom: 6px; }
+    .fish-price { font-weight: 800; color: #0284c7; font-size: 0.95rem; background: #e0f2fe; padding: 4px 8px; border-radius: 8px; text-align: center; }
+    .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.72rem; font-weight: 800; padding: 2px 6px; border-radius: 6px; display: inline-block; }
+    .badge-status { font-size: 0.75rem; padding: 2px 6px; border-radius: 6px; font-weight: 700; display: inline-block; }
+
+    .card-action-hint {
+      background: linear-gradient(135deg, var(--aqua-glow), #0284c7); color: white; border: none;
+      padding: 7px; border-radius: 10px; font-weight: 800; font-size: 0.8rem; text-align: center; margin-top: 4px;
+    }
+
+    /* نافذة اختيار تفاصيل الطهي المنبثقة (Popup Modal) */
+    .cooking-modal-overlay {
+      position: fixed; inset: 0; background: rgba(5, 22, 38, 0.75); backdrop-filter: blur(5px);
+      z-index: 500; display: none; align-items: center; justify-content: center; padding: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+    .cooking-modal-box {
+      background: white; border-radius: 22px; max-width: 420px; width: 100%; padding: 22px;
+      box-shadow: 0 15px 40px rgba(5, 22, 38, 0.3); border: 2px solid #38bdf8;
+      animation: popModal 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+    @keyframes popModal { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .cooking-section-title { font-size: 0.92rem; font-weight: 800; color: var(--ocean-blue); margin-bottom: 8px; margin-top: 12px; }
+    .cooking-options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .cooking-opt-btn {
+      padding: 10px; border: 2px solid #cbd5e1; background: #f8fafc; border-radius: 12px;
+      font-weight: 800; font-size: 0.88rem; color: var(--ocean-blue); cursor: pointer; text-align: center; transition: all 0.2s;
+    }
+    .cooking-opt-btn.selected { border-color: var(--aqua-glow); background: #e0f2fe; color: #0284c7; }
+
+    /* زر الاتصال الهاتفي */
     .styled-phone-call-btn {
       position: fixed; left: 18px; bottom: 105px;
       background: linear-gradient(135deg, #0b2545 0%, #0369a1 100%);
@@ -116,6 +169,7 @@
     }
     .phone-num-text { color: #ffffff; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.5px; direction: ltr; }
 
+    /* شبكة الصيد العائمة (سلة الطلبات) */
     .floating-net-basket {
       position: fixed; left: 20px; bottom: 24px; width: 68px; height: 68px;
       background: radial-gradient(circle at 35% 35%, #0ea5e9, #0369a1);
@@ -144,7 +198,7 @@
     }
 
     .site-footer-wrapper {
-      max-width: 650px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: flex-end;
+      max-width: 680px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: flex-end;
     }
     .dev-badge-marine {
       background: rgba(5, 22, 38, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.45);
@@ -206,38 +260,6 @@
     .dev-btn-phone { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
     .dev-btn-close { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.15); width:100%;}
 
-    .fish-card {
-      background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 14px;
-      box-shadow: var(--shadow); border: 1px solid #e2edf5; display: flex; flex-direction: column; gap: 12px; position: relative;
-    }
-    .fish-card.sold-out { opacity: 0.55; background: #f1f5f9; border-style: dashed; }
-    .fish-header { display: flex; justify-content: space-between; align-items: flex-start; }
-    .fish-name { font-weight: 800; font-size: 1.1rem; color: var(--ocean-blue); }
-    .fish-category-badge { font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 6px; font-weight: 700; margin-right: 6px; }
-    .fish-price { font-weight: 800; color: #0284c7; font-size: 1rem; background: #e0f2fe; padding: 4px 10px; border-radius: 8px; }
-    .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-top: 4px; display: inline-block; }
-    .badge-status { font-size: 0.8rem; padding: 3px 8px; border-radius: 6px; font-weight: 700; display: inline-block; margin-top: 4px; }
-
-    .cooking-options-box { display: flex; flex-direction: column; gap: 8px; width: 100%; border-top: 1px dashed #e2edf5; padding-top: 10px; }
-    .cooking-select-row { display: flex; gap: 8px; }
-    .cooking-select {
-      flex: 1; padding: 8px 10px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 0.85rem;
-      background: #f8fafc; font-weight: 600; outline: none;
-    }
-
-    .fish-controls { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-    .qty-controls { display: flex; align-items: center; gap: 8px; position: relative; }
-    .qty-btn { width: 36px; height: 36px; background: #e2edf5; color: var(--ocean-blue); border: none; border-radius: 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
-    .qty-btn:disabled { cursor: not-allowed; opacity: 0.4; }
-    .qty-display { font-weight: 800; min-width: 30px; text-align: center; }
-
-    .add-to-net-btn {
-      background: linear-gradient(135deg, var(--aqua-glow), #0284c7);
-      color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 800; font-size: 0.85rem; cursor: pointer;
-      box-shadow: 0 3px 10px rgba(14, 165, 233, 0.35); transition: transform 0.15s;
-    }
-    .add-to-net-btn:active { transform: scale(0.95); }
-
     .cart-item-row {
       display: flex; justify-content: space-between; align-items: center; background: white;
       border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px;
@@ -269,7 +291,7 @@
       backdrop-filter: blur(4px); z-index: 200; align-items: flex-end; justify-content: center;
     }
     .modal-content {
-      background: white; width: 100%; max-width: 650px; border-top-left-radius: 24px;
+      background: white; width: 100%; max-width: 680px; border-top-left-radius: 24px;
       border-top-right-radius: 24px; padding: 22px; max-height: 88vh; overflow-y: auto;
     }
     .modal-title { font-size: 1.25rem; font-weight: 800; color: var(--ocean-blue); margin-bottom: 14px; display: flex; justify-content: space-between; }
@@ -375,6 +397,29 @@
     <div class="beach-surf-layer surf-foam-front"></div>
   </div>
 
+  <!-- نافذة منبثقة تفاعلية لاختيار التسوية عند الضغط على السمكة -->
+  <div class="cooking-modal-overlay" id="cookingPopupModal" onclick="closeCookingModalOnOutside(event)">
+    <div class="cooking-modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 id="popupFishTitle" style="color:var(--ocean-blue); font-size:1.15rem; font-weight:900;">اختر طريقة الطهي والتسوية</h3>
+        <button onclick="closeCookingModal()" style="background:#f1f5f9; border:none; font-size:1.2rem; width:28px; height:28px; border-radius:50%; cursor:pointer;">&times;</button>
+      </div>
+      
+      <div id="popupCookingOptionsContainer"></div>
+
+      <div style="margin-top:16px; border-top:1px dashed #cbd5e1; padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="changePopupQty(-0.5)">-</button>
+          <span class="qty-display" id="popupQtyDisplay">1</span>
+          <button class="qty-btn" onclick="changePopupQty(0.5)">+</button>
+        </div>
+        <button class="add-to-net-btn" onclick="confirmPopupAddItem()" style="padding:10px 20px; font-size:0.9rem;">
+          إضافة للشبكة 🕸️
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="dev-modal-overlay" id="devModal">
     <div class="dev-modal-card">
       <img src="Screenshot 2026-09-03 134855.png" alt="Abdallah Hussein" class="dev-avatar-large" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=Abdallah';">
@@ -456,8 +501,9 @@
         <button class="category-btn active" onclick="selectCategory('all', this)">الكل 🌊</button>
       </div>
 
-      <div id="fishList">
-        <div style="text-align:center; padding:40px; color:#64748b;">جاري تحميل الأسماك والسندوتشات الطازجة... 🐟</div>
+      <!-- المنيو بعمودين Grid -->
+      <div class="fish-grid-container" id="fishList">
+        <div style="text-align:center; padding:40px; color:#64748b; grid-column: span 2;">جاري تحميل الأسماك والسندوتشات الطازجة... 🐟</div>
       </div>
 
       <div class="extras-section" id="extrasArea" style="display:none;">
@@ -774,17 +820,148 @@
       document.getElementById('devModal').style.display = 'none';
     }
 
+    // =======================================================
+    // نافذة نافذة الطهي والخيارات عند النقر على السمكة
+    // =======================================================
+    let activePopupFish = null;
+    let popupSelectedMain = "";
+    let popupSelectedSub = "";
+    let popupQty = 1;
+
+    function openCookingModal(fishId) {
+      playBubbleSound();
+      const fish = allMenuItems.find(f => f.id == fishId);
+      if (!fish) return;
+      activePopupFish = fish;
+      popupQty = 1;
+      document.getElementById('popupQtyDisplay').innerText = "1";
+      document.getElementById('popupFishTitle').innerText = fish.name;
+
+      const isSoup = fish.category && fish.category.includes("شورب");
+      const isSandwich = fish.category && fish.category.includes("سندوتش");
+
+      let html = '';
+      if (isSandwich) {
+        popupSelectedMain = "سندوتش جاهز";
+        popupSelectedSub = "";
+        html = `
+          <div class="cooking-section-title">نوع الخبز والتقديم:</div>
+          <div class="cooking-options-grid">
+            <div class="cooking-opt-btn selected" onclick="selectPopupMain(this, 'سندوتش جاهز')">سندوتش جاهز بالخلطة</div>
+            <div class="cooking-opt-btn" onclick="selectPopupMain(this, 'عيش بلدي')">عيش بلدي سويسي</div>
+            <div class="cooking-opt-btn" onclick="selectPopupMain(this, 'عيش فينو')">عيش فينو فرنسي</div>
+          </div>
+        `;
+      } else if (isSoup) {
+        popupSelectedMain = "شوربة";
+        popupSelectedSub = soupTypesList[0] || "";
+        html = `
+          <div class="cooking-section-title">نوع الشوربة:</div>
+          <div class="cooking-options-grid">
+            ${soupTypesList.map((s, idx) => `<div class="cooking-opt-btn ${idx===0?'selected':''}" onclick="selectPopupSub(this, '${s}')">${s}</div>`).join('')}
+          </div>
+        `;
+      } else {
+        popupSelectedMain = "مشوي";
+        popupSelectedSub = grillTypesList[0] || "";
+        html = `
+          <div class="cooking-section-title">1. طريقة التسوية:</div>
+          <div class="cooking-options-grid" style="margin-bottom:10px;">
+            <div class="cooking-opt-btn selected" onclick="switchMainCooking('مشوي', this)">مشوي 🔥</div>
+            <div class="cooking-opt-btn" onclick="switchMainCooking('مقلي', this)">مقلي 🍤</div>
+            <div class="cooking-opt-btn" onclick="switchMainCooking('طازج ني', this)" style="grid-column: span 2;">طازج ني (تنظيف فقط)</div>
+          </div>
+          <div class="cooking-section-title" id="subOptionsTitle">2. طريقة الشوي:</div>
+          <div class="cooking-options-grid" id="subOptionsGrid">
+            ${grillTypesList.map((g, idx) => `<div class="cooking-opt-btn ${idx===0?'selected':''}" onclick="selectPopupSub(this, '${g}')">${g}</div>`).join('')}
+          </div>
+        `;
+      }
+
+      document.getElementById('popupCookingOptionsContainer').innerHTML = html;
+      document.getElementById('cookingPopupModal').style.display = 'flex';
+    }
+
+    function switchMainCooking(mainVal, btnElement) {
+      playBubbleSound();
+      popupSelectedMain = mainVal;
+      document.querySelectorAll('#popupCookingOptionsContainer .cooking-opt-btn').forEach(b => {
+        if (b.innerText.includes("مشوي") || b.innerText.includes("مقلي") || b.innerText.includes("طازج")) {
+          b.classList.remove('selected');
+        }
+      });
+      btnElement.classList.add('selected');
+
+      const titleElem = document.getElementById('subOptionsTitle');
+      const gridElem = document.getElementById('subOptionsGrid');
+
+      if (mainVal === "طازج ني") {
+        popupSelectedSub = "";
+        titleElem.style.display = 'none';
+        gridElem.style.display = 'none';
+      } else {
+        titleElem.style.display = 'block';
+        gridElem.style.display = 'grid';
+        if (mainVal === "مشوي") {
+          titleElem.innerText = "2. طريقة الشوي:";
+          gridElem.innerHTML = grillTypesList.map((g, idx) => `<div class="cooking-opt-btn ${idx===0?'selected':''}" onclick="selectPopupSub(this, '${g}')">${g}</div>`).join('');
+          popupSelectedSub = grillTypesList[0] || "";
+        } else if (mainVal === "مقلي") {
+          titleElem.innerText = "2. طريقة القلي:";
+          gridElem.innerHTML = fryTypesList.map((f, idx) => `<div class="cooking-opt-btn ${idx===0?'selected':''}" onclick="selectPopupSub(this, '${f}')">${f}</div>`).join('');
+          popupSelectedSub = fryTypesList[0] || "";
+        }
+      }
+    }
+
+    function selectPopupSub(btnElement, subVal) {
+      playBubbleSound();
+      popupSelectedSub = subVal;
+      const parent = btnElement.parentNode;
+      parent.querySelectorAll('.cooking-opt-btn').forEach(b => b.classList.remove('selected'));
+      btnElement.classList.add('selected');
+    }
+
+    function closeCookingModal() {
+      document.getElementById('cookingPopupModal').style.display = 'none';
+    }
+
+    function closeCookingModalOnOutside(e) {
+      if (e.target.id === 'cookingPopupModal') closeCookingModal();
+    }
+
+    function changePopupQty(delta) {
+      playBubbleSound();
+      popupQty += delta;
+      if (popupQty < 0.5) popupQty = 0.5;
+      document.getElementById('popupQtyDisplay').innerText = popupQty;
+    }
+
+    async function confirmPopupAddItem() {
+      if (!activePopupFish) return;
+
+      if (popupQty > activePopupFish.remainingQty) {
+        await showCustomAlert(
+          `عفواً، الكمية المتبقية لليوم من [${activePopupFish.name}] هي ${activePopupFish.remainingQty} فقط!`,
+          "الكمية غير متاحة ⚠️",
+          "🐟"
+        );
+        return;
+      }
+
+      // إضافة الطلب للسلة
+      const item = cart[activePopupFish.id];
+      item.qty = popupQty;
+      item.mainCooking = popupSelectedMain;
+      item.subCooking = popupSelectedSub;
+
+      closeCookingModal();
+      animateFishToNetBasket(document.getElementById('floatingNetBasket'));
+    }
+
     let adminAuthPassword = "";
     let cachedAdminPass = "";
     let adminInterval = null;
-
-    function cleanNormalize(val) {
-      if (!val) return "";
-      let str = val.toString().trim();
-      const arDigits = ["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
-      for (let i = 0; i < 10; i++) str = str.replace(new RegExp(arDigits[i], "g"), i.toString());
-      return str;
-    }
 
     async function promptAdminLogin(event) {
       if (event) event.stopPropagation();
@@ -805,35 +982,40 @@
       const pass = await showCustomPrompt("أدخل كلمة سر الإدارة للوصول للطلبات والتسليمات:", "تسجيل دخول الإدارة 🔒");
       if (!pass) return;
 
-      const inputNormalized = cleanNormalize(pass);
-      const targetNormalized = cleanNormalize(cachedAdminPass);
-
-      if (targetNormalized && inputNormalized === targetNormalized) {
-        localStorage.removeItem("admin_failed_attempts");
-        localStorage.removeItem("admin_lock_until");
-        adminAuthPassword = pass.trim();
-        openAdminPanel();
-        fetchAdminLiveOrders();
-      } else {
-        let failedAttempts = Number(localStorage.getItem("admin_failed_attempts") || 0) + 1;
-        localStorage.setItem("admin_failed_attempts", failedAttempts);
-
-        if (failedAttempts >= 5) {
-          const oneHourLock = Date.now() + 60 * 60 * 1000;
-          localStorage.setItem("admin_lock_until", oneHourLock);
-          await showCustomAlert(
-            "كلمة السر خطأ! لقد استنفدت 5 محاولات، تم قفل إمكانية الدخول لمدة ساعة كاملة.",
-            "كلمة السر خطأ 🔒",
-            "🚫"
-          );
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=adminFetchOrders&password=${encodeURIComponent(pass.trim())}`);
+        const d = await res.json();
+        
+        if (d.status === "success") {
+          localStorage.removeItem("admin_failed_attempts");
+          localStorage.removeItem("admin_lock_until");
+          
+          adminAuthPassword = pass.trim();
+          openAdminPanel();
+          renderMarineOrders(d.orders.reverse());
         } else {
-          const remainTries = 5 - failedAttempts;
-          await showCustomAlert(
-            `كلمة السر خطأ! متبقي لك ${remainTries} محاولات قبل قفل الصفحة لمدة ساعة.`,
-            "كلمة السر خطأ",
-            "❌"
-          );
+          let failedAttempts = Number(localStorage.getItem("admin_failed_attempts") || 0) + 1;
+          localStorage.setItem("admin_failed_attempts", failedAttempts);
+
+          if (failedAttempts >= 5) {
+            const oneHourLock = Date.now() + 60 * 60 * 1000;
+            localStorage.setItem("admin_lock_until", oneHourLock);
+            await showCustomAlert(
+              "كلمة السر خطأ! لقد استنفدت 5 محاولات، تم قفل إمكانية الدخول لمدة ساعة كاملة.",
+              "كلمة السر خطأ 🔒",
+              "🚫"
+            );
+          } else {
+            const remainTries = 5 - failedAttempts;
+            await showCustomAlert(
+              `كلمة السر خطأ! متبقي لك ${remainTries} محاولات قبل قفل الصفحة لمدة ساعة.`,
+              "كلمة السر خطأ",
+              "❌"
+            );
+          }
         }
+      } catch (err) {
+        await showCustomAlert("تعذر الاتصال بالخادم للتأكد من كلمة السر! تأكد من اتصال الإنترنت.", "خطأ في الاتصال ⚠️", "📶");
       }
     }
 
@@ -937,17 +1119,11 @@
           allMenuItems.forEach(fish => {
             const isUnavailable = fish.status === "غير متوفر";
             const isSoldOut = fish.status === "خلص" || (!isUnavailable && fish.remainingQty <= 0);
-            const isSoup = fish.category && fish.category.includes("شورب");
-            const isSandwich = fish.category && fish.category.includes("سندوتش");
-
-            let defaultMain = "مشوي";
-            if (isSoup) defaultMain = "شوربة";
-            if (isSandwich) defaultMain = "سندوتش جاهز";
 
             cart[fish.id] = {
               qty: 0,
-              mainCooking: defaultMain,
-              subCooking: isSoup ? (soupTypesList[0] || "") : (grillTypesList[0] || ""),
+              mainCooking: "مشوي",
+              subCooking: grillTypesList[0] || "",
               data: fish,
               maxAvailable: Number(fish.remainingQty) || 0,
               isAvailable: !(isSoldOut || isUnavailable)
@@ -987,135 +1163,51 @@
       renderMenu(filtered);
     }
 
+    // عرض المنيو بنظام Grid عمودين
     function renderMenu(items) {
       const container = document.getElementById('fishList');
       container.innerHTML = '';
 
+      if (items.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); font-weight:700; grid-column: span 2;">لا توجد أصناف مطابقة لبحثك 🔍</div>`;
+        return;
+      }
+
       items.forEach(fish => {
         const itemState = cart[fish.id];
         const isDisabled = !itemState.isAvailable;
-        const isSoup = fish.category && fish.category.includes("شورب");
         const isSandwich = fish.category && fish.category.includes("سندوتش");
 
-        let cookingHtml = '';
-        if (isSandwich) {
-          cookingHtml = `
-            <div class="cooking-select-row">
-              <select class="cooking-select" ${isDisabled ? 'disabled' : ''} onchange="updateMainCooking(${fish.id}, this.value)">
-                <option value="سندوتش جاهز">سندوتش بالخلطة والطحينة</option>
-                <option value="عيش بلدي">عيش بلدي سويسي</option>
-                <option value="عيش فينو">عيش فينو فرنسي</option>
-              </select>
-            </div>
-          `;
-        } else if (isSoup) {
-          cookingHtml = `
-            <div class="cooking-select-row">
-              <select class="cooking-select" ${isDisabled ? 'disabled' : ''} onchange="updateSubCooking(${fish.id}, this.value)">
-                ${soupTypesList.map(s => `<option value="${s}">${s}</option>`).join('')}
-              </select>
-            </div>
-          `;
+        let statusBadgeHtml = '';
+        if (fish.status === "غير متوفر") {
+          statusBadgeHtml = `<span class="badge-status" style="background:#f1f5f9; color:#64748b;">غير متوفر 🚫</span>`;
+        } else if (fish.status === "خلص" || itemState.maxAvailable <= 0) {
+          statusBadgeHtml = `<span class="badge-status" style="background:#fee2e2; color:#ef4444;">نفد لليوم ❌</span>`;
+        } else if (itemState.maxAvailable <= 5) {
+          statusBadgeHtml = `<div class="stock-badge-low">⚠️ متبقي ${itemState.maxAvailable}</div>`;
         } else {
-          cookingHtml = `
-            <div class="cooking-select-row">
-              <select class="cooking-select" ${isDisabled ? 'disabled' : ''} onchange="updateMainCooking(${fish.id}, this.value)">
-                <option value="مشوي">مشوي 🔥</option>
-                <option value="مقلي">مقلي 🍤</option>
-                <option value="طازج ني">طازج ني (تنظيف فقط)</option>
-              </select>
-              <select class="cooking-select" id="subSelect-${fish.id}" ${isDisabled ? 'disabled' : ''} onchange="updateSubCooking(${fish.id}, this.value)">
-                ${grillTypesList.map(g => `<option value="${g}">${g}</option>`).join('')}
-              </select>
-            </div>
-          `;
+          statusBadgeHtml = `<span class="badge-status" style="background:#ecfdf5; color:#059669;">متوفر ✅</span>`;
         }
 
         const card = document.createElement('div');
         card.className = `fish-card ${isDisabled ? 'sold-out' : ''}`;
+        card.onclick = () => { if (!isDisabled) openCookingModal(fish.id); };
+
         card.innerHTML = `
-          <div class="fish-header">
-            <div>
-              <span class="fish-name">${fish.name}</span>
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
               <span class="fish-category-badge">${fish.category}</span>
+              <div>${statusBadgeHtml}</div>
             </div>
-            <div class="fish-price">${fish.price} ج.م ${isSandwich ? '/ سندوتش' : '/ ك'}</div>
+            <div class="fish-name">${fish.name}</div>
           </div>
-          <div class="cooking-options-box">
-            ${cookingHtml}
-            <div class="fish-controls">
-              <div class="qty-controls">
-                <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, -0.5)">-</button>
-                <span class="qty-display" id="qty-${fish.id}">${itemState.qty > 0 ? itemState.qty : 0}</span>
-                <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, 0.5)">+</button>
-              </div>
-              <button class="add-to-net-btn" ${isDisabled ? 'disabled' : ''} onclick="addItemToNet(this, ${fish.id})">
-                إضافة للشبكة 🕸️
-              </button>
-            </div>
+          <div>
+            <div class="fish-price" style="margin-bottom:8px;">${fish.price} ج.م ${isSandwich ? '/ سندوتش' : '/ ك'}</div>
+            <button class="card-action-hint" ${isDisabled ? 'disabled' : ''}>اختيار الطهي والطلب 🛒</button>
           </div>
         `;
         container.appendChild(card);
       });
-    }
-
-    async function changeQty(id, delta) {
-      const item = cart[id];
-      if (!item.isAvailable) return;
-
-      let newQty = item.qty + delta;
-      if (newQty < 0) newQty = 0;
-
-      if (newQty > item.maxAvailable) {
-        await showCustomAlert(
-          `عفواً، الكمية المتبقية لليوم من [${item.data.name}] هي ${item.maxAvailable} فقط!`,
-          "الكمية غير متاحة ⚠️",
-          "🐟"
-        );
-        return;
-      }
-
-      playBubbleSound();
-      item.qty = newQty;
-      const d = document.getElementById(`qty-${id}`);
-      if (d) d.innerText = newQty;
-    }
-
-    async function addItemToNet(btnElement, fishId) {
-      const item = cart[fishId];
-      if (!item.isAvailable) return;
-
-      let currentVal = item.qty;
-      if (currentVal === 0) currentVal = 1;
-
-      if (currentVal > item.maxAvailable) {
-        await showCustomAlert(
-          `عفواً، الكمية المتبقية لليوم من [${item.data.name}] هي ${item.maxAvailable} فقط!`,
-          "الكمية غير متاحة ⚠️",
-          "🐟"
-        );
-        return;
-      }
-
-      item.qty = currentVal;
-      const d = document.getElementById(`qty-${fishId}`);
-      if (d) d.innerText = currentVal;
-
-      animateFishToNetBasket(btnElement);
-    }
-
-    function updateMainCooking(id, val) {
-      cart[id].mainCooking = val;
-      const sub = document.getElementById(`subSelect-${id}`);
-      if (!sub) return;
-      if (val === "مشوي") sub.innerHTML = grillTypesList.map(g => `<option value="${g}">${g}</option>`).join('');
-      if (val === "مقلي") sub.innerHTML = fryTypesList.map(f => `<option value="${f}">${f}</option>`).join('');
-      if (val === "طازج ني") sub.style.display = 'none';
-      else sub.style.display = 'block';
-    }
-
-    function updateSubCooking(id, val) {
-      cart[id].subCooking = val;
     }
 
     function renderExtras(extras) {
@@ -1157,7 +1249,7 @@
       for (let idx in selectedExtras) {
         if (selectedExtras[idx].count > 0) count++;
       }
-      document.getElementById('netCartCount').innerText = count;
+      document.getElementById('netCountBadge').innerText = count; // تم التعديل لتتوافق مع البادج الحقيقي
     }
 
     function calculateTotal() {
@@ -1241,16 +1333,12 @@
       playBubbleSound();
       if (newQty <= 0) newQty = 0;
       item.qty = newQty;
-      const d = document.getElementById(`qty-${id}`);
-      if (d) d.innerText = item.qty;
       renderInteractiveCartModal();
     }
 
     function removeCartItem(id) {
       playBubbleSound();
       cart[id].qty = 0;
-      const d = document.getElementById(`qty-${id}`);
-      if (d) d.innerText = 0;
       renderInteractiveCartModal();
     }
 
