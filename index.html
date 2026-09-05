@@ -44,6 +44,7 @@
       color: white; text-align: center; padding: 26px 16px 22px;
       border-bottom-left-radius: 28px; border-bottom-right-radius: 28px;
       box-shadow: 0 8px 30px rgba(5, 22, 38, 0.4); position: relative; overflow: hidden;
+      cursor: pointer; user-select: none;
     }
 
     .bg-fish { position: absolute; opacity: 0.35; pointer-events: none; z-index: 1; animation: swim linear infinite; }
@@ -130,7 +131,7 @@
     .dev-badge-name { font-size: 0.82rem; font-weight: 800; color: #f8fafc; }
     .dev-badge-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; background: #0b2545; }
 
-    /* زر لوحة الإدارة المباشر */
+    /* زر لوحة الإدارة */
     .admin-access-btn {
       position: fixed; right: 16px; bottom: 74px;
       background: rgba(11, 37, 69, 0.92); border: 1.5px solid rgba(56, 189, 248, 0.6);
@@ -234,7 +235,7 @@
     .extra-name { font-weight: 700; font-size: 0.9rem; color: var(--ocean-blue); }
     .extra-price { font-size: 0.85rem; color: #0284c7; font-weight: 800; margin-top: 4px; }
 
-    /* نافذة المودال */
+    /* المودال */
     .modal {
       display: none; position: fixed; inset: 0; background: rgba(5, 22, 38, 0.65);
       backdrop-filter: blur(4px); z-index: 200; align-items: flex-end; justify-content: center;
@@ -409,7 +410,8 @@
     </div>
   </div>
 
-  <header>
+  <!-- هيدر الصفحة - النقر عليه يعيد تحميل الصفحة بسلاسة -->
+  <header onclick="reloadPageHeader()">
     <div class="bg-fish fish-1">🐠</div>
     <div class="bg-fish fish-2">🐟</div>
     <div class="bg-fish fish-3">🐡</div>
@@ -428,19 +430,24 @@
   </header>
 
   <div class="container">
+    <!-- كارت تتبع الطلب الحالي للعميل -->
     <div class="order-lock-screen" id="orderLockCard" style="display:none; background:white; border-radius:16px; border:2px solid #38bdf8; padding:20px; margin-bottom:20px;">
       <div class="lock-badge" style="display:inline-flex; align-items:center; gap:6px; background:#e0f2fe; color:#0369a1; padding:4px 12px; border-radius:20px; font-weight:800; font-size:0.85rem; margin-bottom:12px;">
-        <span style="width:10px; height:10px; background:#10b981; border-radius:50%;"></span> طلبك جاري تجهيزه بالمحل
+        <span style="width:10px; height:10px; background:#10b981; border-radius:50%; animation:blink 1.5s infinite;"></span> طلبك قيد المتابعة الحية
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <h3 style="color:var(--ocean-blue); font-size:1.2rem;">طلب رقم <span id="lockedOrderId">#</span></h3>
-        <span id="lockedOrderStatus" style="font-weight:800; font-size:1rem; color:#0284c7;">طلب جديد</span>
+        <span id="lockedOrderStatus" style="font-weight:800; font-size:1rem; color:#0284c7; background:#e0f2fe; padding:4px 12px; border-radius:12px;">جديد - جاري التحضير</span>
       </div>
       <div id="lockedOrderDetails" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:0.92rem; line-height:1.6; margin-bottom:12px;"></div>
-      <div id="countdownTimerText" style="font-weight:800; color:#dc2626; font-size:0.95rem; text-align:center;">
-        متاح مسح / إلغاء الطلب خلال: <span id="cancelTimer">10:00</span>
+
+      <!-- خانة الإلغاء مع العداد التصاعدي من 00:00 إلى 10:00 -->
+      <div id="cancelAreaWrapper" style="background:#fef2f2; border:1px dashed #fca5a5; border-radius:12px; padding:12px; text-align:center;">
+        <div id="countdownTimerText" style="font-weight:800; color:#dc2626; font-size:0.92rem; margin-bottom:8px;">
+          يمكنك إلغاء الطلب خلال: <span id="cancelTimer">00:00</span> / 10:00 دقيقة
+        </div>
+        <button id="cancelOrderActionBtn" onclick="requestCancelOrder()" style="background:#ef4444; color:white; border:none; padding:8px 18px; border-radius:10px; font-weight:800; cursor:pointer;">مسح وإلغاء الطلب 🗑️</button>
       </div>
-      <button onclick="requestCancelOrder()" style="width:100%; background:#ef4444; color:white; border:none; padding:10px; border-radius:10px; font-weight:800; margin-top:10px; cursor:pointer;">مسح وإلغاء الطلب 🗑️</button>
     </div>
 
     <div id="menuMainArea">
@@ -535,9 +542,14 @@
   </div>
 
   <script>
-    // الرابط المعتمد الخاص بك
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLmCgLwIPU97Ph57HHahxdGGxm_7a0q3JNNKQiNPrZgtzaCctjvMXmwKfVf2eX2RJ0FQ/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPdFJzHQFe1_q-wKYm8dzoMesp02kbPAAgLVKzLVjJb0Xa1fuv16F62rV9LO08nNeaFw/exec";
     const WHATSAPP_NUM = "201009204577";
+
+    // إعادة تحميل الصفحة عند النقر على الهيدر مع الحفاظ التام على الطلب
+    function reloadPageHeader() {
+      playBubbleSound();
+      location.reload();
+    }
 
     function showCustomAlert(message, title = "خير البحر 🐟", icon = "🌊") {
       return new Promise((resolve) => {
@@ -720,7 +732,9 @@
       document.getElementById('devModal').style.display = 'none';
     }
 
-    // لوحة إدارة الطلبات البحرية الحية
+    // =======================================================
+    // لوحة إدارة الطلبات البحرية الحية (Marine Admin Panel)
+    // =======================================================
     let adminAuthPassword = localStorage.getItem("kheir_admin_auth") || "";
     let adminInterval = null;
 
@@ -728,7 +742,6 @@
       const pass = await showCustomPrompt("أدخل كلمة سر الإدارة للوصول للطلبات والتسليمات:", "تسجيل دخول الإدارة 🔒");
       if (!pass) return;
 
-      // تحقق لحظي من الخادم قبل السماح بالدخول
       try {
         const res = await fetch(`${SCRIPT_URL}?action=getAdminOrders&password=${encodeURIComponent(pass.trim())}`);
         const d = await res.json();
@@ -738,7 +751,7 @@
           openAdminPanel();
           renderMarineOrders(d.orders.reverse());
         } else {
-          await showCustomAlert(" في شيت الاداره.", "خطأ في الصلاحية.كلمة المرور غير صحيحه ❌", "🔒");
+          await showCustomAlert(" في شيت الاداره.", "خطأ في كلمه السر ❌", "🔒");
         }
       } catch (err) {
         await showCustomAlert("تعذر الاتصال بالخادم للتأكد من كلمة السر!", "خطأ في الاتصال ⚠️", "📶");
@@ -834,6 +847,7 @@
     let selectedCategory = "all";
     let timeMode = "now";
     let paymentMethod = "cash";
+    let cancelTimerInterval = null;
 
     async function loadMenu() {
       checkLockState();
@@ -1247,9 +1261,17 @@
       }
     }
 
+    // إدارة قفل الشاشة والعداد التصاعدي
     function checkLockState() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
+
+      const elapsedHours = (Date.now() - saved.timestamp) / (1000 * 60 * 60);
+      if (elapsedHours >= 10) {
+        localStorage.removeItem("kheir_locked_order");
+        return;
+      }
+
       document.getElementById('orderLockCard').style.display = 'block';
       document.getElementById('menuMainArea').style.display = 'none';
       document.getElementById('floatingNetBasket').style.display = 'none';
@@ -1257,13 +1279,75 @@
       document.getElementById('lockedOrderDetails').innerHTML = `
         <strong>الاسم:</strong> ${saved.name}<br>
         <strong>الطلب:</strong> ${saved.itemsDetails}<br>
-        <strong>الإجمالي:</strong> ${saved.total} ج.م
+        <strong>المبلغ الإجمالي:</strong> ${saved.total} ج.م
       `;
+
+      startAscendingCancelTimer(saved.timestamp);
+      trackLiveStatus(saved.orderId);
+    }
+
+    // عداد تصاعدي من 00:00 حتى 10:00 دقائق
+    function startAscendingCancelTimer(timestamp) {
+      clearInterval(cancelTimerInterval);
+      const limitMs = 10 * 60 * 1000;
+
+      function updateAscTimer() {
+        const passed = Date.now() - timestamp;
+
+        if (passed >= limitMs) {
+          clearInterval(cancelTimerInterval);
+          // إخفاء خانة الإلغاء بالكامل
+          const cancelBox = document.getElementById('cancelAreaWrapper');
+          if (cancelBox) cancelBox.style.display = 'none';
+        } else {
+          const m = Math.floor(passed / 60000);
+          const s = Math.floor((passed % 60000) / 1000);
+          const timerStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+          document.getElementById('cancelTimer').innerText = timerStr;
+        }
+      }
+
+      updateAscTimer();
+      cancelTimerInterval = setInterval(updateAscTimer, 1000);
+    }
+
+    function trackLiveStatus(orderId) {
+      fetch(`${SCRIPT_URL}?action=checkStatus&orderId=${orderId}`)
+        .then(r => r.json())
+        .then(d => {
+          if (d.status === "success") {
+            const statusBox = document.getElementById('lockedOrderStatus');
+            statusBox.innerText = d.orderStatus;
+
+            if (d.orderStatus.includes("جاهز") || d.orderStatus.includes("تحضير")) {
+              statusBox.style.background = "#dcfce7";
+              statusBox.style.color = "#15803d";
+            } else if (d.orderStatus.includes("تم التسليم")) {
+              statusBox.style.background = "#f1f5f9";
+              statusBox.style.color = "#475569";
+              showCustomAlert("بالهناء والشفاء! تم تسليم طلبك بنجاح. شكراً لاختيارك خير البحر 🐟", "تم التسليم بنجاح ✅").then(() => {
+                localStorage.removeItem("kheir_locked_order");
+                location.reload();
+              });
+            } else if (d.orderStatus.includes("ملغي") || d.orderStatus.includes("إلغاء")) {
+              localStorage.removeItem("kheir_locked_order");
+              location.reload();
+            }
+          }
+        }).catch(() => {});
     }
 
     async function requestCancelOrder() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
+
+      const passed = Date.now() - saved.timestamp;
+      if (passed > 10 * 60 * 1000) {
+        await showCustomAlert("عفواً، انتهت مهلة الـ 10 دقائق للإلغاء وبدأ الطهي والشوي بالفعل.", "انتهت المهلة ⏳");
+        const cancelBox = document.getElementById('cancelAreaWrapper');
+        if (cancelBox) cancelBox.style.display = 'none';
+        return;
+      }
 
       const confirmed = await showCustomConfirm("هل أنت متأكد من إلغاء الطلب ومسحه نهائياً؟", "تأكيد الإلغاء 🗑️", "⚠️");
       if (!confirmed) return;
@@ -1275,6 +1359,12 @@
       localStorage.removeItem("kheir_locked_order");
       location.reload();
     }
+
+    // متابعة حالة الطلب كل 15 ثانية طالما الصفحة مفتوحة
+    setInterval(() => {
+      const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
+      if (saved) trackLiveStatus(saved.orderId);
+    }, 15000);
 
     loadMenu();
   </script>
