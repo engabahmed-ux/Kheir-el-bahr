@@ -1,0 +1,45 @@
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+  
+  try {
+    var doc = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = doc.getActiveSheet();
+    
+    // إنشاء ترويسة الأعمدة لو الشيت لسه جديد
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow([
+        "تاريخ ووقت الطلب", 
+        "اسم العميل", 
+        "رقم التليفون", 
+        "العنوان / مكان التسليم", 
+        "تفاصيل الطلب", 
+        "إجمالي المبلغ", 
+        "ملاحظات"
+      ]);
+    }
+    
+    var data = JSON.parse(e.postData.contents);
+    
+    sheet.appendRow([
+      new Date().toLocaleString("ar-EG", { timeZone: "Africa/Cairo" }),
+      data.name,
+      "'" + data.phone,
+      data.location,
+      data.items,
+      data.total + " ج.م",
+      data.notes || "لا يوجد"
+    ]);
+    
+    return ContentService
+      .createTextOutput(JSON.stringify({ "result": "success" }))
+      .setMimeType(ContentService.MimeType.JSON);
+      
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    lock.releaseLock();
+  }
+}
