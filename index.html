@@ -738,7 +738,7 @@
           openAdminPanel();
           renderMarineOrders(d.orders.reverse());
         } else {
-          await showCustomAlert("كلمة السر غير صحيحة! يرجى التأكد من الخلية B1 في شيت الاداره.", "خطأ في الصلاحية ❌", "🔒");
+          await showCustomAlert(" في شيت الاداره.", "خطأ في الصلاحية.كلمة المرور غير صحيحه ❌", "🔒");
         }
       } catch (err) {
         await showCustomAlert("تعذر الاتصال بالخادم للتأكد من كلمة السر!", "خطأ في الاتصال ⚠️", "📶");
