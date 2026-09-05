@@ -547,7 +547,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPdFJzHQFe1_q-wKYm8dzoMesp02kbPAAgLVKzLVjJb0Xa1fuv16F62rV9LO08nNeaFw/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyW1QVzud1-K4RDDgvnQ7yDhOaqXwcmlk3MMxd5xd-wAoJfzGhxS6eUMVWMbQm2jO4M0A/exec";
     const WHATSAPP_NUM = "201009204577";
 
     function handleHeaderClick(e) {
@@ -775,7 +775,16 @@
     }
 
     let adminAuthPassword = "";
+    let cachedAdminPass = "";
     let adminInterval = null;
+
+    function cleanNormalize(val) {
+      if (!val) return "";
+      let str = val.toString().trim();
+      const arDigits = ["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
+      for (let i = 0; i < 10; i++) str = str.replace(new RegExp(arDigits[i], "g"), i.toString());
+      return str;
+    }
 
     async function promptAdminLogin(event) {
       if (event) event.stopPropagation();
@@ -796,40 +805,35 @@
       const pass = await showCustomPrompt("أدخل كلمة سر الإدارة للوصول للطلبات والتسليمات:", "تسجيل دخول الإدارة 🔒");
       if (!pass) return;
 
-      try {
-        const res = await fetch(`${SCRIPT_URL}?action=adminFetchOrders&password=${encodeURIComponent(pass.trim())}`);
-        const d = await res.json();
-        
-        if (d.status === "success") {
-          localStorage.removeItem("admin_failed_attempts");
-          localStorage.removeItem("admin_lock_until");
-          
-          adminAuthPassword = pass.trim();
-          openAdminPanel();
-          renderMarineOrders(d.orders.reverse());
-        } else {
-          let failedAttempts = Number(localStorage.getItem("admin_failed_attempts") || 0) + 1;
-          localStorage.setItem("admin_failed_attempts", failedAttempts);
+      const inputNormalized = cleanNormalize(pass);
+      const targetNormalized = cleanNormalize(cachedAdminPass);
 
-          if (failedAttempts >= 5) {
-            const oneHourLock = Date.now() + 60 * 60 * 1000;
-            localStorage.setItem("admin_lock_until", oneHourLock);
-            await showCustomAlert(
-              "كلمة السر خطأ! لقد استنفدت 5 محاولات، تم قفل إمكانية الدخول لمدة ساعة كاملة.",
-              "كلمة السر خطأ 🔒",
-              "🚫"
-            );
-          } else {
-            const remainTries = 5 - failedAttempts;
-            await showCustomAlert(
-              `كلمة السر خطأ! متبقي لك ${remainTries} محاولات قبل قفل الصفحة لمدة ساعة.`,
-              "كلمة السر خطأ",
-              "❌"
-            );
-          }
+      if (targetNormalized && inputNormalized === targetNormalized) {
+        localStorage.removeItem("admin_failed_attempts");
+        localStorage.removeItem("admin_lock_until");
+        adminAuthPassword = pass.trim();
+        openAdminPanel();
+        fetchAdminLiveOrders();
+      } else {
+        let failedAttempts = Number(localStorage.getItem("admin_failed_attempts") || 0) + 1;
+        localStorage.setItem("admin_failed_attempts", failedAttempts);
+
+        if (failedAttempts >= 5) {
+          const oneHourLock = Date.now() + 60 * 60 * 1000;
+          localStorage.setItem("admin_lock_until", oneHourLock);
+          await showCustomAlert(
+            "كلمة السر خطأ! لقد استنفدت 5 محاولات، تم قفل إمكانية الدخول لمدة ساعة كاملة.",
+            "كلمة السر خطأ 🔒",
+            "🚫"
+          );
+        } else {
+          const remainTries = 5 - failedAttempts;
+          await showCustomAlert(
+            `كلمة السر خطأ! متبقي لك ${remainTries} محاولات قبل قفل الصفحة لمدة ساعة.`,
+            "كلمة السر خطأ",
+            "❌"
+          );
         }
-      } catch (err) {
-        await showCustomAlert("تعذر الاتصال بالخادم للتأكد من كلمة السر! تأكد من اتصال الإنترنت.", "خطأ في الاتصال ⚠️", "📶");
       }
     }
 
@@ -928,6 +932,7 @@
           fryTypesList = data.fryTypes || ["زيت", "زيت وليمون"];
           soupTypesList = data.soupTypes || ["مخلية", "بريميوم"];
           document.getElementById('instapayTargetText').innerText = data.instapayTarget || "";
+          cachedAdminPass = data.adminToken || "";
 
           allMenuItems.forEach(fish => {
             const isUnavailable = fish.status === "غير متوفر";
