@@ -774,9 +774,6 @@
       document.getElementById('devModal').style.display = 'none';
     }
 
-    // =======================================================
-    // فحص الإدارة الحازم: لا يدخل إطلاقاً إلا بكلمة سر صحيحة
-    // =======================================================
     let adminAuthPassword = "";
     let adminInterval = null;
 
@@ -811,7 +808,6 @@
           openAdminPanel();
           renderMarineOrders(d.orders.reverse());
         } else {
-          // كلمة السر خاطئة -> يرفض تماماً ولا يفتح اللوحة
           let failedAttempts = Number(localStorage.getItem("admin_failed_attempts") || 0) + 1;
           localStorage.setItem("admin_failed_attempts", failedAttempts);
 
@@ -1058,7 +1054,6 @@
       });
     }
 
-    // فحص الكمية المتبقية وإصدار التنبيه فوراً
     async function changeQty(id, delta) {
       const item = cart[id];
       if (!item.isAvailable) return;
@@ -1066,7 +1061,6 @@
       let newQty = item.qty + delta;
       if (newQty < 0) newQty = 0;
 
-      // فحص تجاوز الكمية المتبقية
       if (newQty > item.maxAvailable) {
         await showCustomAlert(
           `عفواً، الكمية المتبقية لليوم من [${item.data.name}] هي ${item.maxAvailable} فقط!`,
