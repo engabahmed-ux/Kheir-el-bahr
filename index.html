@@ -25,7 +25,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-    body { background-color: var(--bg); color: var(--text-main); padding-bottom: 140px; overflow-x: hidden; position: relative; }
+    body { background-color: var(--bg); color: var(--text-main); padding-bottom: 70px; overflow-x: hidden; position: relative; }
 
     .click-water-ripple {
       position: fixed; border-radius: 50%; border: 2px solid rgba(56, 189, 248, 0.7);
@@ -89,7 +89,51 @@
     }
     .category-btn.active { background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue); }
 
-    /* شبكة الصيد العائمة */
+    /* ======================================================== */
+    /* زر الاتصال الهاتفي الفخم والمنسق                          */
+    /* ======================================================== */
+    .styled-phone-call-btn {
+      position: fixed;
+      left: 18px;
+      bottom: 105px;
+      background: linear-gradient(135deg, #0b2545 0%, #0369a1 100%);
+      border: 1.5px solid rgba(56, 189, 248, 0.7);
+      border-radius: 26px;
+      padding: 6px 14px 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35);
+      z-index: 180;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+    .styled-phone-call-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
+    }
+    .phone-icon-bubble {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      color: white;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+    }
+    .phone-num-text {
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.88rem;
+      letter-spacing: 0.5px;
+      direction: ltr;
+    }
+
+    /* شبكة الصيد العائمة (سلة الطلبات) */
     .floating-net-basket {
       position: fixed; left: 20px; bottom: 24px; width: 68px; height: 68px;
       background: radial-gradient(circle at 35% 35%, #0ea5e9, #0369a1);
@@ -117,28 +161,50 @@
       100% { transform: rotate(-8deg) scaleY(1.05); }
     }
 
-    /* شارة المطور */
-    .dev-badge-marine {
-      position: fixed; right: 16px; bottom: 24px; background: rgba(5, 22, 38, 0.94);
-      border: 1.5px solid rgba(56, 189, 248, 0.45); backdrop-filter: blur(8px); padding: 6px 14px 6px 8px;
-      border-radius: 30px; display: flex; align-items: center; gap: 9px; cursor: pointer;
-      box-shadow: 0 4px 20px rgba(5, 22, 38, 0.35); z-index: 150; transition: all 0.25s ease;
+    /* ======================================================== */
+    /* زر الإدارة السري وغير الملحوظ إطلاقاً                     */
+    /* ======================================================== */
+    .admin-secret-dot {
+      position: fixed;
+      right: 4px;
+      bottom: 4px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      z-index: 999999;
     }
-    .dev-badge-marine:hover { transform: translateY(-3px) scale(1.03); border-color: var(--sea-cyan); }
+
+    /* ======================================================== */
+    /* شارة المطور الثابتة بأسفل الصفحة داخل الفوتر الطبيعي      */
+    /* ======================================================== */
+    .site-footer-wrapper {
+      max-width: 650px;
+      margin: 30px auto 10px;
+      padding: 0 16px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .dev-badge-marine {
+      background: rgba(5, 22, 38, 0.95);
+      border: 1.5px solid rgba(56, 189, 248, 0.45);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px 6px 8px;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(5, 22, 38, 0.25);
+      transition: all 0.25s ease;
+    }
+    .dev-badge-marine:hover { transform: translateY(-2px); border-color: var(--sea-cyan); }
     .dev-badge-marine .dev-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; animation: blink 1.5s infinite; }
     .dev-badge-text { display: flex; flex-direction: column; text-align: right; line-height: 1.2; }
     .dev-badge-sub { font-size: 0.65rem; color: #94a3b8; font-weight: 600; }
     .dev-badge-name { font-size: 0.82rem; font-weight: 800; color: #f8fafc; }
-    .dev-badge-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; background: #0b2545; }
-
-    /* زر لوحة الإدارة */
-    .admin-access-btn {
-      position: fixed; right: 16px; bottom: 74px;
-      background: rgba(11, 37, 69, 0.92); border: 1.5px solid rgba(56, 189, 248, 0.6);
-      color: #38bdf8; padding: 5px 12px; border-radius: 18px; font-size: 0.75rem; font-weight: 800;
-      cursor: pointer; z-index: 150; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-    .admin-access-btn:hover { background: #0b2545; color: white; border-color: #38bdf8; }
+    .dev-badge-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; background: #0b2545; }
 
     /* تسونامي المطور ثلاثي الأبعاد */
     .tsunami-3d-wrap {
@@ -294,7 +360,9 @@
     .dialog-btn-primary { background: linear-gradient(135deg, var(--aqua-glow), #0284c7); color: white; }
     .dialog-btn-cancel { background: #f1f5f9; color: #475569; }
 
-    /* لوحة إدارة الطلبات البحرية الحية */
+    /* ======================================================== */
+    /* لوحة إدارة الطلبات البحرية الحية (Marine Admin Screen)   */
+    /* ======================================================== */
     .marine-admin-screen {
       position: fixed; inset: 0; background: radial-gradient(circle at top, #0b2545 0%, #051626 100%);
       color: #fff; z-index: 99999; display: none; flex-direction: column; overflow-y: auto; font-family: 'Cairo', sans-serif;
@@ -345,10 +413,10 @@
 </head>
 <body>
 
-  <!-- زر الاتصال الهاتفي للمحل -->
-  <a href="tel:01009204577" class="floating-call-btn" style="position:fixed; left:18px; bottom:100px; z-index:150;">
-    <div class="floating-call-icon">📞</div>
-    <span>01009204577</span>
+  <!-- زر الاتصال الهاتفي الفخم والمنسق -->
+  <a href="tel:01009204577" class="styled-phone-call-btn">
+    <div class="phone-icon-bubble">📞</div>
+    <span class="phone-num-text">01009204577</span>
   </a>
 
   <!-- شبكة الصيد العائمة (سلة الطلبات) -->
@@ -357,21 +425,8 @@
     <span class="net-count-badge" id="netCartCount">0</span>
   </div>
 
-  <!-- زر لوحة الإدارة -->
-  <div class="admin-access-btn" onclick="promptAdminLogin()">
-    <span>⚙️</span>
-    <span>إدارة الطلبات</span>
-  </div>
-
-  <!-- شارة المطور -->
-  <div class="dev-badge-marine" onclick="trigger3DTsunamiModal()">
-    <span class="dev-dot"></span>
-    <div class="dev-badge-text">
-      <span class="dev-badge-sub">تطوير وبرمجة</span>
-      <span class="dev-badge-name">Abdallah Hussein</span>
-    </div>
-    <img src="Screenshot 2026-09-03 134855.png" alt="Abdallah Hussein" class="dev-badge-avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=Abdallah';">
-  </div>
+  <!-- نقطة الإدارة السرية وغير الملحوظة إطلاقاً في زاوية الشاشة -->
+  <div class="admin-secret-dot" onclick="promptAdminLogin()"></div>
 
   <!-- موجة تسونامي ثلاثية الأبعاد -->
   <div class="tsunami-3d-wrap" id="tsunami3DWrap">
@@ -471,6 +526,18 @@
     </div>
   </div>
 
+  <!-- فوتر الموقع الطبيعي وبه شارة المطور الثابتة في الأسفل يميناً -->
+  <div class="site-footer-wrapper">
+    <div class="dev-badge-marine" onclick="trigger3DTsunamiModal()">
+      <span class="dev-dot"></span>
+      <div class="dev-badge-text">
+        <span class="dev-badge-sub">تطوير وبرمجة</span>
+        <span class="dev-badge-name">Abdallah Hussein</span>
+      </div>
+      <img src="Screenshot 2026-09-03 134855.png" alt="Abdallah Hussein" class="dev-badge-avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=Abdallah';">
+    </div>
+  </div>
+
   <!-- نافذة مراجعة السلة -->
   <div class="modal" id="checkoutModal">
     <div class="modal-content">
@@ -545,7 +612,6 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPdFJzHQFe1_q-wKYm8dzoMesp02kbPAAgLVKzLVjJb0Xa1fuv16F62rV9LO08nNeaFw/exec";
     const WHATSAPP_NUM = "201009204577";
 
-    // إعادة تحميل الصفحة عند النقر على الهيدر مع الحفاظ التام على الطلب
     function reloadPageHeader() {
       playBubbleSound();
       location.reload();
@@ -732,9 +798,7 @@
       document.getElementById('devModal').style.display = 'none';
     }
 
-    // =======================================================
-    // لوحة إدارة الطلبات البحرية الحية (Marine Admin Panel)
-    // =======================================================
+    // لوحة إدارة الطلبات البحرية الحية
     let adminAuthPassword = localStorage.getItem("kheir_admin_auth") || "";
     let adminInterval = null;
 
@@ -743,7 +807,13 @@
       if (!pass) return;
 
       try {
-        const res = await fetch(`${SCRIPT_URL}?action=getAdminOrders&password=${encodeURIComponent(pass.trim())}`);
+        const res = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: "adminFetchOrders",
+            password: pass.trim()
+          })
+        });
         const d = await res.json();
         if (d.status === "success") {
           adminAuthPassword = pass.trim();
@@ -751,7 +821,7 @@
           openAdminPanel();
           renderMarineOrders(d.orders.reverse());
         } else {
-          await showCustomAlert(" في شيت الاداره.", "خطأ في كلمه السر ❌", "🔒");
+          await showCustomAlert("كلمة السر غير صحيحة! يرجى التأكد من الخلية B1 في شيت الاداره.", "خطأ في الصلاحية ❌", "🔒");
         }
       } catch (err) {
         await showCustomAlert("تعذر الاتصال بالخادم للتأكد من كلمة السر!", "خطأ في الاتصال ⚠️", "📶");
@@ -772,7 +842,13 @@
     async function fetchAdminLiveOrders() {
       const grid = document.getElementById('marineOrdersGrid');
       try {
-        const res = await fetch(`${SCRIPT_URL}?action=getAdminOrders&password=${encodeURIComponent(adminAuthPassword)}`);
+        const res = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: "adminFetchOrders",
+            password: adminAuthPassword
+          })
+        });
         const d = await res.json();
         if (d.status === "success") {
           renderMarineOrders(d.orders.reverse());
@@ -1261,7 +1337,6 @@
       }
     }
 
-    // إدارة قفل الشاشة والعداد التصاعدي
     function checkLockState() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
@@ -1286,7 +1361,6 @@
       trackLiveStatus(saved.orderId);
     }
 
-    // عداد تصاعدي من 00:00 حتى 10:00 دقائق
     function startAscendingCancelTimer(timestamp) {
       clearInterval(cancelTimerInterval);
       const limitMs = 10 * 60 * 1000;
@@ -1296,7 +1370,6 @@
 
         if (passed >= limitMs) {
           clearInterval(cancelTimerInterval);
-          // إخفاء خانة الإلغاء بالكامل
           const cancelBox = document.getElementById('cancelAreaWrapper');
           if (cancelBox) cancelBox.style.display = 'none';
         } else {
@@ -1360,7 +1433,6 @@
       location.reload();
     }
 
-    // متابعة حالة الطلب كل 15 ثانية طالما الصفحة مفتوحة
     setInterval(() => {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (saved) trackLiveStatus(saved.orderId);
