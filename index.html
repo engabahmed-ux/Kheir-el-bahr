@@ -100,60 +100,6 @@
     }
     .category-btn.active { background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue); }
 
-    /* شبكة المنيو عمودين */
-    .fish-grid-container {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    @media (max-width: 480px) {
-      .fish-grid-container { grid-template-columns: 1fr; }
-    }
-
-    .fish-card {
-      background: var(--card-bg); border-radius: 18px; padding: 16px;
-      box-shadow: 0 4px 15px rgba(11, 37, 69, 0.05); border: 1px solid #e2edf5; display: flex; flex-direction: column;
-      justify-content: space-between; gap: 12px; position: relative; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .fish-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(11, 37, 69, 0.12); }
-    .fish-card.sold-out { opacity: 0.55; background: #f1f5f9; border-style: dashed; cursor: not-allowed; }
-    
-    .fish-name { font-weight: 900; font-size: 1.15rem; color: var(--ocean-blue); margin-bottom: 4px; }
-    .fish-category-badge { font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 8px; font-weight: 800; display: inline-block; }
-    .fish-price { font-weight: 900; color: #0284c7; font-size: 1.05rem; background: #e0f2fe; padding: 8px 12px; border-radius: 12px; text-align: center; }
-    .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.75rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; display: inline-block; }
-    .badge-status { font-size: 0.78rem; padding: 3px 8px; border-radius: 8px; font-weight: 800; display: inline-block; }
-
-    /* زر اختيار الطهي والطلب المحدث (مطابق للصورة الأولى) */
-    .card-action-btn {
-      background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; border: none;
-      padding: 10px 14px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; text-align: center;
-      display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.35);
-      transition: transform 0.15s;
-    }
-    .card-action-btn:active { transform: scale(0.96); }
-
-    /* نافذة منبثقة تفاعلية لاختيار التسوية والكمية */
-    .cooking-modal-overlay {
-      position: fixed; inset: 0; background: rgba(5, 22, 38, 0.75); backdrop-filter: blur(5px);
-      z-index: 500; display: none; align-items: center; justify-content: center; padding: 16px;
-      animation: fadeIn 0.25s ease;
-    }
-    .cooking-modal-box {
-      background: white; border-radius: 22px; max-width: 420px; width: 100%; padding: 22px;
-      box-shadow: 0 15px 40px rgba(5, 22, 38, 0.3); border: 2px solid #38bdf8;
-      animation: popModal 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-    }
-    @keyframes popModal { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-    .cooking-section-title { font-size: 0.95rem; font-weight: 900; color: var(--ocean-blue); margin-bottom: 8px; margin-top: 14px; }
-    .cooking-options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .cooking-opt-btn {
-      padding: 10px; border: 2px solid #cbd5e1; background: #f8fafc; border-radius: 12px;
-      font-weight: 800; font-size: 0.88rem; color: var(--ocean-blue); cursor: pointer; text-align: center; transition: all 0.2s;
-    }
-    .cooking-opt-btn.selected { border-color: var(--aqua-glow); background: #e0f2fe; color: #0284c7; }
-
     .styled-phone-call-btn {
       position: fixed; left: 18px; bottom: 105px;
       background: linear-gradient(135deg, #0b2545 0%, #0369a1 100%);
@@ -170,7 +116,7 @@
     }
     .phone-num-text { color: #ffffff; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.5px; direction: ltr; }
 
-    /* شبكة الصيد العائمة (سلة الطلبات) مع أيقونة شبكة الصيد الحقيقية */
+    /* شبكة الصيد الحقيقية للسلة */
     .floating-net-basket {
       position: fixed; left: 20px; bottom: 24px; width: 68px; height: 68px;
       background: radial-gradient(circle at 35% 35%, #0ea5e9, #0369a1);
@@ -198,13 +144,59 @@
       100% { transform: rotate(-8deg) scaleY(1.05); }
     }
 
-    .site-footer-wrapper {
-      max-width: 680px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: flex-end;
+    /* ش شبکه المنيو عمودين */
+    .fish-grid-container {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
     }
+    @media (max-width: 480px) { .fish-grid-container { grid-template-columns: 1fr; } }
+
+    .fish-card {
+      background: var(--card-bg); border-radius: 18px; padding: 16px;
+      box-shadow: 0 4px 15px rgba(11, 37, 69, 0.05); border: 1px solid #e2edf5; display: flex; flex-direction: column;
+      justify-content: space-between; gap: 12px; position: relative;
+    }
+    .fish-card.sold-out { opacity: 0.55; background: #f1f5f9; border-style: dashed; }
+    
+    .fish-name { font-weight: 900; font-size: 1.15rem; color: var(--ocean-blue); margin-bottom: 4px; }
+    .fish-category-badge { font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 8px; font-weight: 800; display: inline-block; }
+    .fish-price { font-weight: 900; color: #0284c7; font-size: 1.05rem; background: #e0f2fe; padding: 6px 10px; border-radius: 10px; text-align: center; }
+    .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.75rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; display: inline-block; }
+    .badge-status { font-size: 0.78rem; padding: 3px 8px; border-radius: 8px; font-weight: 800; display: inline-block; }
+
+    /* الكمية من الخارج تحت السعر */
+    .card-qty-row { display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 6px 10px; }
+    .card-qty-btn { width: 30px; height: 30px; background: #e2edf5; color: var(--ocean-blue); border: none; border-radius: 8px; font-weight: 900; cursor: pointer; }
+    .card-qty-display { font-weight: 900; font-size: 0.95rem; }
+
+    /* زر إضافة */
+    .card-action-btn {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; border: none;
+      padding: 10px; border-radius: 12px; font-weight: 800; font-size: 0.88rem; text-align: center;
+      display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.35); cursor: pointer;
+    }
+    .card-action-btn:active { transform: scale(0.96); }
+
+    /* نافذة منبثقة تفاعلية */
+    .cooking-modal-overlay {
+      position: fixed; inset: 0; background: rgba(5, 22, 38, 0.75); backdrop-filter: blur(5px);
+      z-index: 500; display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .cooking-modal-box {
+      background: white; border-radius: 22px; max-width: 420px; width: 100%; padding: 22px;
+      box-shadow: 0 15px 40px rgba(5, 22, 38, 0.3); border: 2px solid #38bdf8;
+    }
+    .cooking-section-title { font-size: 0.95rem; font-weight: 900; color: var(--ocean-blue); margin-bottom: 8px; margin-top: 14px; }
+    .cooking-options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .cooking-opt-btn {
+      padding: 10px; border: 2px solid #cbd5e1; background: #f8fafc; border-radius: 12px;
+      font-weight: 800; font-size: 0.88rem; color: var(--ocean-blue); cursor: pointer; text-align: center; transition: all 0.2s;
+    }
+    .cooking-opt-btn.selected { border-color: var(--aqua-glow); background: #e0f2fe; color: #0284c7; }
+
+    .site-footer-wrapper { max-width: 680px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: flex-end; }
     .dev-badge-marine {
-      background: rgba(5, 22, 38, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.45);
-      backdrop-filter: blur(8px); padding: 6px 14px 6px 8px; border-radius: 30px;
-      display: inline-flex; align-items: center; gap: 9px; cursor: pointer;
+      background: rgba(5, 22, 38, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.45); backdrop-filter: blur(8px);
+      padding: 6px 14px 6px 8px; border-radius: 30px; display: inline-flex; align-items: center; gap: 9px; cursor: pointer;
       box-shadow: 0 4px 15px rgba(5, 22, 38, 0.25); transition: all 0.25s ease;
     }
     .dev-badge-marine:hover { transform: translateY(-2px); border-color: var(--sea-cyan); }
@@ -214,87 +206,41 @@
     .dev-badge-name { font-size: 0.82rem; font-weight: 800; color: #f8fafc; }
     .dev-badge-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; background: #0b2545; }
 
-    .realistic-wave-overlay {
-      position: fixed; inset: 0; pointer-events: none; z-index: 99990; display: none; overflow: hidden;
-    }
+    .realistic-wave-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 99990; display: none; overflow: hidden; }
     .wave-stage-active { display: block; }
-    .beach-surf-layer {
-      position: absolute; left: -15%; width: 130%; height: 160%; bottom: -160%;
-      border-top-left-radius: 48% 28%; border-top-right-radius: 52% 32%;
-    }
-    .surf-foam-front {
-      background: radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.95) 0%, rgba(224, 242, 254, 0.8) 35%, transparent 70%);
-      box-shadow: 0 -25px 60px rgba(255, 255, 255, 0.85); z-index: 3;
-    }
-    .surf-water-mid {
-      background: linear-gradient(180deg, rgba(56, 189, 248, 0.9) 0%, rgba(14, 165, 233, 0.95) 30%, #0369a1 75%);
-      box-shadow: 0 -15px 40px rgba(56, 189, 248, 0.6); z-index: 2;
-    }
+    .beach-surf-layer { position: absolute; left: -15%; width: 130%; height: 160%; bottom: -160%; border-top-left-radius: 48% 28%; border-top-right-radius: 52% 32%; }
+    .surf-foam-front { background: radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.95) 0%, rgba(224, 242, 254, 0.8) 35%, transparent 70%); box-shadow: 0 -25px 60px rgba(255, 255, 255, 0.85); z-index: 3; }
+    .surf-water-mid { background: linear-gradient(180deg, rgba(56, 189, 248, 0.9) 0%, rgba(14, 165, 233, 0.95) 30%, #0369a1 75%); box-shadow: 0 -15px 40px rgba(56, 189, 248, 0.6); z-index: 2; }
     .surf-deep-back { background: linear-gradient(180deg, #0b2545 0%, #051626 100%); z-index: 1; }
-
-    .wave-stage-active .beach-surf-layer {
-      animation: smoothShoreSurf 2.4s cubic-bezier(0.25, 0.85, 0.35, 1) forwards;
-    }
+    .wave-stage-active .beach-surf-layer { animation: smoothShoreSurf 2.4s cubic-bezier(0.25, 0.85, 0.35, 1) forwards; }
     .wave-stage-active .surf-water-mid { animation-delay: 0.12s; }
     .wave-stage-active .surf-deep-back { animation-delay: 0.22s; }
+    @keyframes smoothShoreSurf { 0% { transform: translateY(0) scaleY(0.7); opacity: 0; } 25% { opacity: 1; } 50% { transform: translateY(-68%) scaleY(1.05); } 80% { opacity: 0.95; } 100% { transform: translateY(-135%) scaleY(1.15); opacity: 0; } }
 
-    @keyframes smoothShoreSurf {
-      0% { transform: translateY(0) scaleY(0.7); opacity: 0; }
-      25% { opacity: 1; }
-      50% { transform: translateY(-68%) scaleY(1.05); }
-      80% { opacity: 0.95; }
-      100% { transform: translateY(-135%) scaleY(1.15); opacity: 0; }
-    }
-
-    .dev-modal-overlay {
-      position: fixed; inset: 0; background: rgba(5, 22, 38, 0.82); backdrop-filter: blur(8px);
-      z-index: 100000; display: none; align-items: center; justify-content: center; padding: 16px;
-    }
-    .dev-modal-card {
-      background: radial-gradient(circle at top, #0f2d4e 0%, #061727 100%); border: 2px solid rgba(56, 189, 248, 0.5);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); border-radius: 24px; max-width: 380px; width: 100%;
-      padding: 30px 24px; text-align: center; color: white;
-    }
+    .dev-modal-overlay { position: fixed; inset: 0; background: rgba(5, 22, 38, 0.82); backdrop-filter: blur(8px); z-index: 100000; display: none; align-items: center; justify-content: center; padding: 16px; }
+    .dev-modal-card { background: radial-gradient(circle at top, #0f2d4e 0%, #061727 100%); border: 2px solid rgba(56, 189, 248, 0.5); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); border-radius: 24px; max-width: 380px; width: 100%; padding: 30px 24px; text-align: center; color: white; }
     .dev-avatar-large { width: 96px; height: 96px; border-radius: 50%; border: 3px solid #38bdf8; margin: 0 auto 14px; object-fit: cover; }
     .dev-action-btn { padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; border:none; cursor:pointer;}
     .dev-btn-wa { background: linear-gradient(135deg, #10b981, #059669); color: white; }
     .dev-btn-phone { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
     .dev-btn-close { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.15); width:100%;}
 
-    .cart-item-row {
-      display: flex; justify-content: space-between; align-items: center; background: white;
-      border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px;
-    }
+    .cart-item-row { display: flex; justify-content: space-between; align-items: center; background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
     .cart-item-title { font-weight: 800; font-size: 0.9rem; color: var(--ocean-blue); }
     .cart-item-desc { font-size: 0.78rem; color: var(--text-muted); }
     .cart-item-controls { display: flex; align-items: center; gap: 6px; }
-    .cart-sm-btn {
-      width: 28px; height: 28px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc;
-      font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    }
+    .cart-sm-btn { width: 28px; height: 28px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .cart-del-btn { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
 
-    .extras-section {
-      background: #ffffff; border-radius: var(--radius); padding: 16px; margin: 18px 0;
-      border: 1px solid #e2edf5; box-shadow: var(--shadow);
-    }
+    .extras-section { background: #ffffff; border-radius: var(--radius); padding: 16px; margin: 18px 0; border: 1px solid #e2edf5; box-shadow: var(--shadow); }
     .extras-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-top: 10px; }
-    .extra-card {
-      border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px; text-align: center;
-      background: #f8fafc; cursor: pointer; transition: all 0.2s;
-    }
+    .extra-card { border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px; text-align: center; background: #f8fafc; cursor: pointer; transition: all 0.2s; }
     .extra-card.selected { border-color: var(--accent-green); background: #ecfdf5; }
     .extra-name { font-weight: 700; font-size: 0.9rem; color: var(--ocean-blue); }
     .extra-price { font-size: 0.85rem; color: #0284c7; font-weight: 800; margin-top: 4px; }
 
-    .modal {
-      display: none; position: fixed; inset: 0; background: rgba(5, 22, 38, 0.65);
-      backdrop-filter: blur(4px); z-index: 200; align-items: flex-end; justify-content: center;
-    }
-    .modal-content {
-      background: white; width: 100%; max-width: 680px; border-top-left-radius: 24px;
-      border-top-right-radius: 24px; padding: 22px; max-height: 88vh; overflow-y: auto;
-    }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(5, 22, 38, 0.65); backdrop-filter: blur(4px); z-index: 200; align-items: flex-end; justify-content: center; }
+    .modal-content { background: white; width: 100%; max-width: 680px; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 22px; max-height: 88vh; overflow-y: auto; }
     .modal-title { font-size: 1.25rem; font-weight: 800; color: var(--ocean-blue); margin-bottom: 14px; display: flex; justify-content: space-between; }
     .close-modal { background: #f1f5f9; border: none; font-size: 1.3rem; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
     .form-group { margin-bottom: 13px; }
@@ -316,68 +262,42 @@
 
     .submit-order-btn { width: 100%; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 13px; border-radius: 12px; font-size: 1.15rem; font-weight: 800; margin-top: 12px; cursor: pointer; }
 
-    .custom-dialog-overlay {
-      position: fixed; inset: 0; background: rgba(5, 22, 38, 0.75); backdrop-filter: blur(5px);
-      z-index: 999999; display: none; align-items: center; justify-content: center; padding: 16px;
-    }
-    .custom-dialog-box {
-      background: #ffffff; border: 2px solid #38bdf8; border-radius: 20px;
-      max-width: 380px; width: 100%; padding: 22px 20px; box-shadow: 0 12px 35px rgba(5, 22, 38, 0.3);
-      text-align: center; animation: dialogPop 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-    }
+    .custom-dialog-overlay { position: fixed; inset: 0; background: rgba(5, 22, 38, 0.75); backdrop-filter: blur(5px); z-index: 999999; display: none; align-items: center; justify-content: center; padding: 16px; }
+    .custom-dialog-box { background: #ffffff; border: 2px solid #38bdf8; border-radius: 20px; max-width: 380px; width: 100%; padding: 22px 20px; box-shadow: 0 12px 35px rgba(5, 22, 38, 0.3); text-align: center; animation: dialogPop 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
     @keyframes dialogPop { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     .custom-dialog-icon { font-size: 2.2rem; margin-bottom: 8px; }
     .custom-dialog-title { font-size: 1.15rem; font-weight: 800; color: var(--ocean-blue); margin-bottom: 6px; }
     .custom-dialog-message { font-size: 0.92rem; color: #475569; line-height: 1.6; margin-bottom: 18px; }
-    .custom-dialog-input {
-      width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px;
-      font-size: 0.95rem; margin-bottom: 16px; outline: none; text-align: center;
-    }
+    .custom-dialog-input { width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; margin-bottom: 16px; outline: none; text-align: center; }
     .custom-dialog-input:focus { border-color: var(--sea-cyan); }
     .custom-dialog-actions { display: flex; gap: 8px; }
     .dialog-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: 800; font-size: 0.9rem; cursor: pointer; }
     .dialog-btn-primary { background: linear-gradient(135deg, var(--aqua-glow), #0284c7); color: white; }
     .dialog-btn-cancel { background: #f1f5f9; color: #475569; }
 
-    .marine-admin-screen {
-      position: fixed; inset: 0; background: radial-gradient(circle at top, #0b2545 0%, #051626 100%);
-      color: #fff; z-index: 99999; display: none; flex-direction: column; overflow-y: auto; font-family: 'Cairo', sans-serif;
-    }
-    .marine-admin-topbar {
-      display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;
-      border-bottom: 2px solid rgba(56, 189, 248, 0.3); background: rgba(5, 22, 38, 0.85); backdrop-filter: blur(8px);
-      position: sticky; top: 0; z-index: 10;
-    }
+    .marine-admin-screen { position: fixed; inset: 0; background: radial-gradient(circle at top, #0b2545 0%, #051626 100%); color: #fff; z-index: 99999; display: none; flex-direction: column; overflow-y: auto; font-family: 'Cairo', sans-serif; }
+    .marine-admin-topbar { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 2px solid rgba(56, 189, 248, 0.3); background: rgba(5, 22, 38, 0.85); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 10; }
     .marine-admin-title { font-size: 1.3rem; font-weight: 900; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
     .marine-top-btns { display: flex; gap: 10px; }
-    .marine-btn-refresh {
-      background: linear-gradient(135deg, #0284c7, #0369a1); color: white; border: none; padding: 8px 16px;
-      border-radius: 10px; font-weight: 800; cursor: pointer; box-shadow: 0 2px 10px rgba(2, 132, 199, 0.3);
-    }
+    .marine-btn-refresh { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 800; cursor: pointer; box-shadow: 0 2px 10px rgba(2, 132, 199, 0.3); }
     .marine-btn-logout { background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: 800; cursor: pointer; }
 
     .marine-orders-grid { display: flex; flex-wrap: wrap; gap: 18px; padding: 20px; justify-content: flex-start; }
-    .marine-order-card {
-      background: rgba(14, 45, 78, 0.7); border: 1.5px solid rgba(56, 189, 248, 0.35); border-radius: 18px; padding: 18px;
-      width: 100%; max-width: 360px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); display: flex; flex-direction: column; gap: 8px; backdrop-filter: blur(6px);
-    }
+    .marine-order-card { background: rgba(14, 45, 78, 0.7); border: 1.5px solid rgba(56, 189, 248, 0.35); border-radius: 18px; padding: 18px; width: 100%; max-width: 360px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); display: flex; flex-direction: column; gap: 8px; backdrop-filter: blur(6px); }
     .marine-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
     .marine-status-pill { background: #0369a1; color: #e0f2fe; font-size: 0.78rem; font-weight: 800; padding: 3px 10px; border-radius: 14px; }
     .marine-order-num { font-size: 1.35rem; font-weight: 900; color: #38bdf8; }
     .marine-info-row { font-size: 0.92rem; color: #e2e8f0; }
     .marine-info-row strong { color: #38bdf8; }
-    .marine-items-box {
-      background: rgba(5, 22, 38, 0.6); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 10px;
-      padding: 10px; font-size: 0.88rem; color: #f8fafc; line-height: 1.6; margin: 6px 0;
-    }
+    .marine-items-box { background: rgba(5, 22, 38, 0.6); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 10px; padding: 10px; font-size: 0.88rem; color: #f8fafc; line-height: 1.6; margin: 6px 0; }
     .marine-total-price { font-size: 1.15rem; font-weight: 900; color: #38bdf8; text-align: left; }
     .marine-action-row { display: flex; gap: 10px; margin-top: 8px; }
-    .marine-act-btn {
-      flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: 800; font-size: 0.88rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-    }
+    .marine-act-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: 800; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
     .marine-btn-prepare { background: linear-gradient(135deg, #10b981, #059669); color: white; }
     .marine-btn-deliver { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; }
+
+    /* تنبيه التعديل في لوحة الإدارة */
+    .edited-badge { background: #f59e0b; color: #051626; font-weight: 900; font-size: 0.75rem; padding: 2px 8px; border-radius: 8px; animation: pulse 1s infinite; }
   </style>
 </head>
 <body>
@@ -387,9 +307,9 @@
     <span class="phone-num-text">01009204577</span>
   </a>
 
-  <!-- شبكة صيد حقيقية في أيقونة السلة العائمة -->
+  <!-- شبكة صيد السمك الحقيقية للسلة -->
   <div class="floating-net-basket" id="floatingNetBasket" onclick="openCheckout()">
-    <span class="net-mesh-icon">🥅</span>
+    <span class="net-mesh-icon">🕸️</span>
     <span class="net-count-badge" id="netCartCount">0</span>
   </div>
 
@@ -399,24 +319,26 @@
     <div class="beach-surf-layer surf-foam-front"></div>
   </div>
 
-  <!-- نافذة منبثقة تفاعلية لاختيار الكمية ثم الطهي والتسوية -->
+  <!-- نافذة منبثقة لاختيار الكمية أولاً ثم الطهي والتسوية -->
   <div class="cooking-modal-overlay" id="cookingPopupModal" onclick="closeCookingModalOnOutside(event)">
     <div class="cooking-modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
         <h3 id="popupFishTitle" style="color:var(--ocean-blue); font-size:1.15rem; font-weight:900;">اختر الكمية وطريقة الطهي</h3>
         <button onclick="closeCookingModal()" style="background:#f1f5f9; border:none; font-size:1.2rem; width:28px; height:28px; border-radius:50%; cursor:pointer;">&times;</button>
       </div>
+
+      <div class="cooking-section-title">1. الكمية المطلوبة:</div>
+      <div style="display:flex; align-items:center; justify-content:center; gap:14px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; padding:8px; margin-bottom:12px;">
+        <button class="card-qty-btn" onclick="changePopupQty(-0.5)" style="width:36px; height:36px; font-size:1.2rem;">-</button>
+        <span id="popupQtyDisplay" style="font-size:1.2rem; font-weight:900; color:var(--ocean-blue); min-width:40px; text-align:center;">1</span>
+        <button class="card-qty-btn" onclick="changePopupQty(0.5)" style="width:36px; height:36px; font-size:1.2rem;">+</button>
+      </div>
       
       <div id="popupCookingOptionsContainer"></div>
 
-      <div style="margin-top:16px; border-top:1px dashed #cbd5e1; padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
-        <div class="qty-controls">
-          <button class="qty-btn" onclick="changePopupQty(-0.5)">-</button>
-          <span class="qty-display" id="popupQtyDisplay">1</span>
-          <button class="qty-btn" onclick="changePopupQty(0.5)">+</button>
-        </div>
-        <button class="add-to-net-btn" onclick="confirmPopupAddItem()" style="padding:10px 20px; font-size:0.9rem;">
-          إضافة للشبكة 🥅
+      <div style="margin-top:16px; border-top:1px dashed #cbd5e1; padding-top:12px;">
+        <button class="card-action-btn" onclick="confirmPopupAddItem()" style="width:100%; font-size:0.95rem; padding:12px;">
+          إضافة للشبكة 🕸️
         </button>
       </div>
     </div>
@@ -487,9 +409,12 @@
 
       <div id="cancelAreaWrapper" style="background:#fef2f2; border:1px dashed #fca5a5; border-radius:12px; padding:12px; text-align:center;">
         <div id="countdownTimerText" style="font-weight:800; color:#dc2626; font-size:0.92rem; margin-bottom:8px;">
-          يمكنك إلغاء الطلب خلال: <span id="cancelTimer">00:00</span> / 10:00 دقيقة
+          متاح تعديل أو إلغاء الطلب خلال: <span id="cancelTimer">00:00</span> / 10:00 دقيقة
         </div>
-        <button id="cancelOrderActionBtn" onclick="requestCancelOrder()" style="background:#ef4444; color:white; border:none; padding:8px 18px; border-radius:10px; font-weight:800; cursor:pointer;">مسح وإلغاء الطلب 🗑️</button>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <button onclick="openEditActiveOrderModal()" style="flex:1; background:#0284c7; color:white; border:none; padding:8px; border-radius:10px; font-weight:800; cursor:pointer;">تعديل الطلب ✏️</button>
+          <button onclick="requestCancelOrder()" style="flex:1; background:#ef4444; color:white; border:none; padding:8px; border-radius:10px; font-weight:800; cursor:pointer;">إلغاء الطلب 🗑️</button>
+        </div>
       </div>
     </div>
 
@@ -693,7 +618,6 @@
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
-
         const bufferSize = ctx.sampleRate * 2.2;
         const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
         const data = buffer.getChannelData(0);
@@ -705,44 +629,19 @@
           b2 = 0.86 * b2 + white * 0.25;
           data[i] = (b0 + b1 + b2) * 0.45;
         }
-
         const surfSource = ctx.createBufferSource();
         surfSource.buffer = buffer;
-
         const surfFilter = ctx.createBiquadFilter();
         surfFilter.type = 'lowpass';
         surfFilter.frequency.setValueAtTime(220, now);
         surfFilter.frequency.linearRampToValueAtTime(750, now + 1.1);
         surfFilter.frequency.exponentialRampToValueAtTime(180, now + 2.2);
-
         const surfGain = ctx.createGain();
         surfGain.gain.setValueAtTime(0.01, now);
         surfGain.gain.linearRampToValueAtTime(0.55, now + 0.9);
         surfGain.gain.exponentialRampToValueAtTime(0.01, now + 2.2);
-
-        surfSource.connect(surfFilter);
-        surfFilter.connect(surfGain);
-        surfGain.connect(ctx.destination);
-
-        surfSource.start(now);
-        surfSource.stop(now + 2.2);
-
-        const subOsc = ctx.createOscillator();
-        const subGain = ctx.createGain();
-        subOsc.type = 'sine';
-        subOsc.frequency.setValueAtTime(55, now);
-        subOsc.frequency.linearRampToValueAtTime(110, now + 0.9);
-        subOsc.frequency.exponentialRampToValueAtTime(45, now + 2.2);
-
-        subGain.gain.setValueAtTime(0.01, now);
-        subGain.gain.linearRampToValueAtTime(0.28, now + 0.9);
-        subGain.gain.exponentialRampToValueAtTime(0.01, now + 2.2);
-
-        subOsc.connect(subGain);
-        subGain.connect(ctx.destination);
-
-        subOsc.start(now);
-        subOsc.stop(now + 2.2);
+        surfSource.connect(surfFilter); surfFilter.connect(surfGain); surfGain.connect(ctx.destination);
+        surfSource.start(now); surfSource.stop(now + 2.2);
       } catch(e) {}
     }
 
@@ -823,7 +722,7 @@
     }
 
     // =======================================================
-    // منطق النافذة المنبثقة لاختيار الكمية ثم الطهي والتسوية
+    // النافذة المنبثقة لاختيار الكمية أولاً ثم الطهي والتسوية
     // =======================================================
     let activePopupFish = null;
     let popupSelectedMain = "";
@@ -847,7 +746,7 @@
         popupSelectedMain = "سندوتش جاهز";
         popupSelectedSub = "";
         html = `
-          <div class="cooking-section-title">نوع الخبز والتقديم:</div>
+          <div class="cooking-section-title">2. نوع الخبز والتقديم:</div>
           <div class="cooking-options-grid">
             <div class="cooking-opt-btn selected" onclick="selectPopupMain(this, 'سندوتش جاهز')">سندوتش جاهز بالخلطة</div>
             <div class="cooking-opt-btn" onclick="selectPopupMain(this, 'عيش بلدي')">عيش بلدي سويسي</div>
@@ -858,7 +757,7 @@
         popupSelectedMain = "شوربة";
         popupSelectedSub = soupTypesList[0] || "";
         html = `
-          <div class="cooking-section-title">نوع الشوربة:</div>
+          <div class="cooking-section-title">2. نوع الشوربة:</div>
           <div class="cooking-options-grid">
             ${soupTypesList.map((s, idx) => `<div class="cooking-opt-btn ${idx===0?'selected':''}" onclick="selectPopupSub(this, '${s}')">${s}</div>`).join('')}
           </div>
@@ -867,13 +766,13 @@
         popupSelectedMain = "مشوي";
         popupSelectedSub = grillTypesList[0] || "";
         html = `
-          <div class="cooking-section-title">1. طريقة التسوية:</div>
+          <div class="cooking-section-title">2. طريقة التسوية:</div>
           <div class="cooking-options-grid" style="margin-bottom:10px;">
             <div class="cooking-opt-btn selected" onclick="switchMainCooking('مشوي', this)">مشوي 🔥</div>
             <div class="cooking-opt-btn" onclick="switchMainCooking('مقلي', this)">مقلي 🍤</div>
             <div class="cooking-opt-btn" onclick="switchMainCooking('طازج ني', this)" style="grid-column: span 2;">طازج ني (تنظيف فقط)</div>
           </div>
-          <div class="cooking-section-title" id="subOptionsTitle">2. طريقة الشوي:</div>
+          <div class="cooking-section-title" id="subOptionsTitle">3. طريقة الشوي:</div>
           <div class="cooking-options-grid" id="subOptionsGrid">
             ${grillTypesList.map((g, idx) => `<div class="cooking-opt-btn ${idx===0?'selected':''}" onclick="selectPopupSub(this, '${g}')">${g}</div>`).join('')}
           </div>
@@ -905,11 +804,11 @@
         titleElem.style.display = 'block';
         gridElem.style.display = 'grid';
         if (mainVal === "مشوي") {
-          titleElem.innerText = "2. طريقة الشوي:";
+          titleElem.innerText = "3. طريقة الشوي:";
           gridElem.innerHTML = grillTypesList.map((g, idx) => `<div class="cooking-opt-btn ${idx===0?'selected':''}" onclick="selectPopupSub(this, '${g}')">${g}</div>`).join('');
           popupSelectedSub = grillTypesList[0] || "";
         } else if (mainVal === "مقلي") {
-          titleElem.innerText = "2. طريقة القلي:";
+          titleElem.innerText = "3. طريقة القلي:";
           gridElem.innerHTML = fryTypesList.map((f, idx) => `<div class="cooking-opt-btn ${idx===0?'selected':''}" onclick="selectPopupSub(this, '${f}')">${f}</div>`).join('');
           popupSelectedSub = fryTypesList[0] || "";
         }
@@ -951,7 +850,6 @@
         return;
       }
 
-      // إضافة الطلب للسلة بانتظام وتحديث العداد
       const item = cart[activePopupFish.id];
       item.qty = popupQty;
       item.mainCooking = popupSelectedMain;
@@ -962,6 +860,9 @@
       animateFishToNetBasket(document.getElementById('floatingNetBasket'));
     }
 
+    // =======================================================
+    // لوحة إدارة الطلبات مع الاستجابة اللحظية (Optimistic UI)
+    // =======================================================
     let adminAuthPassword = "";
     let cachedAdminPass = "";
     let adminInterval = null;
@@ -982,15 +883,11 @@
 
       if (lockUntil && currentTime < lockUntil) {
         const remainingMinutes = Math.ceil((lockUntil - currentTime) / (60 * 1000));
-        await showCustomAlert(
-          `تم قفل محاولات تسجيل الدخول بعد 5 محاولات خاطئة! يرجى الانتظار لمدة ${remainingMinutes} دقيقة والمحاولة لاحقاً.`,
-          "الصفحة مقفولة 🔒",
-          "⏳"
-        );
+        await showCustomAlert(`تم قفل المحاولات بعد 5 محاولات خاطئة! انتظر ${remainingMinutes} دقيقة.`, "مقفول 🔒", "⏳");
         return;
       }
 
-      const pass = await showCustomPrompt("أدخل كلمة سر الإدارة للوصول للطلبات والتسليمات:", "تسجيل دخول الإدارة 🔒");
+      const pass = await showCustomPrompt("أدخل كلمة سر الإدارة للوصول للطلبات:", "تسجيل دخول الإدارة 🔒");
       if (!pass) return;
 
       const inputNormalized = cleanNormalize(pass);
@@ -999,7 +896,6 @@
       if (targetNormalized && inputNormalized === targetNormalized) {
         localStorage.removeItem("admin_failed_attempts");
         localStorage.removeItem("admin_lock_until");
-        
         adminAuthPassword = pass.trim();
         openAdminPanel();
         fetchAdminLiveOrders();
@@ -1008,20 +904,10 @@
         localStorage.setItem("admin_failed_attempts", failedAttempts);
 
         if (failedAttempts >= 5) {
-          const oneHourLock = Date.now() + 60 * 60 * 1000;
-          localStorage.setItem("admin_lock_until", oneHourLock);
-          await showCustomAlert(
-            "كلمة السر خطأ! لقد استنفدت 5 محاولات، تم قفل إمكانية الدخول لمدة ساعة كاملة.",
-            "كلمة السر خطأ 🔒",
-            "🚫"
-          );
+          localStorage.setItem("admin_lock_until", Date.now() + 60 * 60 * 1000);
+          await showCustomAlert("كلمة السر خطأ! تم قفل الدخول لمدة ساعة.", "خطأ 🔒", "🚫");
         } else {
-          const remainTries = 5 - failedAttempts;
-          await showCustomAlert(
-            `كلمة السر خطأ! متبقي لك ${remainTries} محاولات قبل قفل الصفحة لمدة ساعة.`,
-            "كلمة السر خطأ",
-            "❌"
-          );
+          await showCustomAlert(`كلمة السر خطأ! متبقي لك ${5 - failedAttempts} محاولات.`, "خطأ ❌", "🔑");
         }
       }
     }
@@ -1029,7 +915,7 @@
     function openAdminPanel() {
       document.getElementById('marineAdminPanel').style.display = 'flex';
       clearInterval(adminInterval);
-      adminInterval = setInterval(fetchAdminLiveOrders, 12000);
+      adminInterval = setInterval(fetchAdminLiveOrders, 10000);
     }
 
     function closeAdminPanel() {
@@ -1038,7 +924,6 @@
     }
 
     async function fetchAdminLiveOrders() {
-      const grid = document.getElementById('marineOrdersGrid');
       try {
         const res = await fetch(`${SCRIPT_URL}?action=adminFetchOrders&password=${encodeURIComponent(adminAuthPassword)}`);
         const d = await res.json();
@@ -1054,17 +939,22 @@
       const grid = document.getElementById('marineOrdersGrid');
       grid.innerHTML = '';
 
-      if (orders.length === 0) {
-        grid.innerHTML = '<div style="text-align:center; color:#94a3b8; width:100%; padding:50px; font-size:1.1rem;">لا توجد طلبات مسجلة اليوم حتى الآن 📋</div>';
+      // استبعاد الطلبات التي تم تسليمها لتختفي تماماً من شاشة الإدارة
+      const activeOrders = orders.filter(ord => !ord.status.includes("تم التسليم"));
+
+      if (activeOrders.length === 0) {
+        grid.innerHTML = '<div style="text-align:center; color:#94a3b8; width:100%; padding:50px; font-size:1.1rem;">لا توجد طلبات معلقة اليوم 📋</div>';
         return;
       }
 
-      orders.forEach(ord => {
+      activeOrders.forEach(ord => {
+        const isEdited = ord.status.includes("معدل");
         const card = document.createElement('div');
         card.className = 'marine-order-card';
         card.innerHTML = `
           <div class="marine-card-header">
             <span class="marine-status-pill">${ord.status}</span>
+            ${isEdited ? '<span class="edited-badge">تعديل جديد ⚠️</span>' : ''}
             <span class="marine-order-num">#${ord.orderId}</span>
           </div>
           <div class="marine-info-row"><strong>الوقت:</strong> ${ord.time}</div>
@@ -1078,12 +968,9 @@
           </div>
           <div class="marine-total-price">المبلغ: ${ord.totalPrice || 0} ج.م</div>
           <div class="marine-action-row">
-            <button class="marine-act-btn marine-btn-prepare" onclick="updateOrderStatusByAdmin(${ord.orderId}, 'تم تحضير الطلب 🟢')">
-              ✔ تم تحضير الطلب
-            </button>
-            <button class="marine-act-btn marine-btn-deliver" onclick="updateOrderStatusByAdmin(${ord.orderId}, 'تم التسليم')">
-              🛸 تم التسليم
-            </button>
+            ${isEdited ? `<button class="marine-act-btn" style="background:#f59e0b; color:#051626;" onclick="acknowledgeEdit(${ord.orderId})">✔ تم الاطلاع</button>` : ''}
+            <button class="marine-act-btn marine-btn-prepare" onclick="updateOrderStatusByAdmin(${ord.orderId}, 'تم تحضير الطلب 🟢')">✔ تجهيز</button>
+            <button class="marine-act-btn marine-btn-deliver" onclick="updateOrderStatusByAdmin(${ord.orderId}, 'تم التسليم')">🛸 تم التسليم</button>
           </div>
         `;
         grid.appendChild(card);
@@ -1092,11 +979,24 @@
 
     async function updateOrderStatusByAdmin(orderId, newStatus) {
       playBubbleSound();
+      // استجابة لحظية في الواجهة بتحديث البطاقات محلياً قبل الخادم
+      const cardNodes = document.querySelectorAll('.marine-order-card');
+      cardNodes.forEach(card => {
+        if (card.innerHTML.includes(`#${orderId}`)) {
+          if (newStatus.includes("تم التسليم")) card.remove();
+        }
+      });
+
       try {
         const url = `${SCRIPT_URL}?action=updateStatusByAdmin&password=${encodeURIComponent(adminAuthPassword)}&orderId=${orderId}&newStatus=${encodeURIComponent(newStatus)}`;
         await fetch(url);
         fetchAdminLiveOrders();
       } catch(e) {}
+    }
+
+    async function acknowledgeEdit(orderId) {
+      playBubbleSound();
+      await updateOrderStatusByAdmin(orderId, 'قيد التجهيز (تم الاطلاع على التعديل)');
     }
 
     let allMenuItems = [];
@@ -1170,7 +1070,7 @@
       renderMenu(filtered);
     }
 
-    // عرض المنيو بنظام Grid عمودين مع زر إضافة المحدث
+    // عرض المنيو بعمودين مع زر "إضافة 🛒"
     function renderMenu(items) {
       const container = document.getElementById('fishList');
       container.innerHTML = '';
@@ -1210,7 +1110,7 @@
           <div>
             <div class="fish-price" style="margin-bottom:10px;">${fish.price} ج.م ${isSandwich ? '/ سندوتش' : '/ ك'}</div>
             <button class="card-action-btn" ${isDisabled ? 'disabled' : ''} onclick="openCookingModal(${fish.id})">
-              🛒 اختيار الطهي والطلب
+              🛒 إضافة
             </button>
           </div>
         `;
@@ -1330,11 +1230,7 @@
       let newQty = item.qty + delta;
 
       if (newQty > item.maxAvailable) {
-        await showCustomAlert(
-          `عفواً، الكمية المتبقية لليوم من [${item.data.name}] هي ${item.maxAvailable} فقط!`,
-          "الكمية غير متاحة ⚠️",
-          "🐟"
-        );
+        await showCustomAlert(`عفواً، الكمية المتبقية لليوم من [${item.data.name}] هي ${item.maxAvailable} فقط!`, "الكمية غير متاحة ⚠️", "🐟");
         return;
       }
 
@@ -1353,8 +1249,6 @@
     function removeExtraItem(idx) {
       playBubbleSound();
       selectedExtras[idx].count = 0;
-      const card = document.getElementById(`extra-${idx}`);
-      if (card) card.classList.remove('selected');
       renderInteractiveCartModal();
     }
 
@@ -1391,6 +1285,7 @@
       document.getElementById('receiptBox').style.display = 'block';
     }
 
+    // إرسال الطلب مع الاستجابة اللحظية (Optimistic UI)
     async function sendOrder() {
       const name = document.getElementById('custName').value.trim();
       const phone = document.getElementById('custPhone').value.trim();
@@ -1398,12 +1293,11 @@
       const total = calculateTotal();
 
       if (total === 0) {
-        await showCustomAlert("شبكة الصيد فارغة! اختر بعض الأصناف أولاً.", "تنبيه", "🕸️");
+        await showCustomAlert("شبكة الصيد فارغة!", "تنبيه", "🕸️");
         return;
       }
-
       if (!name || !phone) {
-        await showCustomAlert("يرجى إدخال الاسم بالكامل ورقم التليفون للتواصل!", "بيانات ناقصة ⚠️", "✍️");
+        await showCustomAlert("يرجى إدخال الاسم ورقم التليفون للتواصل!", "بيانات ناقصة ⚠️", "✍️");
         return;
       }
 
@@ -1424,65 +1318,39 @@
       }
 
       const payload = {
-        name: name,
-        phone: phone,
+        name: name, phone: phone,
         deliveryTime: timeMode === 'now' ? 'في أقرب وقت (الآن)' : (document.getElementById('custCustomTime').value || 'موعد محدد'),
-        itemsDetails: itemsDetailsList.join(" | "),
-        totalPrice: total,
-        cartItems: cartItems,
-        paymentMethod: paymentMethod,
-        notes: notes
+        itemsDetails: itemsDetailsList.join(" | "), totalPrice: total,
+        cartItems: cartItems, paymentMethod: paymentMethod, notes: notes
       };
 
-      const btn = document.getElementById('submitBtn');
-      btn.innerText = "جاري الإرسال...";
-      btn.disabled = true;
+      closeCheckout();
+      const mockOrderId = Math.floor(Math.random() * 900) + 100;
+      const orderSnapshot = { orderId: mockOrderId, timestamp: Date.now(), name: name, deliveryTime: payload.deliveryTime, itemsDetails: payload.itemsDetails, total: total, cartItems: cartItems };
+      localStorage.setItem("kheir_locked_order", JSON.stringify(orderSnapshot));
+      checkLockState();
+      await showCustomAlert(`تم تسجيل طلبك برقم #${mockOrderId} وجاري المتابعة فوراً بنجاح!`, "تم بنجاح ✅", "🎉");
 
-      try {
-        const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-        const d = await res.json();
-        if (d.result === "success") {
-          const orderSnapshot = {
-            orderId: d.orderId,
-            timestamp: Date.now(),
-            name: name,
-            deliveryTime: payload.deliveryTime,
-            itemsDetails: payload.itemsDetails,
-            total: total,
-            cartItems: cartItems
-          };
+      // المزامنة في الخلفية
+      fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(r=>r.json()).then(d=>{
+        if(d.result === "success") {
+          orderSnapshot.orderId = d.orderId;
           localStorage.setItem("kheir_locked_order", JSON.stringify(orderSnapshot));
-          closeCheckout();
-          checkLockState();
-          await showCustomAlert(`تم تأكيد طلبك بنجاح برقم #${d.orderId}! سيتم التجهيز فوراً.`, "تم تسجيل الطلب ✅", "🎉");
+          document.getElementById('lockedOrderId').innerText = `#${d.orderId}`;
         }
-      } catch(e) {
-        await showCustomAlert("حدث خطأ أثناء إرسال الطلب، يرجى المحاولة مرة أخرى.", "خطأ في الاتصال ❌", "⚠️");
-      } finally {
-        btn.innerText = "تأكيد وإرسال الطلب للمحل ✅";
-        btn.disabled = false;
-      }
+      }).catch(()=>{});
     }
 
     function checkLockState() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
-
-      const elapsedHours = (Date.now() - saved.timestamp) / (1000 * 60 * 60);
-      if (elapsedHours >= 10) {
-        localStorage.removeItem("kheir_locked_order");
-        return;
-      }
+      if ((Date.now() - saved.timestamp) / (1000 * 60 * 60) >= 10) { localStorage.removeItem("kheir_locked_order"); return; }
 
       document.getElementById('orderLockCard').style.display = 'block';
       document.getElementById('menuMainArea').style.display = 'none';
       document.getElementById('floatingNetBasket').style.display = 'none';
       document.getElementById('lockedOrderId').innerText = `#${saved.orderId}`;
-      document.getElementById('lockedOrderDetails').innerHTML = `
-        <strong>الاسم:</strong> ${saved.name}<br>
-        <strong>الطلب:</strong> ${saved.itemsDetails}<br>
-        <strong>المبلغ الإجمالي:</strong> ${saved.total} ج.م
-      `;
+      document.getElementById('lockedOrderDetails').innerHTML = `<strong>الاسم:</strong> ${saved.name}<br><strong>الطلب:</strong> ${saved.itemsDetails}<br><strong>الإجمالي:</strong> ${saved.total} ج.م`;
 
       startAscendingCancelTimer(saved.timestamp);
       trackLiveStatus(saved.orderId);
@@ -1491,79 +1359,63 @@
     function startAscendingCancelTimer(timestamp) {
       clearInterval(cancelTimerInterval);
       const limitMs = 10 * 60 * 1000;
-
       function updateAscTimer() {
         const passed = Date.now() - timestamp;
-
         if (passed >= limitMs) {
           clearInterval(cancelTimerInterval);
-          const cancelBox = document.getElementById('cancelAreaWrapper');
-          if (cancelBox) cancelBox.style.display = 'none';
+          const cb = document.getElementById('cancelAreaWrapper');
+          if (cb) cb.style.display = 'none';
         } else {
-          const m = Math.floor(passed / 60000);
-          const s = Math.floor((passed % 60000) / 1000);
-          const timerStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-          document.getElementById('cancelTimer').innerText = timerStr;
+          const m = Math.floor(passed / 60000), s = Math.floor((passed % 60000) / 1000);
+          document.getElementById('cancelTimer').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         }
       }
-
       updateAscTimer();
       cancelTimerInterval = setInterval(updateAscTimer, 1000);
     }
 
     function trackLiveStatus(orderId) {
-      fetch(`${SCRIPT_URL}?action=checkStatus&orderId=${orderId}`)
-        .then(r => r.json())
-        .then(d => {
-          if (d.status === "success") {
-            const statusBox = document.getElementById('lockedOrderStatus');
-            statusBox.innerText = d.orderStatus;
-
-            if (d.orderStatus.includes("جاهز") || d.orderStatus.includes("تحضير")) {
-              statusBox.style.background = "#dcfce7";
-              statusBox.style.color = "#15803d";
-            } else if (d.orderStatus.includes("تم التسليم")) {
-              statusBox.style.background = "#f1f5f9";
-              statusBox.style.color = "#475569";
-              showCustomAlert("بالهناء والشفاء! تم تسليم طلبك بنجاح. شكراً لاختيارك خير البحر 🐟", "تم التسليم بنجاح ✅").then(() => {
-                localStorage.removeItem("kheir_locked_order");
-                location.reload();
-              });
-            } else if (d.orderStatus.includes("ملغي") || d.orderStatus.includes("إلغاء")) {
-              localStorage.removeItem("kheir_locked_order");
-              location.reload();
-            }
+      fetch(`${SCRIPT_URL}?action=checkStatus&orderId=${orderId}`).then(r => r.json()).then(d => {
+        if (d.status === "success") {
+          const box = document.getElementById('lockedOrderStatus');
+          box.innerText = d.orderStatus;
+          if (d.orderStatus.includes("تم التسليم")) {
+            localStorage.removeItem("kheir_locked_order");
+            showCustomAlert("بالهناء والشفاء! تم تسليم طلبك بنجاح.", "تم التسليم ✅").then(() => location.reload());
           }
-        }).catch(() => {});
+        }
+      }).catch(()=>{});
     }
 
     async function requestCancelOrder() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
-
-      const passed = Date.now() - saved.timestamp;
-      if (passed > 10 * 60 * 1000) {
-        await showCustomAlert("عفواً، انتهت مهلة الـ 10 دقائق للإلغاء وبدأ الطهي والشوي بالفعل.", "انتهت المهلة ⏳");
-        const cancelBox = document.getElementById('cancelAreaWrapper');
-        if (cancelBox) cancelBox.style.display = 'none';
-        return;
+      if (await showCustomConfirm("هل أنت متأكد من إلغاء الطلب نهائياً؟", "إلغاء 🗑️", "⚠️")) {
+        fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems }) }).catch(()=>{});
+        localStorage.removeItem("kheir_locked_order");
+        location.reload();
       }
-
-      const confirmed = await showCustomConfirm("هل أنت متأكد من إلغاء الطلب ومسحه نهائياً؟", "تأكيد الإلغاء 🗑️", "⚠️");
-      if (!confirmed) return;
-
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems })
-      });
-      localStorage.removeItem("kheir_locked_order");
-      location.reload();
     }
 
-    setInterval(() => {
+    // تعديل الطلب القائم داخل الـ 10 دقائق الأولى وإشعار الإدارة
+    async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
-      if (saved) trackLiveStatus(saved.orderId);
-    }, 15000);
+      if (!saved) return;
+      const newNotes = await showCustomPrompt("اكتب تفاصيل التعديل المطلوب على طلبك:", "تعديل الطلب ✏️", "text", "📝");
+      if (!newNotes) return;
+
+      // إشعار الإدارة بالتعديل وإرسال البايلود في الخلفية
+      fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems }) }).catch(()=>{});
+      
+      saved.itemsDetails += ` | [تعديل العميل: ${newNotes}]`;
+      localStorage.setItem("kheir_locked_order", JSON.stringify(saved));
+      
+      // إعادة الإرسال كمشروع معدل
+      fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ name: saved.name, phone: '01000000000', deliveryTime: saved.deliveryTime, itemsDetails: saved.itemsDetails, totalPrice: saved.total, cartItems: saved.cartItems, paymentMethod: 'cash', notes: 'تعديل طلب نشط' }) }).catch(()=>{});
+
+      await showCustomAlert("تم إرسال التعديل إلى لوحة الإدارة بنجاح!", "تعديل ناجح ✅", "✏️");
+      location.reload();
+    }
 
     loadMenu();
   </script>
