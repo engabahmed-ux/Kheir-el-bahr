@@ -27,6 +27,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
     body { background-color: var(--bg); color: var(--text-main); padding-bottom: 70px; overflow-x: hidden; position: relative; }
 
+    /* تأثير تموج الماء عند النقر */
     .click-water-ripple {
       position: fixed; border-radius: 50%; border: 2px solid rgba(56, 189, 248, 0.7);
       background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, rgba(56, 189, 248, 0.05) 60%, transparent 100%);
@@ -37,6 +38,36 @@
       0% { width: 0px; height: 0px; opacity: 0.9; transform: translate(-50%, -50%) scale(0.2); }
       70% { opacity: 0.5; }
       100% { width: 140px; height: 140px; opacity: 0; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    /* ======================================================== */
+    /* زر الإدارة: ترس أنيق وصغير في أقصى اليسار من فوق        */
+    /* ======================================================== */
+    .admin-gear-top-btn {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38bdf8;
+      font-size: 1.15rem;
+      cursor: pointer;
+      z-index: 20;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .admin-gear-top-btn:hover {
+      background: rgba(56, 189, 248, 0.25);
+      color: #ffffff;
+      transform: rotate(60deg) scale(1.08);
+      border-color: #38bdf8;
     }
 
     header {
@@ -89,9 +120,7 @@
     }
     .category-btn.active { background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue); }
 
-    /* ======================================================== */
-    /* زر الاتصال الهاتفي الفخم والمنسق                          */
-    /* ======================================================== */
+    /* زر الاتصال الهاتفي */
     .styled-phone-call-btn {
       position: fixed;
       left: 18px;
@@ -133,7 +162,7 @@
       direction: ltr;
     }
 
-    /* شبكة الصيد العائمة (سلة الطلبات) */
+    /* شبكة الصيد العائمة (السلة) */
     .floating-net-basket {
       position: fixed; left: 20px; bottom: 24px; width: 68px; height: 68px;
       background: radial-gradient(circle at 35% 35%, #0ea5e9, #0369a1);
@@ -162,26 +191,11 @@
     }
 
     /* ======================================================== */
-    /* زر الإدارة السري وغير الملحوظ إطلاقاً                     */
-    /* ======================================================== */
-    .admin-secret-dot {
-      position: fixed;
-      right: 4px;
-      bottom: 4px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: transparent;
-      cursor: pointer;
-      z-index: 999999;
-    }
-
-    /* ======================================================== */
-    /* شارة المطور الثابتة بأسفل الصفحة داخل الفوتر الطبيعي      */
+    /* شارة المطور الثابتة في الأسفل تماماً على اليمين           */
     /* ======================================================== */
     .site-footer-wrapper {
       max-width: 650px;
-      margin: 30px auto 10px;
+      margin: 40px auto 16px;
       padding: 0 16px;
       display: flex;
       justify-content: flex-end;
@@ -206,29 +220,81 @@
     .dev-badge-name { font-size: 0.82rem; font-weight: 800; color: #f8fafc; }
     .dev-badge-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; background: #0b2545; }
 
-    /* تسونامي المطور ثلاثي الأبعاد */
-    .tsunami-3d-wrap {
-      position: fixed; inset: 0; pointer-events: none; z-index: 9990; display: none; overflow: hidden; perspective: 1000px;
+    /* ======================================================== */
+    /* موجة الشاطئ السينمائية البطيئة (Realistic Beach Surf)   */
+    /* ======================================================== */
+    .realistic-wave-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99990;
+      display: none;
+      overflow: hidden;
     }
-    .tsunami-3d-wave {
-      position: absolute; bottom: -120%; left: -10%; width: 120%; height: 220%;
-      background: linear-gradient(0deg, #051626 0%, #0b2545 40%, #0284c7 75%, #38bdf8 92%, #ffffff 100%);
-      border-top-left-radius: 40% 25%; border-top-right-radius: 50% 30%;
-      box-shadow: 0 -30px 80px rgba(56, 189, 248, 0.8); transform-style: preserve-3d;
+    .wave-stage-active {
+      display: block;
     }
-    .tsunami-active { display: block; }
-    .tsunami-active .tsunami-3d-wave { animation: tsunamiRoll 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-    @keyframes tsunamiRoll {
-      0% { transform: translateY(0) rotateX(25deg) scaleY(0.6); opacity: 0; }
-      25% { opacity: 1; }
-      55% { transform: translateY(-58%) rotateX(0deg) scaleY(1.05); }
-      100% { transform: translateY(-115%) rotateX(-15deg) scaleY(1.2); opacity: 0; }
+    .beach-surf-layer {
+      position: absolute;
+      left: -15%;
+      width: 130%;
+      height: 160%;
+      bottom: -160%;
+      border-top-left-radius: 48% 28%;
+      border-top-right-radius: 52% 32%;
+    }
+    /* طبقة زبد البحر والرغوة البيضاء */
+    .surf-foam-front {
+      background: radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.95) 0%, rgba(224, 242, 254, 0.8) 35%, transparent 70%);
+      box-shadow: 0 -25px 60px rgba(255, 255, 255, 0.85);
+      z-index: 3;
+    }
+    /* جسم الموجة التيركوازي النقي */
+    .surf-water-mid {
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.9) 0%, rgba(14, 165, 233, 0.95) 30%, #0369a1 75%);
+      box-shadow: 0 -15px 40px rgba(56, 189, 248, 0.6);
+      z-index: 2;
+    }
+    /* عمق البحر الكحلي */
+    .surf-deep-back {
+      background: linear-gradient(180deg, #0b2545 0%, #051626 100%);
+      z-index: 1;
+    }
+
+    .wave-stage-active .beach-surf-layer {
+      animation: smoothShoreSurf 2.4s cubic-bezier(0.25, 0.85, 0.35, 1) forwards;
+    }
+    .wave-stage-active .surf-water-mid {
+      animation-delay: 0.12s;
+    }
+    .wave-stage-active .surf-deep-back {
+      animation-delay: 0.22s;
+    }
+
+    @keyframes smoothShoreSurf {
+      0% {
+        transform: translateY(0) scaleY(0.7);
+        opacity: 0;
+      }
+      25% {
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(-68%) scaleY(1.05);
+      }
+      80% {
+        opacity: 0.95;
+      }
+      100% {
+        transform: translateY(-135%) scaleY(1.15);
+        opacity: 0;
+      }
     }
 
     /* نافذة المطور */
     .dev-modal-overlay {
       position: fixed; inset: 0; background: rgba(5, 22, 38, 0.82); backdrop-filter: blur(8px);
-      z-index: 10000; display: none; align-items: center; justify-content: center; padding: 16px;
+      z-index: 100000; display: none; align-items: center; justify-content: center; padding: 16px;
     }
     .dev-modal-card {
       background: radial-gradient(circle at top, #0f2d4e 0%, #061727 100%); border: 2px solid rgba(56, 189, 248, 0.5);
@@ -360,9 +426,7 @@
     .dialog-btn-primary { background: linear-gradient(135deg, var(--aqua-glow), #0284c7); color: white; }
     .dialog-btn-cancel { background: #f1f5f9; color: #475569; }
 
-    /* ======================================================== */
-    /* لوحة إدارة الطلبات البحرية الحية (Marine Admin Screen)   */
-    /* ======================================================== */
+    /* لوحة إدارة الطلبات البحرية الحية */
     .marine-admin-screen {
       position: fixed; inset: 0; background: radial-gradient(circle at top, #0b2545 0%, #051626 100%);
       color: #fff; z-index: 99999; display: none; flex-direction: column; overflow-y: auto; font-family: 'Cairo', sans-serif;
@@ -425,12 +489,11 @@
     <span class="net-count-badge" id="netCartCount">0</span>
   </div>
 
-  <!-- نقطة الإدارة السرية وغير الملحوظة إطلاقاً في زاوية الشاشة -->
-  <div class="admin-secret-dot" onclick="promptAdminLogin()"></div>
-
-  <!-- موجة تسونامي ثلاثية الأبعاد -->
-  <div class="tsunami-3d-wrap" id="tsunami3DWrap">
-    <div class="tsunami-3d-wave"></div>
+  <!-- موجة الشاطئ السينمائية البطيئة متعددة الطبقات -->
+  <div class="realistic-wave-overlay" id="realisticBeachWave">
+    <div class="beach-surf-layer surf-deep-back"></div>
+    <div class="beach-surf-layer surf-water-mid"></div>
+    <div class="beach-surf-layer surf-foam-front"></div>
   </div>
 
   <!-- كارت المطور -->
@@ -465,8 +528,13 @@
     </div>
   </div>
 
-  <!-- هيدر الصفحة - النقر عليه يعيد تحميل الصفحة بسلاسة -->
-  <header onclick="reloadPageHeader()">
+  <!-- هيدر الصفحة وبداخله علامة الترس في أقصى اليسار فوق تماماً -->
+  <header onclick="handleHeaderClick(event)">
+    <!-- زر الإدارة: ترس صغير ومدمج بأقصى اليسار فوق -->
+    <div class="admin-gear-top-btn" onclick="promptAdminLogin(event)" title="لوحة الإدارة">
+      ⚙️
+    </div>
+
     <div class="bg-fish fish-1">🐠</div>
     <div class="bg-fish fish-2">🐟</div>
     <div class="bg-fish fish-3">🐡</div>
@@ -496,7 +564,6 @@
       </div>
       <div id="lockedOrderDetails" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:0.92rem; line-height:1.6; margin-bottom:12px;"></div>
 
-      <!-- خانة الإلغاء مع العداد التصاعدي من 00:00 إلى 10:00 -->
       <div id="cancelAreaWrapper" style="background:#fef2f2; border:1px dashed #fca5a5; border-radius:12px; padding:12px; text-align:center;">
         <div id="countdownTimerText" style="font-weight:800; color:#dc2626; font-size:0.92rem; margin-bottom:8px;">
           يمكنك إلغاء الطلب خلال: <span id="cancelTimer">00:00</span> / 10:00 دقيقة
@@ -526,9 +593,9 @@
     </div>
   </div>
 
-  <!-- فوتر الموقع الطبيعي وبه شارة المطور الثابتة في الأسفل يميناً -->
+  <!-- فوتر الموقع الطبيعي وبه شارة المطور الثابتة في الأسفل تماماً على اليمين -->
   <div class="site-footer-wrapper">
-    <div class="dev-badge-marine" onclick="trigger3DTsunamiModal()">
+    <div class="dev-badge-marine" onclick="triggerRealisticBeachWave()">
       <span class="dev-dot"></span>
       <div class="dev-badge-text">
         <span class="dev-badge-sub">تطوير وبرمجة</span>
@@ -612,7 +679,9 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPdFJzHQFe1_q-wKYm8dzoMesp02kbPAAgLVKzLVjJb0Xa1fuv16F62rV9LO08nNeaFw/exec";
     const WHATSAPP_NUM = "201009204577";
 
-    function reloadPageHeader() {
+    // منع إعادة تحميل الهيدر إذا كان النقر على زر الترس
+    function handleHeaderClick(e) {
+      if (e.target.closest('.admin-gear-top-btn')) return;
       playBubbleSound();
       location.reload();
     }
@@ -702,23 +771,66 @@
       return audioCtx;
     }
 
-    function playTsunamiRoarSound() {
+    // =======================================================
+    // صوت حفيف وهدير أمواج البحر الواقعية على الشاطئ
+    // =======================================================
+    function playRealisticOceanSurfSound() {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(60, now);
-        osc.frequency.exponentialRampToValueAtTime(380, now + 0.5);
-        osc.frequency.exponentialRampToValueAtTime(90, now + 1.3);
 
-        gain.gain.setValueAtTime(0.01, now);
-        gain.gain.linearRampToValueAtTime(0.7, now + 0.45);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 1.4);
+        // ضجيج حفيف زبد البحر الطبيعي
+        const bufferSize = ctx.sampleRate * 2.2;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        let b0 = 0, b1 = 0, b2 = 0;
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          b0 = 0.99 * b0 + white * 0.05;
+          b1 = 0.96 * b1 + white * 0.11;
+          b2 = 0.86 * b2 + white * 0.25;
+          data[i] = (b0 + b1 + b2) * 0.45;
+        }
 
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(now); osc.stop(now + 1.4);
+        const surfSource = ctx.createBufferSource();
+        surfSource.buffer = buffer;
+
+        // فلتر لتجسيد تلاطم الأمواج وتراجعها على الشاطئ
+        const surfFilter = ctx.createBiquadFilter();
+        surfFilter.type = 'lowpass';
+        surfFilter.frequency.setValueAtTime(220, now);
+        surfFilter.frequency.linearRampToValueAtTime(750, now + 1.1);
+        surfFilter.frequency.exponentialRampToValueAtTime(180, now + 2.2);
+
+        const surfGain = ctx.createGain();
+        surfGain.gain.setValueAtTime(0.01, now);
+        surfGain.gain.linearRampToValueAtTime(0.55, now + 0.9);
+        surfGain.gain.exponentialRampToValueAtTime(0.01, now + 2.2);
+
+        surfSource.connect(surfFilter);
+        surfFilter.connect(surfGain);
+        surfGain.connect(ctx.destination);
+
+        surfSource.start(now);
+        surfSource.stop(now + 2.2);
+
+        // نغمة رنين محيطي عميق متزامنة
+        const subOsc = ctx.createOscillator();
+        const subGain = ctx.createGain();
+        subOsc.type = 'sine';
+        subOsc.frequency.setValueAtTime(55, now);
+        subOsc.frequency.linearRampToValueAtTime(110, now + 0.9);
+        subOsc.frequency.exponentialRampToValueAtTime(45, now + 2.2);
+
+        subGain.gain.setValueAtTime(0.01, now);
+        subGain.gain.linearRampToValueAtTime(0.28, now + 0.9);
+        subGain.gain.exponentialRampToValueAtTime(0.01, now + 2.2);
+
+        subOsc.connect(subGain);
+        subGain.connect(ctx.destination);
+
+        subOsc.start(now);
+        subOsc.stop(now + 2.2);
       } catch(e) {}
     }
 
@@ -782,15 +894,16 @@
       }, 900);
     }
 
-    function trigger3DTsunamiModal() {
-      playTsunamiRoarSound();
-      const wrap = document.getElementById('tsunami3DWrap');
-      wrap.classList.remove('tsunami-active');
-      void wrap.offsetWidth;
-      wrap.classList.add('tsunami-active');
+    // تشغيل موجة الشاطئ الواقعية
+    function triggerRealisticBeachWave() {
+      playRealisticOceanSurfSound();
+      const waveOverlay = document.getElementById('realisticBeachWave');
+      waveOverlay.classList.remove('wave-stage-active');
+      void waveOverlay.offsetWidth;
+      waveOverlay.classList.add('wave-stage-active');
 
-      setTimeout(() => { document.getElementById('devModal').style.display = 'flex'; }, 700);
-      setTimeout(() => { wrap.classList.remove('tsunami-active'); }, 1400);
+      setTimeout(() => { document.getElementById('devModal').style.display = 'flex'; }, 1100);
+      setTimeout(() => { waveOverlay.classList.remove('wave-stage-active'); }, 2400);
     }
 
     function closeDevModal() {
@@ -802,7 +915,8 @@
     let adminAuthPassword = localStorage.getItem("kheir_admin_auth") || "";
     let adminInterval = null;
 
-    async function promptAdminLogin() {
+    async function promptAdminLogin(event) {
+      if (event) event.stopPropagation();
       const pass = await showCustomPrompt("أدخل كلمة سر الإدارة للوصول للطلبات والتسليمات:", "تسجيل دخول الإدارة 🔒");
       if (!pass) return;
 
@@ -1337,6 +1451,7 @@
       }
     }
 
+    // إدارة قفل الشاشة والعداد التصاعدي
     function checkLockState() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
@@ -1361,6 +1476,7 @@
       trackLiveStatus(saved.orderId);
     }
 
+    // عداد تصاعدي من 00:00 حتى 10:00 دقائق
     function startAscendingCancelTimer(timestamp) {
       clearInterval(cancelTimerInterval);
       const limitMs = 10 * 60 * 1000;
