@@ -27,7 +27,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
     body { background-color: var(--bg); color: var(--text-main); padding-bottom: 140px; overflow-x: hidden; position: relative; }
 
-    /* تأثير تموج الماء عند اللمس */
     .click-water-ripple {
       position: fixed; border-radius: 50%; border: 2px solid rgba(56, 189, 248, 0.7);
       background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, rgba(56, 189, 248, 0.05) 60%, transparent 100%);
@@ -131,7 +130,7 @@
     .dev-badge-name { font-size: 0.82rem; font-weight: 800; color: #f8fafc; }
     .dev-badge-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; background: #0b2545; }
 
-    /* زر لوحة الإدارة */
+    /* زر لوحة الإدارة المباشر */
     .admin-access-btn {
       position: fixed; right: 16px; bottom: 74px;
       background: rgba(11, 37, 69, 0.92); border: 1.5px solid rgba(56, 189, 248, 0.6);
@@ -265,9 +264,7 @@
 
     .submit-order-btn { width: 100%; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 13px; border-radius: 12px; font-size: 1.15rem; font-weight: 800; margin-top: 12px; cursor: pointer; }
 
-    /* ======================================================== */
-    /* النوافذ المخصصة البحرية (بديلة alert و confirm و prompt) */
-    /* ======================================================== */
+    /* النوافذ المخصصة البحرية */
     .custom-dialog-overlay {
       position: fixed; inset: 0; background: rgba(5, 22, 38, 0.75); backdrop-filter: blur(5px);
       z-index: 999999; display: none; align-items: center; justify-content: center; padding: 16px;
@@ -296,9 +293,7 @@
     .dialog-btn-primary { background: linear-gradient(135deg, var(--aqua-glow), #0284c7); color: white; }
     .dialog-btn-cancel { background: #f1f5f9; color: #475569; }
 
-    /* ======================================================== */
-    /* لوحة إدارة الطلبات الحية بتنسيق وهوية البحر الفاخرة       */
-    /* ======================================================== */
+    /* لوحة إدارة الطلبات البحرية الحية */
     .marine-admin-screen {
       position: fixed; inset: 0; background: radial-gradient(circle at top, #0b2545 0%, #051626 100%);
       color: #fff; z-index: 99999; display: none; flex-direction: column; overflow-y: auto; font-family: 'Cairo', sans-serif;
@@ -361,7 +356,7 @@
     <span class="net-count-badge" id="netCartCount">0</span>
   </div>
 
-  <!-- زر لوحة الإدارة بتنسيق بحري -->
+  <!-- زر لوحة الإدارة -->
   <div class="admin-access-btn" onclick="promptAdminLogin()">
     <span>⚙️</span>
     <span>إدارة الطلبات</span>
@@ -397,7 +392,7 @@
     </div>
   </div>
 
-  <!-- لوحة إدارة الطلبات الحية بهوية وتنسيق البحر -->
+  <!-- لوحة إدارة الطلبات البحرية الحية -->
   <div class="marine-admin-screen" id="marineAdminPanel">
     <div class="marine-admin-topbar">
       <div class="marine-top-btns">
@@ -526,7 +521,7 @@
     </div>
   </div>
 
-  <!-- النافذة المخصصة البحرية (بديلة التنبيهات والبرومبت) -->
+  <!-- النافذة المخصصة البحرية -->
   <div class="custom-dialog-overlay" id="customDialog">
     <div class="custom-dialog-box">
       <div class="custom-dialog-icon" id="dialogIcon">🌊</div>
@@ -540,12 +535,10 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPdFJzHQFe1_q-wKYm8dzoMesp02kbPAAgLVKzLVjJb0Xa1fuv16F62rV9LO08nNeaFw/exec";
+    // الرابط المعتمد الخاص بك
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLmCgLwIPU97Ph57HHahxdGGxm_7a0q3JNNKQiNPrZgtzaCctjvMXmwKfVf2eX2RJ0FQ/exec";
     const WHATSAPP_NUM = "201009204577";
 
-    // =======================================================
-    // نظام النوافذ المخصصة البحرية (بديلة alert و confirm و prompt)
-    // =======================================================
     function showCustomAlert(message, title = "خير البحر 🐟", icon = "🌊") {
       return new Promise((resolve) => {
         const dialog = document.getElementById('customDialog');
@@ -601,12 +594,12 @@
 
         input.type = inputType;
         input.value = '';
-        input.placeholder = 'اكتب هنا...';
+        input.placeholder = 'اكتب كلمة السر هنا...';
         input.style.display = 'block';
 
         const actions = document.getElementById('dialogActions');
         actions.innerHTML = `
-          <button class="dialog-btn dialog-btn-primary" id="dialogSubmit">تأكيد 🔓</button>
+          <button class="dialog-btn dialog-btn-primary" id="dialogSubmit">دخول 🔓</button>
           <button class="dialog-btn dialog-btn-cancel" id="dialogDismiss">إلغاء</button>
         `;
         dialog.style.display = 'flex';
@@ -624,9 +617,6 @@
       });
     }
 
-    // =======================================================
-    // محرك الأصوات والتأثيرات
-    // =======================================================
     let audioCtx = null;
     function getAudioContext() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -730,22 +720,33 @@
       document.getElementById('devModal').style.display = 'none';
     }
 
-    // =======================================================
-    // لوحة إدارة الطلبات البحرية الحية (Marine Admin Panel)
-    // =======================================================
+    // لوحة إدارة الطلبات البحرية الحية
     let adminAuthPassword = localStorage.getItem("kheir_admin_auth") || "";
     let adminInterval = null;
 
     async function promptAdminLogin() {
       const pass = await showCustomPrompt("أدخل كلمة سر الإدارة للوصول للطلبات والتسليمات:", "تسجيل دخول الإدارة 🔒");
       if (!pass) return;
-      adminAuthPassword = pass.trim();
-      openAdminPanel();
+
+      // تحقق لحظي من الخادم قبل السماح بالدخول
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=getAdminOrders&password=${encodeURIComponent(pass.trim())}`);
+        const d = await res.json();
+        if (d.status === "success") {
+          adminAuthPassword = pass.trim();
+          localStorage.setItem("kheir_admin_auth", adminAuthPassword);
+          openAdminPanel();
+          renderMarineOrders(d.orders.reverse());
+        } else {
+          await showCustomAlert("كلمة السر غير صحيحة! يرجى التأكد من الخلية B1 في شيت الاداره.", "خطأ في الصلاحية ❌", "🔒");
+        }
+      } catch (err) {
+        await showCustomAlert("تعذر الاتصال بالخادم للتأكد من كلمة السر!", "خطأ في الاتصال ⚠️", "📶");
+      }
     }
 
     function openAdminPanel() {
       document.getElementById('marineAdminPanel').style.display = 'flex';
-      fetchAdminLiveOrders();
       clearInterval(adminInterval);
       adminInterval = setInterval(fetchAdminLiveOrders, 12000);
     }
@@ -761,15 +762,11 @@
         const res = await fetch(`${SCRIPT_URL}?action=getAdminOrders&password=${encodeURIComponent(adminAuthPassword)}`);
         const d = await res.json();
         if (d.status === "success") {
-          localStorage.setItem("kheir_admin_auth", adminAuthPassword);
           renderMarineOrders(d.orders.reverse());
         } else {
-          await showCustomAlert(d.message || "كلمة السر غير صحيحة!", "خطأ في الصلاحية ❌", "🔒");
           closeAdminPanel();
         }
-      } catch(e) {
-        grid.innerHTML = '<div style="text-align:center; color:#f87171; width:100%; padding:30px;">حدث خطأ أثناء جلب الطلبات، اضغط تحديث 🔄</div>';
-      }
+      } catch(e) {}
     }
 
     function renderMarineOrders(orders) {
@@ -798,7 +795,7 @@
             ${ord.details}
             ${ord.notes && ord.notes !== 'لا يوجد' ? `<br><span style="color:#f59e0b;">ملاحظات: ${ord.notes}</span>` : ''}
           </div>
-          <div class="marine-total-price">الإجمالي: ${ord.totalPrice || 0} ج.م</div>
+          <div class="marine-total-price">المبلغ: ${ord.totalPrice || 0} ج.م</div>
           <div class="marine-action-row">
             <button class="marine-act-btn marine-btn-prepare" onclick="updateOrderStatusByAdmin(${ord.orderId}, 'تم تحضير الطلب 🟢')">
               ✔ تم تحضير الطلب
@@ -828,9 +825,6 @@
       } catch(e) {}
     }
 
-    // =======================================================
-    // محرك المنيو والسلة والطلبات
-    // =======================================================
     let allMenuItems = [];
     let cart = {};
     let selectedExtras = {};
