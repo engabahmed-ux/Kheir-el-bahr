@@ -39,7 +39,7 @@
       100% { width: 140px; height: 140px; opacity: 0; transform: translate(-50%, -50%) scale(1); }
     }
 
-    /* زر الإدارة: ترس أنيق وصغير في أقصى اليسار من فوق */
+    /* زر الإدارة: ترس أنيق وصغير بأقصى اليسار فوق */
     .admin-gear-top-btn {
       position: absolute;
       top: 16px;
@@ -117,7 +117,7 @@
     }
     .category-btn.active { background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue); }
 
-    /* زر الاتصال الهاتفي */
+    /* زر الاتصال الهاتفي الفخم */
     .styled-phone-call-btn {
       position: fixed;
       left: 18px;
@@ -159,7 +159,7 @@
       direction: ltr;
     }
 
-    /* شبكة الصيد العائمة (السلة) */
+    /* شبكة الصيد العائمة (سلة الطلبات) */
     .floating-net-basket {
       position: fixed; left: 20px; bottom: 24px; width: 68px; height: 68px;
       background: radial-gradient(circle at 35% 35%, #0ea5e9, #0369a1);
@@ -187,7 +187,7 @@
       100% { transform: rotate(-8deg) scaleY(1.05); }
     }
 
-    /* شارة المطور الثابتة في الأسفل يميناً */
+    /* شارة المطور الثابتة بالأسفل يميناً */
     .site-footer-wrapper {
       max-width: 650px;
       margin: 40px auto 16px;
@@ -551,7 +551,7 @@
     </div>
   </div>
 
-  <!-- فوتر الموقع الطبيعي وبه شارة المطور الثابتة في الأسفل يميناً -->
+  <!-- فوتر الموقع الطبيعي وبه شارة المطور الثابتة في الأسفل تماماً على اليمين -->
   <div class="site-footer-wrapper">
     <div class="dev-badge-marine" onclick="triggerRealisticBeachWave()">
       <span class="dev-dot"></span>
@@ -870,7 +870,6 @@
     async function promptAdminLogin(event) {
       if (event) event.stopPropagation();
 
-      // فحص إذا كانت الإدارة محظورة بسبب 5 محاولات فاشلة
       const lockUntil = Number(localStorage.getItem("admin_lock_until") || 0);
       const currentTime = Date.now();
 
@@ -888,11 +887,10 @@
       if (!pass) return;
 
       try {
-        const res = await fetch(`${SCRIPT_URL}?action=getAdminOrders&password=${encodeURIComponent(pass.trim())}`);
+        const res = await fetch(`${SCRIPT_URL}?action=adminFetchOrders&password=${encodeURIComponent(pass.trim())}`);
         const d = await res.json();
         
         if (d.status === "success") {
-          // مسح المحاولات الفاشلة عند النجاح
           localStorage.removeItem("admin_failed_attempts");
           localStorage.removeItem("admin_lock_until");
           
@@ -901,12 +899,10 @@
           openAdminPanel();
           renderMarineOrders(d.orders.reverse());
         } else {
-          // تسجيل محاولة فاشلة
           let failedAttempts = Number(localStorage.getItem("admin_failed_attempts") || 0) + 1;
           localStorage.setItem("admin_failed_attempts", failedAttempts);
 
           if (failedAttempts >= 5) {
-            // قفل لمدة ساعة كاملة (60 دقيقة)
             const oneHourLock = Date.now() + 60 * 60 * 1000;
             localStorage.setItem("admin_lock_until", oneHourLock);
             await showCustomAlert(
@@ -942,7 +938,7 @@
     async function fetchAdminLiveOrders() {
       const grid = document.getElementById('marineOrdersGrid');
       try {
-        const res = await fetch(`${SCRIPT_URL}?action=getAdminOrders&password=${encodeURIComponent(adminAuthPassword)}`);
+        const res = await fetch(`${SCRIPT_URL}?action=adminFetchOrders&password=${encodeURIComponent(adminAuthPassword)}`);
         const d = await res.json();
         if (d.status === "success") {
           renderMarineOrders(d.orders.reverse());
@@ -995,15 +991,8 @@
     async function updateOrderStatusByAdmin(orderId, newStatus) {
       playBubbleSound();
       try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            action: "updateStatusByAdmin",
-            password: adminAuthPassword,
-            orderId: orderId,
-            newStatus: newStatus
-          })
-        });
+        const url = `${SCRIPT_URL}?action=updateStatusByAdmin&password=${encodeURIComponent(adminAuthPassword)}&orderId=${orderId}&newStatus=${encodeURIComponent(newStatus)}`;
+        await fetch(url);
         fetchAdminLiveOrders();
       } catch(e) {}
     }
