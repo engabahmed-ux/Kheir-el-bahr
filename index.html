@@ -26,18 +26,26 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-    body { background-color: var(--bg); color: var(--text-main); padding-bottom: 110px; overflow-x: hidden; }
+    body { background-color: var(--bg); color: var(--text-main); padding-bottom: 140px; overflow-x: hidden; position: relative; }
+
+    /* تأثير تموجات الماء عند النقر */
+    .click-water-ripple {
+      position: fixed; border-radius: 50%; border: 2px solid rgba(56, 189, 248, 0.7);
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, rgba(56, 189, 248, 0.05) 60%, transparent 100%);
+      pointer-events: none; transform: translate(-50%, -50%) scale(0);
+      animation: waterRippleAnim 0.65s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 9999;
+    }
+    @keyframes waterRippleAnim {
+      0% { width: 0px; height: 0px; opacity: 0.9; transform: translate(-50%, -50%) scale(0.2); }
+      70% { opacity: 0.5; }
+      100% { width: 140px; height: 140px; opacity: 0; transform: translate(-50%, -50%) scale(1); }
+    }
 
     header {
       background: radial-gradient(circle at center, #0e3860 0%, var(--deep-ocean) 100%);
-      color: white;
-      text-align: center;
-      padding: 26px 16px 22px;
-      border-bottom-left-radius: 28px;
-      border-bottom-right-radius: 28px;
-      box-shadow: 0 8px 30px rgba(5, 22, 38, 0.4);
-      position: relative;
-      overflow: hidden;
+      color: white; text-align: center; padding: 26px 16px 22px;
+      border-bottom-left-radius: 28px; border-bottom-right-radius: 28px;
+      box-shadow: 0 8px 30px rgba(5, 22, 38, 0.4); position: relative; overflow: hidden;
     }
 
     .bg-fish { position: absolute; opacity: 0.35; pointer-events: none; z-index: 1; animation: swim linear infinite; }
@@ -52,11 +60,7 @@
       100% { transform: translateX(-20vw) scaleX(1); }
     }
 
-    .bubble {
-      position: absolute; bottom: -15px; background: rgba(255, 255, 255, 0.18);
-      border-radius: 50%; pointer-events: none; animation: rise linear infinite; z-index: 1;
-    }
-
+    .bubble { position: absolute; bottom: -15px; background: rgba(255, 255, 255, 0.18); border-radius: 50%; pointer-events: none; animation: rise linear infinite; z-index: 1; }
     @keyframes rise {
       0% { transform: translateY(0) scale(0.6); opacity: 0; }
       50% { opacity: 0.8; }
@@ -69,7 +73,6 @@
     .sub-slogan { font-size: 0.9rem; color: var(--sea-cyan); font-weight: 700; }
 
     .container { max-width: 650px; margin: auto; padding: 16px 14px; }
-
     .search-box-wrapper { position: relative; margin-bottom: 14px; }
     .search-input {
       width: 100%; padding: 12px 42px 12px 14px; border-radius: 14px; border: 1px solid #cbd5e1;
@@ -85,10 +88,9 @@
       white-space: nowrap; padding: 8px 16px; border-radius: 20px; border: 1px solid #cbd5e1;
       background: white; color: var(--ocean-blue); font-weight: 700; font-size: 0.88rem; cursor: pointer;
     }
-    .category-btn.active {
-      background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue);
-    }
+    .category-btn.active { background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue); }
 
+    /* زر الاتصال الهاتفي للمحل */
     .floating-call-btn {
       position: fixed; left: 18px; bottom: 85px; background: linear-gradient(135deg, #10b981, #059669);
       color: white; display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 30px;
@@ -96,11 +98,78 @@
     }
     .floating-call-icon { width: 28px; height: 28px; background: rgba(255,255,255,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
 
+    /* شارة المطور البحرية */
+    .dev-badge-marine {
+      position: fixed; right: 16px; bottom: 85px; background: rgba(5, 22, 38, 0.92);
+      border: 1.5px solid rgba(56, 189, 248, 0.45); backdrop-filter: blur(8px); padding: 6px 14px 6px 8px;
+      border-radius: 30px; display: flex; align-items: center; gap: 9px; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(5, 22, 38, 0.35); z-index: 150; transition: all 0.25s ease;
+    }
+    .dev-badge-marine .dev-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; animation: blink 1.5s infinite; }
+    .dev-badge-text { display: flex; flex-direction: column; text-align: right; line-height: 1.2; }
+    .dev-badge-sub { font-size: 0.65rem; color: #94a3b8; font-weight: 600; }
+    .dev-badge-name { font-size: 0.82rem; font-weight: 800; color: #f8fafc; }
+    .dev-badge-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; background: #0b2545; }
+
+    /* ======================================================== */
+    /* زر الإدارة السري وغير الملحوظ في أقصى أسفل اليمين        */
+    /* ======================================================== */
+    .admin-secret-trigger {
+      position: fixed;
+      right: 6px;
+      bottom: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(14, 165, 233, 0.18);
+      cursor: pointer;
+      z-index: 999;
+      opacity: 0.4;
+      transition: all 0.2s;
+    }
+    .admin-secret-trigger:hover {
+      opacity: 0.9;
+      background: rgba(14, 165, 233, 0.7);
+      transform: scale(1.3);
+    }
+
+    /* أنيميشن الموجة البحرية */
+    .ocean-wave-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 9990; display: none; overflow: hidden; }
+    .ocean-wave-curtain {
+      position: absolute; bottom: -100%; left: 0; right: 0; height: 200%;
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.85) 0%, rgba(14, 165, 233, 0.95) 25%, #0b2545 75%, #051626 100%);
+      border-top-left-radius: 50% 15%; border-top-right-radius: 50% 15%; box-shadow: 0 -20px 50px rgba(56, 189, 248, 0.5);
+    }
+    .wave-active { display: block; }
+    .wave-active .ocean-wave-curtain { animation: waveCrash 1.1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+    @keyframes waveCrash {
+      0% { transform: translateY(0); opacity: 0; }
+      20% { opacity: 1; }
+      55% { transform: translateY(-55%); }
+      100% { transform: translateY(-110%); opacity: 0; }
+    }
+
+    /* نافذة كارت المطور */
+    .dev-modal-overlay {
+      position: fixed; inset: 0; background: rgba(5, 22, 38, 0.8); backdrop-filter: blur(8px);
+      z-index: 10000; display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .dev-modal-card {
+      background: radial-gradient(circle at top, #0f2d4e 0%, #061727 100%); border: 2px solid rgba(56, 189, 248, 0.5);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); border-radius: 24px; max-width: 380px; width: 100%;
+      padding: 30px 24px; text-align: center; color: white;
+    }
+    .dev-avatar-large { width: 96px; height: 96px; border-radius: 50%; border: 3px solid #38bdf8; margin: 0 auto 14px; object-fit: cover; }
+    .dev-action-btn { padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; border:none; cursor:pointer;}
+    .dev-btn-wa { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+    .dev-btn-phone { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+    .dev-btn-close { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.15); width:100%;}
+
+    /* كروت الأسماك */
     .fish-card {
       background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 14px;
       box-shadow: var(--shadow); border: 1px solid #e2edf5; display: flex; flex-direction: column; gap: 12px; position: relative;
     }
-
     .fish-card.sold-out { opacity: 0.55; background: #f1f5f9; border-style: dashed; }
     .fish-header { display: flex; justify-content: space-between; align-items: flex-start; }
     .fish-name { font-weight: 800; font-size: 1.1rem; color: var(--ocean-blue); }
@@ -197,14 +266,152 @@
     .receipt-upload-box { display: none; margin-top: 12px; background: #ffffff; border: 1px solid #d8b4fe; border-radius: 8px; padding: 12px; text-align: right; }
 
     .submit-order-btn { width: 100%; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 13px; border-radius: 12px; font-size: 1.15rem; font-weight: 800; margin-top: 12px; cursor: pointer; }
+
+    /* ======================================================== */
+    /* شاشة لوحة تحكم الإدارة الحية الكاملة (Admin Dashboard)   */
+    /* ======================================================== */
+    .admin-overlay-screen {
+      position: fixed; inset: 0; background: #051626; z-index: 99999;
+      display: none; flex-direction: column; overflow-y: auto; color: white;
+    }
+    .admin-nav {
+      background: #0b2545; padding: 16px 20px; border-bottom: 2px solid #38bdf8;
+      display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10;
+    }
+    .admin-stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 16px;
+    }
+    .stat-card {
+      background: #0f2d4e; border: 1px solid #1e4976; border-radius: 12px; padding: 12px; text-align: center;
+    }
+    .stat-number { font-size: 1.4rem; font-weight: 900; color: #38bdf8; }
+    .stat-label { font-size: 0.78rem; color: #94a3b8; margin-top: 4px; font-weight: 600; }
+
+    .admin-filter-tabs {
+      display: flex; gap: 8px; padding: 0 16px 14px; overflow-x: auto;
+    }
+    .admin-filter-btn {
+      background: #0f2d4e; color: #94a3b8; border: 1px solid #1e4976; padding: 7px 14px; border-radius: 20px;
+      font-size: 0.85rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+    }
+    .admin-filter-btn.active {
+      background: #38bdf8; color: #051626; border-color: #38bdf8;
+    }
+
+    .admin-orders-list { padding: 0 16px 40px; display: flex; flex-direction: column; gap: 12px; }
+    .admin-order-card {
+      background: #0e2947; border: 1px solid #204e7c; border-radius: 16px; padding: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 10px;
+    }
+    .admin-card-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #204e7c; padding-bottom: 8px; }
+    .admin-order-id { font-weight: 900; font-size: 1.15rem; color: #38bdf8; }
+    .admin-order-status-badge {
+      font-size: 0.78rem; font-weight: 800; padding: 4px 10px; border-radius: 20px;
+    }
+    .status-new { background: #0369a1; color: white; }
+    .status-cooking { background: #f59e0b; color: #051626; }
+    .status-ready { background: #10b981; color: white; }
+    .status-done { background: #475569; color: #cbd5e1; }
+    .status-cancel { background: #ef4444; color: white; }
+
+    .admin-client-info { font-size: 0.9rem; color: #f1f5f9; line-height: 1.6; }
+    .admin-items-box {
+      background: rgba(5, 22, 38, 0.6); border-radius: 10px; padding: 10px; font-size: 0.88rem; color: #e2e8f0; line-height: 1.5;
+    }
+    .admin-action-bar {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;
+    }
+    .admin-act-btn {
+      flex: 1; min-width: 90px; padding: 8px; border-radius: 8px; border: none; font-size: 0.8rem; font-weight: 800; cursor: pointer;
+    }
+    .act-cooking { background: #f59e0b; color: #051626; }
+    .act-ready { background: #10b981; color: white; }
+    .act-done { background: #64748b; color: white; }
+    .act-cancel { background: #ef4444; color: white; }
   </style>
 </head>
 <body>
 
+  <!-- زر الاتصال الهاتفي للمحل (على اليسار) -->
   <a href="tel:01009204577" class="floating-call-btn">
     <div class="floating-call-icon">📞</div>
     <span>01009204577</span>
   </a>
+
+  <!-- شارة إمضاء المطور البحرية (على اليمين) -->
+  <div class="dev-badge-marine" onclick="triggerDeveloperWaveModal()">
+    <span class="dev-dot"></span>
+    <div class="dev-badge-text">
+      <span class="dev-badge-sub">تطوير وبرمجة</span>
+      <span class="dev-badge-name">Abdallah Hussein</span>
+    </div>
+    <img src="Screenshot 2026-09-03 134855.png" alt="Abdallah Hussein" class="dev-badge-avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=Abdallah';">
+  </div>
+
+  <!-- نقطة الإدارة السرية غير الملحوظة في أقصى أسفل يمين الشاشة -->
+  <div class="admin-secret-trigger" title="الدخول" onclick="promptAdminLogin()"></div>
+
+  <!-- حاوية الموجة البحرية العملاقة -->
+  <div class="ocean-wave-overlay" id="oceanWaveEffect">
+    <div class="ocean-wave-curtain"></div>
+  </div>
+
+  <!-- نافذة كارت المطور -->
+  <div class="dev-modal-overlay" id="devModal">
+    <div class="dev-modal-card">
+      <img src="Screenshot 2026-09-03 134855.png" alt="Abdallah Hussein" class="dev-avatar-large" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=Abdallah';">
+      <h3 style="font-size:1.45rem; font-weight:900; color:#38bdf8; margin-bottom:6px;">Abdallah Hussein</h3>
+      <div style="font-size:0.88rem; color:#93c5fd; font-weight:700; margin-bottom:12px;">مهندس أنظمة ومطور حلول الويب السحابية 🌊⚡</div>
+      <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.6; margin-bottom:20px;">
+        يسعدني تواصلك لمناقشة أي استفسار أو تطوير أنظمة إلكترونية مخصصة لإدارة وتنمية أعمالك التجارية بكل احترافية.
+      </p>
+      <a href="https://wa.me/201009204577" target="_blank" class="dev-action-btn dev-btn-wa">💬 مراسلة عبر واتساب</a>
+      <a href="tel:01009204577" class="dev-action-btn dev-btn-phone">📞 اتصال هاتفي مباشر</a>
+      <button class="dev-action-btn dev-btn-close" onclick="closeDevModal()">🌊 إغلاق والعودة للمنيو</button>
+    </div>
+  </div>
+
+  <!-- شاشة إدارة الطلبات والتسليمات المباشرة (Dashboard) -->
+  <div class="admin-overlay-screen" id="adminDashboard">
+    <div class="admin-nav">
+      <div>
+        <h2 style="font-size:1.2rem; font-weight:900; color:#38bdf8;">🐟 إدارة طلبات خير البحر</h2>
+        <span style="font-size:0.75rem; color:#94a3b8;">متابعة فورية وحية للطلبات والتسليم</span>
+      </div>
+      <button onclick="closeAdminDashboard()" style="background:#ef4444; color:white; border:none; padding:6px 14px; border-radius:8px; font-weight:800; cursor:pointer;">خروج ✕</button>
+    </div>
+
+    <div class="admin-stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="admTotalCount">0</div>
+        <div class="stat-label">إجمالي الطلبات</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="admCookingCount" style="color:#f59e0b;">0</div>
+        <div class="stat-label">قيد التجهيز والشوي</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="admReadyCount" style="color:#10b981;">0</div>
+        <div class="stat-label">جاهز للتسليم</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="admDoneCount" style="color:#94a3b8;">0</div>
+        <div class="stat-label">تم التسليم</div>
+      </div>
+    </div>
+
+    <div class="admin-filter-tabs">
+      <button class="admin-filter-btn active" onclick="setAdminFilter('all', this)">الكل</button>
+      <button class="admin-filter-btn" onclick="setAdminFilter('جديد', this)">طلب جديد ⚡</button>
+      <button class="admin-filter-btn" onclick="setAdminFilter('قيد التجهيز', this)">قيد التجهيز 🔥</button>
+      <button class="admin-filter-btn" onclick="setAdminFilter('جاهز', this)">جاهز للتسليم 🟢</button>
+      <button class="admin-filter-btn" onclick="setAdminFilter('تم التسليم', this)">تم التسليم ✅</button>
+    </div>
+
+    <div class="admin-orders-list" id="adminOrdersContainer">
+      <div style="text-align:center; padding:40px; color:#94a3b8;">جاري جلب أحدث الطلبات... ⏳</div>
+    </div>
+  </div>
 
   <header>
     <div class="bg-fish fish-1">🐠</div>
@@ -346,7 +553,6 @@
   </div>
 
   <script>
-    // الرابط المحدث الأخير
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZNjdXqOGZeCXpcQaEUX7eNbzPGP5YwfBpwWmx12QslvXySqqo6kO83caebxvXiK9lNw/exec";
     const WHATSAPP_NUM = "201009204577";
 
@@ -355,6 +561,42 @@
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') audioCtx.resume();
       return audioCtx;
+    }
+
+    function playGiantOceanWaveRoar() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(80, now);
+        osc.frequency.exponentialRampToValueAtTime(320, now + 0.45);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 1.2);
+        gain.gain.setValueAtTime(0.01, now);
+        gain.gain.linearRampToValueAtTime(0.65, now + 0.4);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 1.25);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now + 1.3);
+
+        const bufferSize = ctx.sampleRate * 1.2;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(300, now);
+        filter.frequency.linearRampToValueAtTime(1200, now + 0.5);
+        filter.frequency.linearRampToValueAtTime(250, now + 1.2);
+        const noiseGain = ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.02, now);
+        noiseGain.gain.linearRampToValueAtTime(0.5, now + 0.45);
+        noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
+        noise.connect(filter); filter.connect(noiseGain); noiseGain.connect(ctx.destination);
+        noise.start(now); noise.stop(now + 1.2);
+      } catch (e) {}
     }
 
     function playWaterSplash() {
@@ -407,6 +649,37 @@
       } catch(e) {}
     }
 
+    function triggerDeveloperWaveModal() {
+      playGiantOceanWaveRoar();
+      const waveOverlay = document.getElementById('oceanWaveEffect');
+      waveOverlay.classList.remove('wave-active');
+      void waveOverlay.offsetWidth;
+      waveOverlay.classList.add('wave-active');
+
+      setTimeout(() => {
+        document.getElementById('devModal').style.display = 'flex';
+      }, 450);
+
+      setTimeout(() => {
+        waveOverlay.classList.remove('wave-active');
+      }, 1200);
+    }
+
+    function closeDevModal() {
+      playBubbleSound();
+      document.getElementById('devModal').style.display = 'none';
+    }
+
+    document.addEventListener('pointerdown', function(e) {
+      if (e.target.closest('.qty-btn') || e.target.closest('.dev-badge-marine') || e.target.closest('.admin-secret-trigger') || e.target.closest('.admin-overlay-screen')) return;
+      const ripple = document.createElement('div');
+      ripple.className = 'click-water-ripple';
+      ripple.style.left = e.clientX + 'px';
+      ripple.style.top = e.clientY + 'px';
+      document.body.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 650);
+    });
+
     function triggerFishJumpAnimation(targetBtn) {
       const parent = targetBtn.closest('.qty-controls');
       if (!parent) return;
@@ -425,6 +698,145 @@
       }, 400);
 
       setTimeout(() => fish.remove(), 750);
+    }
+
+    // ==========================================
+    // محرك شاشة الإدارة الحية للطلبات (Admin Engine)
+    // ==========================================
+    let adminAuthPassword = localStorage.getItem("kheir_admin_auth") || "";
+    let adminOrdersList = [];
+    let adminCurrentFilter = "all";
+    let adminPollingInterval = null;
+
+    function promptAdminLogin() {
+      const entered = prompt("🔒 يرجى إدخال كلمة سر الإدارة:");
+      if (!entered) return;
+
+      adminAuthPassword = entered.trim();
+      openAdminDashboard();
+    }
+
+    function openAdminDashboard() {
+      document.getElementById('adminDashboard').style.display = 'flex';
+      fetchAdminOrders();
+      clearInterval(adminPollingInterval);
+      adminPollingInterval = setInterval(fetchAdminOrders, 15000); // تحديث دوري كل 15 ثانية
+    }
+
+    function closeAdminDashboard() {
+      document.getElementById('adminDashboard').style.display = 'none';
+      clearInterval(adminPollingInterval);
+    }
+
+    async function fetchAdminOrders() {
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=getAdminOrders&password=${encodeURIComponent(adminAuthPassword)}`);
+        const d = await res.json();
+
+        if (d.status === "success") {
+          localStorage.setItem("kheir_admin_auth", adminAuthPassword);
+          adminOrdersList = d.orders.reverse(); // أحدث الطلبات بالأعلى
+          updateAdminStats();
+          renderAdminOrders();
+        } else {
+          alert(d.message || "كلمة السر غير صحيحة!");
+          closeAdminDashboard();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function updateAdminStats() {
+      const total = adminOrdersList.length;
+      const cooking = adminOrdersList.filter(o => o.status && o.status.includes("تجهيز")).length;
+      const ready = adminOrdersList.filter(o => o.status && o.status.includes("جاهز")).length;
+      const done = adminOrdersList.filter(o => o.status && o.status.includes("تم التسليم")).length;
+
+      document.getElementById('admTotalCount').innerText = total;
+      document.getElementById('admCookingCount').innerText = cooking;
+      document.getElementById('admReadyCount').innerText = ready;
+      document.getElementById('admDoneCount').innerText = done;
+    }
+
+    function setAdminFilter(filterKey, btn) {
+      adminCurrentFilter = filterKey;
+      document.querySelectorAll('.admin-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderAdminOrders();
+    }
+
+    function renderAdminOrders() {
+      const container = document.getElementById('adminOrdersContainer');
+      container.innerHTML = '';
+
+      const filtered = adminOrdersList.filter(ord => {
+        if (adminCurrentFilter === "all") return true;
+        return ord.status && ord.status.includes(adminCurrentFilter);
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; color:#94a3b8;">لا توجد طلبات في هذا القسم 📋</div>`;
+        return;
+      }
+
+      filtered.forEach(order => {
+        let statusBadgeClass = "status-new";
+        if (order.status.includes("تجهيز")) statusBadgeClass = "status-cooking";
+        if (order.status.includes("جاهز")) statusBadgeClass = "status-ready";
+        if (order.status.includes("تسليم")) statusBadgeClass = "status-done";
+        if (order.status.includes("إلغاء")) statusBadgeClass = "status-cancel";
+
+        const card = document.createElement('div');
+        card.className = 'admin-order-card';
+        card.innerHTML = `
+          <div class="admin-card-top">
+            <span class="admin-order-id">طلب #${order.orderId}</span>
+            <span class="admin-order-status-badge ${statusBadgeClass}">${order.status}</span>
+          </div>
+          <div class="admin-client-info">
+            <strong>العميل:</strong> ${order.name} | <a href="tel:${order.phone}" style="color:#38bdf8; text-decoration:none;">📞 ${order.phone}</a>
+            <a href="https://wa.me/20${order.phone.slice(-10)}" target="_blank" style="margin-right:8px; color:#10b981; font-weight:bold; text-decoration:none;">[واتساب]</a><br>
+            <strong>موعد الاستلام:</strong> ${order.deliveryTime}<br>
+            <span style="font-size:0.8rem; color:#94a3b8;">وقت الطلب: ${order.time} | تاريخ: ${order.date}</span>
+          </div>
+          <div class="admin-items-box">
+            <strong>الأصناف والتسوية:</strong><br>
+            ${order.details}
+            ${order.notes && order.notes !== 'لا يوجد' ? `<br><strong style="color:#f59e0b;">ملاحظات:</strong> ${order.notes}` : ''}
+          </div>
+          <div class="admin-action-bar">
+            <button class="admin-act-btn act-cooking" onclick="changeOrderStatusByAdmin(${order.orderId}, 'قيد التجهيز والشوي 🔥')">قيد التجهيز 🔥</button>
+            <button class="admin-act-btn act-ready" onclick="changeOrderStatusByAdmin(${order.orderId}, 'جاهز للتسليم 🟢')">جاهز للتسليم 🟢</button>
+            <button class="admin-act-btn act-done" onclick="changeOrderStatusByAdmin(${order.orderId}, 'تم التسليم')">تم التسليم ✅</button>
+            <button class="admin-act-btn act-cancel" onclick="changeOrderStatusByAdmin(${order.orderId}, 'تم الإلغاء بواسطة الإدارة ❌')">إلغاء ❌</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function changeOrderStatusByAdmin(orderId, newStatus) {
+      playBubbleSound();
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: "updateStatusByAdmin",
+            password: adminAuthPassword,
+            orderId: orderId,
+            newStatus: newStatus
+          })
+        });
+        const d = await res.json();
+        if (d.result === "success") {
+          fetchAdminOrders();
+        } else {
+          alert("فشل تحديث الحالة: " + d.message);
+        }
+      } catch (e) {
+        alert("حدث خطأ في الاتصال");
+      }
     }
 
     let allMenuItems = [];
