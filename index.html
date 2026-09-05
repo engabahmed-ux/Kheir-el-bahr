@@ -69,7 +69,99 @@
     .sub-slogan { font-size: 0.9rem; color: var(--sea-cyan); font-weight: 700; }
 
     .container { max-width: 650px; margin: auto; padding: 16px 14px; }
-    .section-title { font-size: 1.25rem; font-weight: 800; color: var(--ocean-blue); margin-bottom: 12px; }
+
+    .search-box-wrapper {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 42px 12px 14px;
+      border-radius: 14px;
+      border: 1px solid #cbd5e1;
+      font-size: 0.95rem;
+      background: white;
+      box-shadow: var(--shadow);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--sea-cyan); }
+    .search-icon {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .categories-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+    .categories-bar::-webkit-scrollbar { display: none; }
+
+    .category-btn {
+      white-space: nowrap;
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid #cbd5e1;
+      background: white;
+      color: var(--ocean-blue);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .category-btn.active {
+      background: linear-gradient(135deg, var(--ocean-blue), #0e3860);
+      color: white;
+      border-color: var(--ocean-blue);
+      box-shadow: 0 4px 12px rgba(11, 37, 69, 0.25);
+    }
+
+    .floating-call-btn {
+      position: fixed;
+      left: 18px;
+      bottom: 85px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4);
+      z-index: 150;
+      font-weight: 800;
+      font-size: 0.88rem;
+      transition: transform 0.2s;
+      animation: bounceCall 2.5s infinite;
+    }
+    .floating-call-btn:active { transform: scale(0.95); }
+    .floating-call-icon {
+      width: 28px;
+      height: 28px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    @keyframes bounceCall {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
 
     .fish-card {
       background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-bottom: 14px;
@@ -80,6 +172,7 @@
     .fish-card.sold-out { opacity: 0.55; background: #f1f5f9; border-style: dashed; }
     .fish-header { display: flex; justify-content: space-between; align-items: flex-start; }
     .fish-name { font-weight: 800; font-size: 1.1rem; color: var(--ocean-blue); }
+    .fish-category-badge { font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 6px; font-weight: 700; margin-right: 6px; }
     .fish-price { font-weight: 800; color: #0284c7; font-size: 1rem; background: #e0f2fe; padding: 4px 10px; border-radius: 8px; }
     .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-top: 4px; display: inline-block; }
     .badge-status { font-size: 0.8rem; padding: 3px 8px; border-radius: 6px; font-weight: 700; display: inline-block; margin-top: 4px; }
@@ -121,14 +214,8 @@
     .pulse-dot { width: 10px; height: 10px; background: #10b981; border-radius: 50%; animation: blink 1.5s infinite; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-    .cancel-box {
-      margin-top: 16px; padding: 14px; background: #fef2f2; border: 1px dashed #f87171;
-      border-radius: 12px; text-align: center;
-    }
-    .cancel-btn {
-      background: #ef4444; color: white; border: none; padding: 9px 18px; border-radius: 8px;
-      font-weight: 800; font-size: 0.9rem; cursor: pointer; margin-top: 8px;
-    }
+    .cancel-box { margin-top: 16px; padding: 14px; background: #fef2f2; border: 1px dashed #f87171; border-radius: 12px; text-align: center; }
+    .cancel-btn { background: #ef4444; color: white; border: none; padding: 9px 18px; border-radius: 8px; font-weight: 800; font-size: 0.9rem; cursor: pointer; margin-top: 8px; }
     .cancel-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
 
     .modal {
@@ -163,6 +250,12 @@
 </head>
 <body>
 
+  <!-- زر الاتصال الهاتفي العائم -->
+  <a href="tel:01009204577" class="floating-call-btn">
+    <div class="floating-call-icon">📞</div>
+    <span>01009204577</span>
+  </a>
+
   <header>
     <div class="bg-fish fish-1">🐠</div>
     <div class="bg-fish fish-2">🐟</div>
@@ -182,7 +275,7 @@
   </header>
 
   <div class="container">
-    <!-- شاشة قفل الصفحة وتتبع الطلب -->
+    <!-- شاشة قفل وتتبع الطلب -->
     <div class="order-lock-screen" id="orderLockCard">
       <div class="lock-badge">
         <span class="pulse-dot"></span> طلبك جاري تجهيزه بالمحل
@@ -191,14 +284,10 @@
         <h3 style="color:var(--ocean-blue); font-size:1.2rem;">طلب رقم <span id="lockedOrderId">#</span></h3>
         <span id="lockedOrderStatus" style="font-weight:800; font-size:1rem; color:#0284c7;">طلب جديد</span>
       </div>
-
       <div id="lockedOrderDetails" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:0.92rem; line-height:1.6; margin-bottom:12px;"></div>
-
       <div style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
-        🔒 تم قفل شاشة الطلبات مؤقتاً لحين الانتهاء وتسليم هذا الطلب. يتم تحديث حالة طلبك من المطبخ والشواية تلقائياً دون الحاجة لتحديث الصفحة.
+        🔒 تم قفل شاشة الطلبات مؤقتاً لحين الانتهاء وتسليم هذا الطلب. يتم تحديث حالة طلبك تلقائياً دون الحاجة لتحديث الصفحة.
       </div>
-
-      <!-- خانة الإلغاء مع عداد الـ 10 دقائق -->
       <div class="cancel-box" id="cancelControlBox">
         <div id="countdownTimerText" style="font-weight:800; color:#dc2626; font-size:0.95rem;">
           متاح مسح / إلغاء الطلب خلال: <span id="cancelTimer">10:00</span>
@@ -207,9 +296,19 @@
       </div>
     </div>
 
-    <!-- قائمة المنيو العادية -->
+    <!-- قائمة المنيو الرئيسية -->
     <div id="menuMainArea">
-      <div class="section-title">قائمة الأسماك المتاحة لليوم</div>
+      <!-- شريط البحث -->
+      <div class="search-box-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن نوع السمك أو الصنف..." oninput="filterMenu()">
+      </div>
+
+      <!-- أزرار التصنيفات الديناميكية -->
+      <div class="categories-bar" id="categoriesBar">
+        <button class="category-btn active" onclick="selectCategory('all', this)">الكل 🌊</button>
+      </div>
+
       <div id="fishList">
         <div style="text-align:center; padding:40px; color:#64748b;">جاري تحميل الأسعار والكميات من المحل... 🐟</div>
       </div>
@@ -296,9 +395,9 @@
   </div>
 
   <script>
-    // تم إدراج الرابط الجديد الخاص بك
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtntIdM_riEZn1NaSGFhLzqfBvHHA8jjMDrAyg04snDHsJvC8vjyqmkONis3FNOs4KmQ/exec";
-    const WHATSAPP_NUM = "201XXXXXXXXX";
+    // تم ربط الرابط الجديد المحدث
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5nQd9v11uTeT_3sE0EWcJzTtjJSkiMyprAVZNvi3W8MRk3S3rBhWicb0_djrt2cEYkw/exec";
+    const WHATSAPP_NUM = "201009204577";
 
     let audioCtx = null;
     function getAudioContext() {
@@ -377,12 +476,14 @@
       setTimeout(() => fish.remove(), 750);
     }
 
+    let allMenuItems = [];
     let cart = {};
     let dynamicCookingOptions = [];
     let instapayAccount = "";
     let timeMode = "now";
     let paymentMethod = "cash";
     let cancelTimerInterval = null;
+    let selectedCategory = "all";
 
     function checkLockState() {
       const savedOrder = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
@@ -514,11 +615,26 @@
         const data = await res.json();
         
         if (data.status === "success" && data.menu.length > 0) {
+          allMenuItems = data.menu;
           dynamicCookingOptions = data.cookingOptions || ["مشوي ردة بالخلطة", "مشوي زيت وليمون", "مقلي", "سنجاري"];
           instapayAccount = data.instapayTarget || "رقم إنستاباي المحل";
           
           document.getElementById('instapayTargetText').innerText = instapayAccount;
-          renderMenu(data.menu);
+
+          allMenuItems.forEach(fish => {
+            const isUnavailable = fish.status === "غير متوفر";
+            const isSoldOut = fish.status === "خلص" || (!isUnavailable && fish.remainingQty <= 0);
+            cart[fish.id] = {
+              qty: 0,
+              cooking: fish.defaultCooking,
+              data: fish,
+              maxAvailable: fish.remainingQty,
+              isAvailable: !(isSoldOut || isUnavailable)
+            };
+          });
+
+          renderCategories(data.categories || []);
+          renderMenu(allMenuItems);
         } else {
           container.innerHTML = `<div style="text-align:center; padding:20px; color:red;">تعذر تحميل الأصناف. تأكد من شيت المنيو.</div>`;
         }
@@ -527,23 +643,55 @@
       }
     }
 
-    function renderMenu(menuItems) {
+    function renderCategories(categories) {
+      const catBar = document.getElementById('categoriesBar');
+      catBar.innerHTML = `<button class="category-btn active" onclick="selectCategory('all', this)">الكل 🌊</button>`;
+
+      categories.forEach(cat => {
+        if (cat && cat.trim() !== "") {
+          const btn = document.createElement('button');
+          btn.className = 'category-btn';
+          btn.innerText = cat;
+          btn.onclick = () => selectCategory(cat, btn);
+          catBar.appendChild(btn);
+        }
+      });
+    }
+
+    function selectCategory(cat, btn) {
+      playBubbleSound();
+      selectedCategory = cat;
+      document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterMenu();
+    }
+
+    function filterMenu() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+
+      const filtered = allMenuItems.filter(fish => {
+        const matchesCat = (selectedCategory === "all") || (fish.category === selectedCategory);
+        const matchesQuery = fish.name.toLowerCase().includes(query) || (fish.category && fish.category.toLowerCase().includes(query));
+        return matchesCat && matchesQuery;
+      });
+
+      renderMenu(filtered);
+    }
+
+    function renderMenu(itemsToRender) {
       const container = document.getElementById('fishList');
       container.innerHTML = '';
-      cart = {};
 
-      menuItems.forEach(fish => {
+      if (itemsToRender.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); font-weight:700;">لا توجد أسماك مطابقة لبحثك 🔍</div>`;
+        return;
+      }
+
+      itemsToRender.forEach(fish => {
+        const itemState = cart[fish.id];
+        const isSoldOut = fish.status === "خلص" || (!itemState.isAvailable && fish.status !== "غير متوفر");
         const isUnavailable = fish.status === "غير متوفر";
-        const isSoldOut = fish.status === "خلص" || (!isUnavailable && fish.remainingQty <= 0);
-        const isDisabled = isSoldOut || isUnavailable;
-
-        cart[fish.id] = {
-          qty: 0,
-          cooking: fish.defaultCooking,
-          data: fish,
-          maxAvailable: fish.remainingQty,
-          isAvailable: !isDisabled
-        };
+        const isDisabled = !itemState.isAvailable;
 
         const card = document.createElement('div');
         card.className = `fish-card ${isDisabled ? 'sold-out' : ''}`;
@@ -561,17 +709,18 @@
           <div class="fish-header">
             <div>
               <span class="fish-name">${fish.name}</span>
+              ${fish.category ? `<span class="fish-category-badge">${fish.category}</span>` : ''}
               <div>${statusBadgeHtml}</div>
             </div>
             <div class="fish-price">${fish.price} ج.م / ك</div>
           </div>
           <div class="fish-controls">
             <select class="cooking-select" ${isDisabled ? 'disabled' : ''} onchange="playBubbleSound(); updateCooking(${fish.id}, this.value)">
-              ${dynamicCookingOptions.map(opt => `<option value="${opt}" ${opt === fish.defaultCooking ? 'selected' : ''}>${opt}</option>`).join('')}
+              ${dynamicCookingOptions.map(opt => `<option value="${opt}" ${opt === itemState.cooking ? 'selected' : ''}>${opt}</option>`).join('')}
             </select>
             <div class="qty-controls">
               <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, -0.5, this)">-</button>
-              <span class="qty-display" id="qty-${fish.id}">0</span>
+              <span class="qty-display" id="qty-${fish.id}">${itemState.qty > 0 ? itemState.qty + " ك" : "0"}</span>
               <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, 0.5, this)">+</button>
             </div>
           </div>
@@ -600,7 +749,8 @@
       }
 
       item.qty = newQty;
-      document.getElementById(`qty-${id}`).innerText = newQty > 0 ? newQty + " ك" : "0";
+      const displayElem = document.getElementById(`qty-${id}`);
+      if (displayElem) displayElem.innerText = newQty > 0 ? newQty + " ك" : "0";
       calculateTotal();
     }
 
