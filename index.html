@@ -1,45 +1,484 @@
-function doPost(e) {
-  var lock = LockService.getScriptLock();
-  lock.tryLock(10000);
-  
-  try {
-    var doc = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = doc.getActiveSheet();
-    
-    // إنشاء ترويسة الأعمدة لو الشيت لسه جديد
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow([
-        "تاريخ ووقت الطلب", 
-        "اسم العميل", 
-        "رقم التليفون", 
-        "العنوان / مكان التسليم", 
-        "تفاصيل الطلب", 
-        "إجمالي المبلغ", 
-        "ملاحظات"
-      ]);
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>خير البحر - أسماك السويس الطازجة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0077b6;
+      --primary-dark: #03045e;
+      --accent: #00b4d8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --success: #10b981;
+      --radius: 14px;
     }
-    
-    var data = JSON.parse(e.postData.contents);
-    
-    sheet.appendRow([
-      new Date().toLocaleString("ar-EG", { timeZone: "Africa/Cairo" }),
-      data.name,
-      "'" + data.phone,
-      data.location,
-      data.items,
-      data.total + " ج.م",
-      data.notes || "لا يوجد"
-    ]);
-    
-    return ContentService
-      .createTextOutput(JSON.stringify({ "result": "success" }))
-      .setMimeType(ContentService.MimeType.JSON);
-      
-  } catch (error) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
-  } finally {
-    lock.releaseLock();
-  }
-}
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 90px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+      text-align: center;
+      padding: 30px 15px 25px;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2);
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      padding: 16px;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin: 18px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* كروت الأسماك */
+    .fish-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .fish-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .fish-name {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .fish-price {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .fish-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px dashed #e2e8f0;
+      padding-top: 10px;
+    }
+
+    .cooking-select {
+      flex: 1;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 0.85rem;
+      background: #f1f5f9;
+      color: var(--text);
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      background: #e2e8f0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qty-btn:active {
+      background: #cbd5e1;
+    }
+
+    .qty-display {
+      font-weight: 700;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    /* شريط السلة العائم */
+    .cart-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.06);
+      z-index: 100;
+    }
+
+    .cart-summary {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-total {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .checkout-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    /* المودال */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 200;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 650px;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding: 20px;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 0.95rem;
+    }
+
+    .submit-order-btn {
+      width: 100%;
+      background: var(--success);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🐟 أسماك خير البحر</h1>
+    <p>طازة من غاطس وحلقة السويس إلى بيتك أو سيارتك مباشرة</p>
+  </header>
+
+  <div class="container">
+    <div class="section-title">قائمة الأسماك (السعر للكيلو)</div>
+    <div id="fishList"></div>
+  </div>
+
+  <!-- شريط السلة -->
+  <div class="cart-bar">
+    <div class="cart-summary">
+      <span style="font-size:0.8rem; color:var(--text-muted)">الإجمالي:</span>
+      <span class="cart-total" id="totalAmount">0 ج.م</span>
+    </div>
+    <button class="checkout-btn" onclick="openCheckout()">إتمام الطلب 🛒</button>
+  </div>
+
+  <!-- نافذة إتمام الطلب -->
+  <div class="modal" id="checkoutModal">
+    <div class="modal-content">
+      <div class="modal-title">
+        <span>بيانات التسليم والطلب</span>
+        <button class="close-modal" onclick="closeCheckout()">&times;</button>
+      </div>
+
+      <div id="orderSummaryReview" style="background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:12px; font-size:0.9rem;"></div>
+
+      <div class="form-group">
+        <label>الاسم بالكامل:</label>
+        <input type="text" id="custName" placeholder="مثال: عبد الله أحمد" required>
+      </div>
+
+      <div class="form-group">
+        <label>رقم التليفون:</label>
+        <input type="tel" id="custPhone" placeholder="010XXXXXXXX" required>
+      </div>
+
+      <div class="form-group">
+        <label>مكان الاستلام أو التوصيل:</label>
+        <input type="text" id="custLocation" placeholder="مثال: استلام سيارة أمام المحل (نوع/لون) أو عنوان بالبورتوفيق/الأربعين..." required>
+      </div>
+
+      <div class="form-group">
+        <label>ملاحظات إضافية (اختياري):</label>
+        <textarea id="custNotes" rows="2" placeholder="تجهيز سبايسي، تسوية زيادة، وقت الاستلام..."></textarea>
+      </div>
+
+      <button class="submit-order-btn" id="submitBtn" onclick="sendOrder()">تأكيد وإرسال الطلب ✅</button>
+    </div>
+  </div>
+
+  <script>
+    // ضع هنا رابط Web App بعد نشر الـ Apps Script
+    const SCRIPT_URL = "YOUR_SCRIPT_URL_HERE"; 
+    const WHATSAPP_NUM = "201XXXXXXXXX"; // رقم واتساب المحل لاستقبال الطلب
+
+    // أشهر أسماك السويس والأسعار التقريبية للكيلو
+    const fishData = [
+      { id: 1, name: "سمك شعور سويسي", price: 280, defaultCooking: "سنجاري في الفرن" },
+      { id: 2, name: "سمك دراك (كنعد)", price: 260, defaultCooking: "جزل مقلي" },
+      { id: 3, name: "جمبري سويسي (وسط/كبير)", price: 380, defaultCooking: "مشوي بترفلاي" },
+      { id: 4, name: "بربوني سويسي أحمر", price: 220, defaultCooking: "مقلي مقرمش" },
+      { id: 5, name: "سمك سهلية سويسية", price: 240, defaultCooking: "مشوي ردة" },
+      { id: 6, name: "سمك حارت (قنال)", price: 160, defaultCooking: "مقلي" },
+      { id: 7, name: "سمك سيجان", price: 150, defaultCooking: "مشوي زيت وليمون" },
+      { id: 8, name: "سمك لوت سويسي", price: 230, defaultCooking: "طاجن صلصة بالبطاطس" },
+      { id: 9, name: "سمك بوري طازة", price: 160, defaultCooking: "مشوي ردة بالخلطة" },
+      { id: 10, name: "سبيط بلدي طازة", price: 340, defaultCooking: "طاجن أبيض كريمة أو مقلي" }
+    ];
+
+    const cookingOptions = [
+      "مشوي ردة بالخلطة السويسي",
+      "مشوي زيت وليمون",
+      "مقلي مقرمش",
+      "سنجاري بالفرن",
+      "طاجن صيادية / صلصة",
+      "طازج (تنظيف فقط بدون طهي)"
+    ];
+
+    let cart = {};
+
+    function renderFishList() {
+      const container = document.getElementById('fishList');
+      container.innerHTML = '';
+
+      fishData.forEach(fish => {
+        cart[fish.id] = { qty: 0, cooking: fish.defaultCooking, data: fish };
+
+        const card = document.createElement('div');
+        card.className = 'fish-card';
+        card.innerHTML = `
+          <div class="fish-header">
+            <span class="fish-name">${fish.name}</span>
+            <span class="fish-price">${fish.price} ج.م / كجم</span>
+          </div>
+          <div class="fish-controls">
+            <select class="cooking-select" onchange="updateCooking(${fish.id}, this.value)">
+              ${cookingOptions.map(opt => `<option value="${opt}" ${opt === fish.defaultCooking ? 'selected' : ''}>${opt}</option>`).join('')}
+            </select>
+            <div class="qty-controls">
+              <button class="qty-btn" onclick="changeQty(${fish.id}, -0.5)">-</button>
+              <span class="qty-display" id="qty-${fish.id}">0</span>
+              <button class="qty-btn" onclick="changeQty(${fish.id}, 0.5)">+</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function changeQty(id, delta) {
+      let current = cart[id].qty;
+      let updated = Math.max(0, current + delta);
+      cart[id].qty = updated;
+      document.getElementById(`qty-${id}`).innerText = updated > 0 ? updated + " ك" : "0";
+      calculateTotal();
+    }
+
+    function updateCooking(id, method) {
+      cart[id].cooking = method;
+    }
+
+    function calculateTotal() {
+      let total = 0;
+      for (let id in cart) {
+        total += cart[id].qty * cart[id].data.price;
+      }
+      document.getElementById('totalAmount').innerText = `${total} ج.م`;
+      return total;
+    }
+
+    function openCheckout() {
+      const total = calculateTotal();
+      if (total === 0) {
+        alert("من فضلك اختر بعض الأسماك أولاً!");
+        return;
+      }
+
+      let summaryHtml = "<strong>الأصناف المختارة:</strong><br>";
+      for (let id in cart) {
+        if (cart[id].qty > 0) {
+          summaryHtml += `• ${cart[id].data.name} (${cart[id].qty} كجم) - ${cart[id].cooking}<br>`;
+        }
+      }
+      document.getElementById('orderSummaryReview').innerHTML = summaryHtml;
+      document.getElementById('checkoutModal').style.display = 'flex';
+    }
+
+    function closeCheckout() {
+      document.getElementById('checkoutModal').style.display = 'none';
+    }
+
+    async function sendOrder() {
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const location = document.getElementById('custLocation').value.trim();
+      const notes = document.getElementById('custNotes').value.trim();
+      const total = calculateTotal();
+
+      if (!name || !phone || !location) {
+        alert("يرجى كتابة الاسم ورقم الهاتف ومكان التسليم!");
+        return;
+      }
+
+      let itemsSummary = [];
+      for (let id in cart) {
+        if (cart[id].qty > 0) {
+          itemsSummary.push(`${cart[id].data.name} [${cart[id].qty} كجم - ${cart[id].cooking}]`);
+        }
+      }
+
+      const payload = {
+        name: name,
+        phone: phone,
+        location: location,
+        items: itemsSummary.join(" | "),
+        total: total,
+        notes: notes
+      };
+
+      const btn = document.getElementById('submitBtn');
+      btn.innerText = "جاري إرسال الطلب...";
+      btn.disabled = true;
+
+      try {
+        if (SCRIPT_URL && SCRIPT_URL !== "YOUR_SCRIPT_URL_HERE") {
+          await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        }
+
+        // إمكانية إرسال نسخة واتساب مباشرة
+        const waText = encodeURIComponent(
+          `*طلب جديد من خير البحر 🐟*\n` +
+          `*الاسم:* ${name}\n` +
+          `*الهاتف:* ${phone}\n` +
+          `*المكان:* ${location}\n` +
+          `*الطلب:* \n${itemsSummary.join("\n")}\n` +
+          `*الإجمالي:* ${total} ج.م\n` +
+          `*ملاحظات:* ${notes || 'لا يوجد'}`
+        );
+
+        alert("تم استلام طلبك بنجاح وسيبدأ تجهيزه طازجاً فوراً!");
+        window.location.href = `https://wa.me/${WHATSAPP_NUM}?text=${waText}`;
+
+      } catch (err) {
+        alert("حدث خطأ أثناء الاتصال، يمكنك إرسال الطلب عبر الواتساب مباشرة.");
+      } finally {
+        btn.innerText = "تأكيد وإرسال الطلب ✅";
+        btn.disabled = false;
+        closeCheckout();
+      }
+    }
+
+    renderFishList();
+  </script>
+</body>
+</html>
