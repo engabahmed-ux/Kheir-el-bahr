@@ -3,100 +3,148 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>خير البحر - أسماك السويس الطازجة</title>
+  <title>خير البحر | للأسماك الطازجة وفواكه البحر بالسويس</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #0077b6;
-      --primary-dark: #03045e;
-      --accent: #00b4d8;
-      --bg: #f8fafc;
+      --deep-ocean: #051626;
+      --ocean-blue: #0b2545;
+      --sea-cyan: #38bdf8;
+      --aqua-glow: #0ea5e9;
+      --bg: #f0f7fb;
       --card-bg: #ffffff;
-      --text: #1e293b;
+      --text-main: #0f172a;
       --text-muted: #64748b;
-      --success: #10b981;
-      --radius: 14px;
+      --accent-green: #10b981;
+      --danger-red: #ef4444;
+      --warning-orange: #f97316;
+      --radius: 16px;
+      --shadow: 0 4px 20px -2px rgba(11, 37, 69, 0.08);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Cairo', sans-serif;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding-bottom: 90px;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+    body { background-color: var(--bg); color: var(--text-main); padding-bottom: 110px; }
 
     header {
-      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      background: radial-gradient(circle at center, #0e3860 0%, var(--deep-ocean) 100%);
       color: white;
       text-align: center;
-      padding: 30px 15px 25px;
-      border-bottom-left-radius: 24px;
-      border-bottom-right-radius: 24px;
-      box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2);
+      padding: 26px 16px 20px;
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
+      box-shadow: 0 8px 30px rgba(5, 22, 38, 0.4);
+    }
+
+    .logo-img {
+      width: 125px;
+      height: 125px;
+      object-fit: cover;
+      border-radius: 22px;
+      border: 3px solid rgba(56, 189, 248, 0.5);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      margin-bottom: 10px;
+      background: #0b2545;
     }
 
     header h1 {
       font-size: 1.8rem;
-      font-weight: 800;
-      margin-bottom: 6px;
+      font-weight: 900;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
     }
 
-    header p {
-      font-size: 0.95rem;
-      opacity: 0.9;
+    .sub-slogan {
+      display: inline-block;
+      font-size: 0.9rem;
+      color: var(--sea-cyan);
+      font-weight: 700;
+      margin-top: 4px;
+      border-top: 1px solid rgba(56, 189, 248, 0.25);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 2px 12px;
     }
 
-    .container {
-      max-width: 650px;
-      margin: auto;
-      padding: 16px;
+    .container { max-width: 650px; margin: auto; padding: 16px 14px; }
+
+    .badge-today {
+      background: rgba(14, 165, 233, 0.12);
+      color: #0284c7;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 12px;
     }
 
     .section-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--primary-dark);
-      margin: 18px 0 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--ocean-blue);
+      margin-bottom: 12px;
     }
 
-    /* كروت الأسماك */
     .fish-card {
       background: var(--card-bg);
       border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-      border: 1px solid #e2e8f0;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+      border: 1px solid #e2edf5;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .fish-card.sold-out {
+      opacity: 0.55;
+      background: #f1f5f9;
+      border: 1px dashed #cbd5e1;
     }
 
     .fish-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
     }
 
     .fish-name {
-      font-weight: 700;
-      font-size: 1.05rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--ocean-blue);
+    }
+
+    .stock-badge-low {
+      display: inline-block;
+      background: #ffedd5;
+      color: var(--warning-orange);
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-top: 4px;
     }
 
     .fish-price {
-      font-weight: 700;
-      color: var(--primary);
+      font-weight: 800;
+      color: #0284c7;
       font-size: 1rem;
+      background: #e0f2fe;
+      padding: 4px 10px;
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .badge-status {
+      display: inline-block;
+      font-size: 0.8rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      margin-top: 3px;
     }
 
     .fish-controls {
@@ -104,18 +152,20 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      border-top: 1px dashed #e2e8f0;
-      padding-top: 10px;
+      border-top: 1px dashed #e2edf5;
+      padding-top: 12px;
     }
 
     .cooking-select {
       flex: 1;
-      padding: 6px 10px;
-      border-radius: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
       border: 1px solid #cbd5e1;
       font-size: 0.85rem;
-      background: #f1f5f9;
-      color: var(--text);
+      background: #f8fafc;
+      color: var(--text-main);
+      font-weight: 600;
+      outline: none;
     }
 
     .qty-controls {
@@ -125,73 +175,53 @@
     }
 
     .qty-btn {
-      width: 32px;
-      height: 32px;
-      background: #e2e8f0;
+      width: 36px;
+      height: 36px;
+      background: #e2edf5;
+      color: var(--ocean-blue);
       border: none;
-      border-radius: 8px;
-      font-size: 1.1rem;
+      border-radius: 10px;
+      font-size: 1.2rem;
       font-weight: bold;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    .qty-btn:active {
-      background: #cbd5e1;
-    }
+    .qty-btn:disabled { cursor: not-allowed; opacity: 0.4; }
+    .qty-display { font-weight: 800; min-width: 32px; text-align: center; font-size: 0.95rem; }
 
-    .qty-display {
-      font-weight: 700;
-      min-width: 24px;
-      text-align: center;
-    }
-
-    /* شريط السلة العائم */
     .cart-bar {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: white;
-      border-top: 1px solid #e2e8f0;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-top: 2px solid #e2edf5;
       padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
       z-index: 100;
     }
 
-    .cart-summary {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .cart-total {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--primary-dark);
-    }
+    .cart-total { font-size: 1.3rem; font-weight: 900; color: var(--ocean-blue); }
 
     .checkout-btn {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--aqua-glow), #0284c7);
       color: white;
       border: none;
-      padding: 10px 22px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.95rem;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1rem;
       cursor: pointer;
     }
 
-    /* المودال */
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(5, 22, 38, 0.65);
+      backdrop-filter: blur(4px);
       z-index: 200;
       align-items: flex-end;
       justify-content: center;
@@ -201,57 +231,53 @@
       background: white;
       width: 100%;
       max-width: 650px;
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
-      padding: 20px;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 24px;
       max-height: 85vh;
       overflow-y: auto;
     }
 
     .modal-title {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 800;
-      margin-bottom: 15px;
+      color: var(--ocean-blue);
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .close-modal {
-      background: none;
+      background: #f1f5f9;
       border: none;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
       cursor: pointer;
     }
 
-    .form-group {
-      margin-bottom: 12px;
-    }
-
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 5px;
-      font-size: 0.9rem;
-    }
-
+    .form-group { margin-bottom: 13px; }
+    .form-group label { display: block; font-weight: 700; margin-bottom: 5px; font-size: 0.9rem; color: #334155; }
     .form-group input, .form-group textarea {
       width: 100%;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 10px 12px;
+      border-radius: 10px;
       border: 1px solid #cbd5e1;
       font-size: 0.95rem;
+      font-family: inherit;
     }
 
     .submit-order-btn {
       width: 100%;
-      background: var(--success);
+      background: linear-gradient(135deg, #10b981, #059669);
       color: white;
       border: none;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      font-weight: 700;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 1.15rem;
+      font-weight: 800;
       margin-top: 10px;
       cursor: pointer;
     }
@@ -260,37 +286,39 @@
 <body>
 
   <header>
-    <h1>🐟 أسماك خير البحر</h1>
-    <p>طازة من غاطس وحلقة السويس إلى بيتك أو سيارتك مباشرة</p>
+    <img src="logo.png" alt="خير البحر" class="logo-img" onerror="this.style.display='none'">
+    <h1>خَيْر البَحْر</h1>
+    <div class="sub-slogan">للأسماك الطازجة وفواكه البحر</div>
   </header>
 
   <div class="container">
-    <div class="section-title">قائمة الأسماك (السعر للكيلو)</div>
-    <div id="fishList"></div>
+    <div class="badge-today">🌊 طازة يومياً من غاطس وحلقة السويس</div>
+    <div class="section-title">قائمة الأسماك والكميات المتاحة لليوم</div>
+    <div id="fishList">
+      <div style="text-align:center; padding:40px; color:#64748b;">جاري تحميل أسعار وكميات اليوم من المحل... 🐟</div>
+    </div>
   </div>
 
-  <!-- شريط السلة -->
   <div class="cart-bar">
-    <div class="cart-summary">
-      <span style="font-size:0.8rem; color:var(--text-muted)">الإجمالي:</span>
-      <span class="cart-total" id="totalAmount">0 ج.م</span>
+    <div>
+      <span style="font-size:0.8rem; color:var(--text-muted); font-weight: 600;">الإجمالي:</span>
+      <div class="cart-total" id="totalAmount">0 ج.م</div>
     </div>
     <button class="checkout-btn" onclick="openCheckout()">إتمام الطلب 🛒</button>
   </div>
 
-  <!-- نافذة إتمام الطلب -->
   <div class="modal" id="checkoutModal">
     <div class="modal-content">
       <div class="modal-title">
-        <span>بيانات التسليم والطلب</span>
+        <span>تأكيد بيانات الاستلام 📋</span>
         <button class="close-modal" onclick="closeCheckout()">&times;</button>
       </div>
 
-      <div id="orderSummaryReview" style="background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:12px; font-size:0.9rem;"></div>
+      <div id="orderSummaryReview" style="background:#f0f7fb; border:1px solid #bae6fd; padding:12px; border-radius:10px; margin-bottom:14px; font-size:0.92rem; line-height: 1.6;"></div>
 
       <div class="form-group">
         <label>الاسم بالكامل:</label>
-        <input type="text" id="custName" placeholder="مثال: عبد الله أحمد" required>
+        <input type="text" id="custName" placeholder="مثال: أحمد محمود" required>
       </div>
 
       <div class="form-group">
@@ -299,71 +327,98 @@
       </div>
 
       <div class="form-group">
-        <label>مكان الاستلام أو التوصيل:</label>
-        <input type="text" id="custLocation" placeholder="مثال: استلام سيارة أمام المحل (نوع/لون) أو عنوان بالبورتوفيق/الأربعين..." required>
+        <label>الوقت المطلوب الاستلام فيه:</label>
+        <input type="text" id="custDeliveryTime" placeholder="مثال: الساعة 5 مساءً" required>
       </div>
 
       <div class="form-group">
         <label>ملاحظات إضافية (اختياري):</label>
-        <textarea id="custNotes" rows="2" placeholder="تجهيز سبايسي، تسوية زيادة، وقت الاستلام..."></textarea>
+        <textarea id="custNotes" rows="2" placeholder="عايز عيش زيادة، تسوية زيادة، سبايسي..."></textarea>
       </div>
 
-      <button class="submit-order-btn" id="submitBtn" onclick="sendOrder()">تأكيد وإرسال الطلب ✅</button>
+      <button class="submit-order-btn" id="submitBtn" onclick="sendOrder()">تأكيد وإرسال الطلب للمحل ✅</button>
     </div>
   </div>
 
   <script>
-    // ضع هنا رابط Web App بعد نشر الـ Apps Script
-    const SCRIPT_URL = "YOUR_SCRIPT_URL_HERE"; 
-    const WHATSAPP_NUM = "201XXXXXXXXX"; // رقم واتساب المحل لاستقبال الطلب
-
-    // أشهر أسماك السويس والأسعار التقريبية للكيلو
-    const fishData = [
-      { id: 1, name: "سمك شعور سويسي", price: 280, defaultCooking: "سنجاري في الفرن" },
-      { id: 2, name: "سمك دراك (كنعد)", price: 260, defaultCooking: "جزل مقلي" },
-      { id: 3, name: "جمبري سويسي (وسط/كبير)", price: 380, defaultCooking: "مشوي بترفلاي" },
-      { id: 4, name: "بربوني سويسي أحمر", price: 220, defaultCooking: "مقلي مقرمش" },
-      { id: 5, name: "سمك سهلية سويسية", price: 240, defaultCooking: "مشوي ردة" },
-      { id: 6, name: "سمك حارت (قنال)", price: 160, defaultCooking: "مقلي" },
-      { id: 7, name: "سمك سيجان", price: 150, defaultCooking: "مشوي زيت وليمون" },
-      { id: 8, name: "سمك لوت سويسي", price: 230, defaultCooking: "طاجن صلصة بالبطاطس" },
-      { id: 9, name: "سمك بوري طازة", price: 160, defaultCooking: "مشوي ردة بالخلطة" },
-      { id: 10, name: "سبيط بلدي طازة", price: 340, defaultCooking: "طاجن أبيض كريمة أو مقلي" }
-    ];
+    // تم إدراج رابط Web App الخاص بك
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyHZqOqAMSdYv6QqCzZpkWNSNvsKNQQ_sm0YV34-vWkRuCIFvjWF_smAIepP4CN6bFCPA/exec"; 
+    const WHATSAPP_NUM = "201XXXXXXXXX"; // ضع رقم واتساب المحل هنا
 
     const cookingOptions = [
-      "مشوي ردة بالخلطة السويسي",
+      "مشوي ردة",
       "مشوي زيت وليمون",
       "مقلي مقرمش",
-      "سنجاري بالفرن",
-      "طاجن صيادية / صلصة",
-      "طازج (تنظيف فقط بدون طهي)"
+      "سنجاري في الفرن",
+      "مشوي باترفلاي",
+      "طاجن صيادية"
     ];
 
     let cart = {};
 
-    function renderFishList() {
+    async function loadMenu() {
+      const container = document.getElementById('fishList');
+      try {
+        const res = await fetch(SCRIPT_URL);
+        const data = await res.json();
+        
+        if (data.status === "success" && data.menu.length > 0) {
+          renderMenu(data.menu);
+        } else {
+          container.innerHTML = `<div style="text-align:center; padding:20px; color:red;">تعذر تحميل الأصناف. تأكد من إدخال البيانات في شيت المنيو اليومي.</div>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div style="text-align:center; padding:20px; color:red;">حدث خطأ في الاتصال بالشيت.</div>`;
+      }
+    }
+
+    function renderMenu(menuItems) {
       const container = document.getElementById('fishList');
       container.innerHTML = '';
+      cart = {};
 
-      fishData.forEach(fish => {
-        cart[fish.id] = { qty: 0, cooking: fish.defaultCooking, data: fish };
+      menuItems.forEach(fish => {
+        const isUnavailable = fish.status === "غير متوفر";
+        const isSoldOut = fish.status === "خلص" || (!isUnavailable && fish.remainingQty <= 0);
+        const isDisabled = isSoldOut || isUnavailable;
+        
+        cart[fish.id] = {
+          qty: 0,
+          cooking: fish.defaultCooking,
+          data: fish,
+          maxAvailable: fish.remainingQty,
+          isAvailable: !isDisabled
+        };
 
         const card = document.createElement('div');
-        card.className = 'fish-card';
+        card.className = `fish-card ${isDisabled ? 'sold-out' : ''}`;
+        
+        // شارة الحالة
+        let statusBadgeHtml = '';
+        if (isUnavailable) {
+          statusBadgeHtml = `<span class="badge-status" style="background:#f1f5f9; color:#64748b;">غير متوفر اليوم 🚫</span>`;
+        } else if (isSoldOut) {
+          statusBadgeHtml = `<span class="badge-status" style="background:#fee2e2; color:#ef4444;">نفد لليوم ❌</span>`;
+        } else if (fish.remainingQty <= 5) {
+          statusBadgeHtml = `<div class="stock-badge-low">⚠️ متبقي ${fish.remainingQty} كجم فقط لليوم!</div>`;
+        }
+
         card.innerHTML = `
           <div class="fish-header">
-            <span class="fish-name">${fish.name}</span>
-            <span class="fish-price">${fish.price} ج.م / كجم</span>
+            <div>
+              <span class="fish-name">${fish.name}</span>
+              <div>${statusBadgeHtml}</div>
+            </div>
+            <div class="fish-price">${fish.price} ج.م / ك</div>
           </div>
           <div class="fish-controls">
-            <select class="cooking-select" onchange="updateCooking(${fish.id}, this.value)">
+            <select class="cooking-select" ${isDisabled ? 'disabled' : ''} onchange="updateCooking(${fish.id}, this.value)">
               ${cookingOptions.map(opt => `<option value="${opt}" ${opt === fish.defaultCooking ? 'selected' : ''}>${opt}</option>`).join('')}
             </select>
             <div class="qty-controls">
-              <button class="qty-btn" onclick="changeQty(${fish.id}, -0.5)">-</button>
+              <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, -0.5)">-</button>
               <span class="qty-display" id="qty-${fish.id}">0</span>
-              <button class="qty-btn" onclick="changeQty(${fish.id}, 0.5)">+</button>
+              <button class="qty-btn" ${isDisabled ? 'disabled' : ''} onclick="changeQty(${fish.id}, 0.5)">+</button>
             </div>
           </div>
         `;
@@ -372,10 +427,19 @@
     }
 
     function changeQty(id, delta) {
-      let current = cart[id].qty;
-      let updated = Math.max(0, current + delta);
-      cart[id].qty = updated;
-      document.getElementById(`qty-${id}`).innerText = updated > 0 ? updated + " ك" : "0";
+      const item = cart[id];
+      if (!item.isAvailable) return;
+
+      let newQty = item.qty + delta;
+      if (newQty < 0) newQty = 0;
+
+      if (newQty > item.maxAvailable) {
+        alert(`عفواً، الكمية المتبقية لليوم من [${item.data.name}] هي ${item.maxAvailable} كجم فقط!`);
+        return;
+      }
+
+      item.qty = newQty;
+      document.getElementById(`qty-${id}`).innerText = newQty > 0 ? newQty + " ك" : "0";
       calculateTotal();
     }
 
@@ -393,8 +457,7 @@
     }
 
     function openCheckout() {
-      const total = calculateTotal();
-      if (total === 0) {
+      if (calculateTotal() === 0) {
         alert("من فضلك اختر بعض الأسماك أولاً!");
         return;
       }
@@ -402,7 +465,7 @@
       let summaryHtml = "<strong>الأصناف المختارة:</strong><br>";
       for (let id in cart) {
         if (cart[id].qty > 0) {
-          summaryHtml += `• ${cart[id].data.name} (${cart[id].qty} كجم) - ${cart[id].cooking}<br>`;
+          summaryHtml += `• ${cart[id].qty} كجم ${cart[id].data.name} (${cart[id].cooking})<br>`;
         }
       }
       document.getElementById('orderSummaryReview').innerHTML = summaryHtml;
@@ -416,69 +479,73 @@
     async function sendOrder() {
       const name = document.getElementById('custName').value.trim();
       const phone = document.getElementById('custPhone').value.trim();
-      const location = document.getElementById('custLocation').value.trim();
+      const deliveryTime = document.getElementById('custDeliveryTime').value.trim();
       const notes = document.getElementById('custNotes').value.trim();
       const total = calculateTotal();
 
-      if (!name || !phone || !location) {
-        alert("يرجى كتابة الاسم ورقم الهاتف ومكان التسليم!");
+      if (!name || !phone || !deliveryTime) {
+        alert("يرجى إدخال الاسم، رقم الهاتف، والوقت المطلوب للاستلام!");
         return;
       }
 
-      let itemsSummary = [];
+      let itemsDetailsList = [];
+      let cartItems = [];
+
       for (let id in cart) {
         if (cart[id].qty > 0) {
-          itemsSummary.push(`${cart[id].data.name} [${cart[id].qty} كجم - ${cart[id].cooking}]`);
+          itemsDetailsList.push(`${cart[id].qty} كيلو سمك ${cart[id].data.name} (${cart[id].cooking})`);
+          cartItems.push({
+            id: cart[id].data.id,
+            name: cart[id].data.name,
+            qty: cart[id].qty
+          });
         }
       }
 
       const payload = {
         name: name,
         phone: phone,
-        location: location,
-        items: itemsSummary.join(" | "),
-        total: total,
+        deliveryTime: deliveryTime,
+        itemsDetails: itemsDetailsList.join(" + "),
+        cartItems: cartItems,
         notes: notes
       };
 
       const btn = document.getElementById('submitBtn');
-      btn.innerText = "جاري إرسال الطلب...";
+      btn.innerText = "جاري تأكيد وخصم الطلب...";
       btn.disabled = true;
 
       try {
-        if (SCRIPT_URL && SCRIPT_URL !== "YOUR_SCRIPT_URL_HERE") {
-          await fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-        }
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
 
-        // إمكانية إرسال نسخة واتساب مباشرة
         const waText = encodeURIComponent(
           `*طلب جديد من خير البحر 🐟*\n` +
           `*الاسم:* ${name}\n` +
           `*الهاتف:* ${phone}\n` +
-          `*المكان:* ${location}\n` +
-          `*الطلب:* \n${itemsSummary.join("\n")}\n` +
-          `*الإجمالي:* ${total} ج.م\n` +
+          `*وقت الاستلام:* ${deliveryTime}\n` +
+          `*تفاصيل الطلب:* \n${itemsDetailsList.join("\n")}\n` +
+          `*الإجمالي التقديري:* ${total} ج.م\n` +
           `*ملاحظات:* ${notes || 'لا يوجد'}`
         );
 
-        alert("تم استلام طلبك بنجاح وسيبدأ تجهيزه طازجاً فوراً!");
+        alert("تم استلام طلبك بنجاح وحجز الكمية لك فوراً!");
         window.location.href = `https://wa.me/${WHATSAPP_NUM}?text=${waText}`;
 
       } catch (err) {
-        alert("حدث خطأ أثناء الاتصال، يمكنك إرسال الطلب عبر الواتساب مباشرة.");
+        alert("حدث خطأ أثناء الإرسال، سيتم تحويلك للواتساب.");
       } finally {
-        btn.innerText = "تأكيد وإرسال الطلب ✅";
+        btn.innerText = "تأكيد وإرسال الطلب للمحل ✅";
         btn.disabled = false;
         closeCheckout();
       }
     }
 
-    renderFishList();
+    loadMenu();
   </script>
 </body>
 </html>
