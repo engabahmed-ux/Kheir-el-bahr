@@ -27,7 +27,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
     body { background-color: var(--bg); color: var(--text-main); padding-bottom: 70px; overflow-x: hidden; position: relative; }
 
-    /* تأثير تموج الماء عند النقر */
     .click-water-ripple {
       position: fixed; border-radius: 50%; border: 2px solid rgba(56, 189, 248, 0.7);
       background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, rgba(56, 189, 248, 0.05) 60%, transparent 100%);
@@ -40,9 +39,7 @@
       100% { width: 140px; height: 140px; opacity: 0; transform: translate(-50%, -50%) scale(1); }
     }
 
-    /* ======================================================== */
-    /* زر الإدارة: ترس أنيق وصغير في أقصى اليسار من فوق        */
-    /* ======================================================== */
+    /* زر الإدارة: ترس أنيق وصغير في أقصى اليسار من فوق */
     .admin-gear-top-btn {
       position: absolute;
       top: 16px;
@@ -190,9 +187,7 @@
       100% { transform: rotate(-8deg) scaleY(1.05); }
     }
 
-    /* ======================================================== */
-    /* شارة المطور الثابتة في الأسفل تماماً على اليمين           */
-    /* ======================================================== */
+    /* شارة المطور الثابتة في الأسفل يميناً */
     .site-footer-wrapper {
       max-width: 650px;
       margin: 40px auto 16px;
@@ -220,75 +215,39 @@
     .dev-badge-name { font-size: 0.82rem; font-weight: 800; color: #f8fafc; }
     .dev-badge-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; background: #0b2545; }
 
-    /* ======================================================== */
-    /* موجة الشاطئ السينمائية البطيئة (Realistic Beach Surf)   */
-    /* ======================================================== */
+    /* موجة الشاطئ الواقعية البطيئة */
     .realistic-wave-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 99990;
-      display: none;
-      overflow: hidden;
+      position: fixed; inset: 0; pointer-events: none; z-index: 99990; display: none; overflow: hidden;
     }
-    .wave-stage-active {
-      display: block;
-    }
+    .wave-stage-active { display: block; }
     .beach-surf-layer {
-      position: absolute;
-      left: -15%;
-      width: 130%;
-      height: 160%;
-      bottom: -160%;
-      border-top-left-radius: 48% 28%;
-      border-top-right-radius: 52% 32%;
+      position: absolute; left: -15%; width: 130%; height: 160%; bottom: -160%;
+      border-top-left-radius: 48% 28%; border-top-right-radius: 52% 32%;
     }
-    /* طبقة زبد البحر والرغوة البيضاء */
     .surf-foam-front {
       background: radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.95) 0%, rgba(224, 242, 254, 0.8) 35%, transparent 70%);
-      box-shadow: 0 -25px 60px rgba(255, 255, 255, 0.85);
-      z-index: 3;
+      box-shadow: 0 -25px 60px rgba(255, 255, 255, 0.85); z-index: 3;
     }
-    /* جسم الموجة التيركوازي النقي */
     .surf-water-mid {
       background: linear-gradient(180deg, rgba(56, 189, 248, 0.9) 0%, rgba(14, 165, 233, 0.95) 30%, #0369a1 75%);
-      box-shadow: 0 -15px 40px rgba(56, 189, 248, 0.6);
-      z-index: 2;
+      box-shadow: 0 -15px 40px rgba(56, 189, 248, 0.6); z-index: 2;
     }
-    /* عمق البحر الكحلي */
     .surf-deep-back {
-      background: linear-gradient(180deg, #0b2545 0%, #051626 100%);
-      z-index: 1;
+      background: linear-gradient(180deg, #0b2545 0%, #051626 100%); z-index: 1;
     }
 
     .wave-stage-active .beach-surf-layer {
       animation: smoothShoreSurf 2.4s cubic-bezier(0.25, 0.85, 0.35, 1) forwards;
     }
-    .wave-stage-active .surf-water-mid {
-      animation-delay: 0.12s;
-    }
-    .wave-stage-active .surf-deep-back {
-      animation-delay: 0.22s;
-    }
+    .wave-stage-active .surf-water-mid { animation-delay: 0.12s; }
+    .wave-stage-active .surf-deep-back { animation-delay: 0.22s; }
 
     @keyframes smoothShoreSurf {
-      0% {
-        transform: translateY(0) scaleY(0.7);
-        opacity: 0;
-      }
-      25% {
-        opacity: 1;
-      }
-      50% {
-        transform: translateY(-68%) scaleY(1.05);
-      }
-      80% {
-        opacity: 0.95;
-      }
-      100% {
-        transform: translateY(-135%) scaleY(1.15);
-        opacity: 0;
-      }
+      0% { transform: translateY(0) scaleY(0.7); opacity: 0; }
+      25% { opacity: 1; }
+      50% { transform: translateY(-68%) scaleY(1.05); }
+      80% { opacity: 0.95; }
+      100% { transform: translateY(-135%) scaleY(1.15); opacity: 0; }
     }
 
     /* نافذة المطور */
@@ -477,7 +436,7 @@
 </head>
 <body>
 
-  <!-- زر الاتصال الهاتفي الفخم والمنسق -->
+  <!-- زر الاتصال الهاتفي الفخم -->
   <a href="tel:01009204577" class="styled-phone-call-btn">
     <div class="phone-icon-bubble">📞</div>
     <span class="phone-num-text">01009204577</span>
@@ -530,7 +489,6 @@
 
   <!-- هيدر الصفحة وبداخله علامة الترس في أقصى اليسار فوق تماماً -->
   <header onclick="handleHeaderClick(event)">
-    <!-- زر الإدارة: ترس صغير ومدمج بأقصى اليسار فوق -->
     <div class="admin-gear-top-btn" onclick="promptAdminLogin(event)" title="لوحة الإدارة">
       ⚙️
     </div>
@@ -593,7 +551,7 @@
     </div>
   </div>
 
-  <!-- فوتر الموقع الطبيعي وبه شارة المطور الثابتة في الأسفل تماماً على اليمين -->
+  <!-- فوتر الموقع الطبيعي وبه شارة المطور الثابتة في الأسفل يميناً -->
   <div class="site-footer-wrapper">
     <div class="dev-badge-marine" onclick="triggerRealisticBeachWave()">
       <span class="dev-dot"></span>
@@ -679,7 +637,6 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPdFJzHQFe1_q-wKYm8dzoMesp02kbPAAgLVKzLVjJb0Xa1fuv16F62rV9LO08nNeaFw/exec";
     const WHATSAPP_NUM = "201009204577";
 
-    // منع إعادة تحميل الهيدر إذا كان النقر على زر الترس
     function handleHeaderClick(e) {
       if (e.target.closest('.admin-gear-top-btn')) return;
       playBubbleSound();
@@ -771,15 +728,11 @@
       return audioCtx;
     }
 
-    // =======================================================
-    // صوت حفيف وهدير أمواج البحر الواقعية على الشاطئ
-    // =======================================================
     function playRealisticOceanSurfSound() {
       try {
         const ctx = getAudioContext();
         const now = ctx.currentTime;
 
-        // ضجيج حفيف زبد البحر الطبيعي
         const bufferSize = ctx.sampleRate * 2.2;
         const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
         const data = buffer.getChannelData(0);
@@ -795,7 +748,6 @@
         const surfSource = ctx.createBufferSource();
         surfSource.buffer = buffer;
 
-        // فلتر لتجسيد تلاطم الأمواج وتراجعها على الشاطئ
         const surfFilter = ctx.createBiquadFilter();
         surfFilter.type = 'lowpass';
         surfFilter.frequency.setValueAtTime(220, now);
@@ -814,7 +766,6 @@
         surfSource.start(now);
         surfSource.stop(now + 2.2);
 
-        // نغمة رنين محيطي عميق متزامنة
         const subOsc = ctx.createOscillator();
         const subGain = ctx.createGain();
         subOsc.type = 'sine';
@@ -894,7 +845,6 @@
       }, 900);
     }
 
-    // تشغيل موجة الشاطئ الواقعية
     function triggerRealisticBeachWave() {
       playRealisticOceanSurfSound();
       const waveOverlay = document.getElementById('realisticBeachWave');
@@ -911,34 +861,70 @@
       document.getElementById('devModal').style.display = 'none';
     }
 
-    // لوحة إدارة الطلبات البحرية الحية
+    // =======================================================
+    // لوحة إدارة الطلبات البحرية مع قفل المحاولات بعد 5 مرات
+    // =======================================================
     let adminAuthPassword = localStorage.getItem("kheir_admin_auth") || "";
     let adminInterval = null;
 
     async function promptAdminLogin(event) {
       if (event) event.stopPropagation();
+
+      // فحص إذا كانت الإدارة محظورة بسبب 5 محاولات فاشلة
+      const lockUntil = Number(localStorage.getItem("admin_lock_until") || 0);
+      const currentTime = Date.now();
+
+      if (lockUntil && currentTime < lockUntil) {
+        const remainingMinutes = Math.ceil((lockUntil - currentTime) / (60 * 1000));
+        await showCustomAlert(
+          `تم قفل محاولات تسجيل الدخول بعد 5 محاولات خاطئة! يرجى الانتظار لمدة ${remainingMinutes} دقيقة والمحاولة لاحقاً.`,
+          "الصفحة مقفولة 🔒",
+          "⏳"
+        );
+        return;
+      }
+
       const pass = await showCustomPrompt("أدخل كلمة سر الإدارة للوصول للطلبات والتسليمات:", "تسجيل دخول الإدارة 🔒");
       if (!pass) return;
 
       try {
-        const res = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            action: "adminFetchOrders",
-            password: pass.trim()
-          })
-        });
+        const res = await fetch(`${SCRIPT_URL}?action=getAdminOrders&password=${encodeURIComponent(pass.trim())}`);
         const d = await res.json();
+        
         if (d.status === "success") {
+          // مسح المحاولات الفاشلة عند النجاح
+          localStorage.removeItem("admin_failed_attempts");
+          localStorage.removeItem("admin_lock_until");
+          
           adminAuthPassword = pass.trim();
           localStorage.setItem("kheir_admin_auth", adminAuthPassword);
           openAdminPanel();
           renderMarineOrders(d.orders.reverse());
         } else {
-          await showCustomAlert("كلمة السر غير صحيحة! يرجى التأكد من الخلية B1 في شيت الاداره.", "خطأ في الصلاحية ❌", "🔒");
+          // تسجيل محاولة فاشلة
+          let failedAttempts = Number(localStorage.getItem("admin_failed_attempts") || 0) + 1;
+          localStorage.setItem("admin_failed_attempts", failedAttempts);
+
+          if (failedAttempts >= 5) {
+            // قفل لمدة ساعة كاملة (60 دقيقة)
+            const oneHourLock = Date.now() + 60 * 60 * 1000;
+            localStorage.setItem("admin_lock_until", oneHourLock);
+            await showCustomAlert(
+              "كلمة السر خطأ! لقد استنفدت 5 محاولات، تم قفل إمكانية الدخول لمدة ساعة كاملة.",
+              "كلمة السر خطأ 🔒",
+              "🚫"
+            );
+          } else {
+            const remainTries = 5 - failedAttempts;
+            await showCustomAlert(
+              `كلمة السر خطأ! متبقي لك ${remainTries} محاولات قبل قفل الصفحة لمدة ساعة.`,
+              "كلمة السر خطأ ❌",
+              "🔑"
+            );
+          }
         }
       } catch (err) {
-        await showCustomAlert("تعذر الاتصال بالخادم للتأكد من كلمة السر!", "خطأ في الاتصال ⚠️", "📶");
+        await showCustomAlert("تعذر الاتصال بالخادم للتأكد من كلمة السر! تأكد من اتصال الإنترنت.", "خطأ في الاتصال ⚠️", "📶");
       }
     }
 
@@ -956,13 +942,7 @@
     async function fetchAdminLiveOrders() {
       const grid = document.getElementById('marineOrdersGrid');
       try {
-        const res = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            action: "adminFetchOrders",
-            password: adminAuthPassword
-          })
-        });
+        const res = await fetch(`${SCRIPT_URL}?action=getAdminOrders&password=${encodeURIComponent(adminAuthPassword)}`);
         const d = await res.json();
         if (d.status === "success") {
           renderMarineOrders(d.orders.reverse());
@@ -1451,7 +1431,6 @@
       }
     }
 
-    // إدارة قفل الشاشة والعداد التصاعدي
     function checkLockState() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
@@ -1476,7 +1455,6 @@
       trackLiveStatus(saved.orderId);
     }
 
-    // عداد تصاعدي من 00:00 حتى 10:00 دقائق
     function startAscendingCancelTimer(timestamp) {
       clearInterval(cancelTimerInterval);
       const limitMs = 10 * 60 * 1000;
