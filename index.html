@@ -521,7 +521,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz1W7G7gBbSE6XoTVg5qci9V8K_-1l1RRbt8FrJQ2QcdMo-OyZYOLJgMDiq2OCmkBlDhw/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw7exaq_pgtSUEytzoZed19_kAILnrWlifsZmwmECyYsS74aaqa9e-TJ7txAFSnE4DcTg/exec";
     let shopPhoneNumber = "201009204577";
     let uploadedReceiptBase64 = "";
 
@@ -1465,7 +1465,7 @@
         name: name, phone: phone,
         deliveryTime: timeMode === 'now' ? 'في أقرب وقت (الآن)' : (document.getElementById('custCustomTime').value || 'موعد محدد'),
         itemsDetails: itemsDetailsList.join(" | "), totalPrice: total,
-        cartItems: cartItems, paymentMethod: paymentMethod, notes: (editingOrderId ? "معدل ⚠️: " : "") + notes,
+        cartItems: cartItems, paymentMethod: paymentMethod, notes: notes,
         receiptImage: uploadedReceiptBase64 || ""
       };
 
@@ -1529,7 +1529,6 @@
       cancelTimerInterval = setInterval(updateAscTimer, 1000);
     }
 
-    // تتبع حالة الطلب بثبات تام وعدم الخروج إلا لو قام الأدمن بمسحه يدوياً من الشيت
     function trackClientLiveStatus(orderId) {
       clearInterval(clientStatusInterval);
       clientStatusInterval = setInterval(() => {
