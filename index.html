@@ -168,8 +168,8 @@
     }
     .cooking-opt-btn.selected { border-color: var(--aqua-glow); background: #e0f2fe; color: #0284c7; }
 
-    /* تعديل مكان زر المطور ليكون في المنتصف تماماً على كافة الشاشات والموبايل */
-    .site-footer-wrapper { max-width: 680px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: center; text-align: center; }
+    /* إعادة زر المطور ليصبح في الأسفل على اليمين تماماً كما طلبته */
+    .site-footer-wrapper { max-width: 680px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: flex-end; text-align: right; }
     .dev-badge-marine {
       background: rgba(5, 22, 38, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.45); backdrop-filter: blur(8px);
       padding: 6px 14px 6px 8px; border-radius: 30px; display: inline-flex; align-items: center; gap: 9px; cursor: pointer;
@@ -236,8 +236,7 @@
     .instapay-action-card { display: none; background: #faf5ff; border: 1px dashed #7928ca; border-radius: 10px; padding: 14px; margin-top: 10px; text-align: center; }
     .instapay-go-btn { display: inline-block; margin: 8px 0; background: #7928ca; color: white; text-decoration: none; padding: 9px 18px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
     
-    /* تنسيق إرفاق صورة إنستاباي لتكون بجانب كلمة إنستاباي وفي بطاقة الدفع */
-    .receipt-upload-box { display: none; margin-top: 10px; background: #ffffff; border: 1px solid #d8b4fe; border-radius: 8px; padding: 10px; text-align: center; }
+    .receipt-upload-box { display: block; margin-top: 10px; background: #ffffff; border: 1px solid #d8b4fe; border-radius: 8px; padding: 10px; text-align: center; }
     .receipt-preview-img { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; border: 2px solid #7928ca; margin-top: 6px; display: none; }
 
     .submit-order-btn { width: 100%; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 13px; border-radius: 12px; font-size: 1.15rem; font-weight: 800; margin-top: 12px; cursor: pointer; }
@@ -491,8 +490,8 @@
           <div style="margin-bottom:6px;">رقم إنستاباي: <strong id="instapayTargetText"></strong></div>
           <a href="#" id="instapayAppLink" target="_blank" class="instapay-go-btn">💳 دفع مباشر عبر رابط إنستاباي ↗️</a>
           
-          <div class="receipt-upload-box" id="receiptBox" style="display:block;">
-            <label style="font-size:0.85srem; font-weight:800; color:#7928ca; display:block; margin-bottom:4px;">📎 إرفاق صورة إيصال التحويل:</label>
+          <div class="receipt-upload-box" id="receiptBox">
+            <label style="font-size:0.85rem; font-weight:800; color:#7928ca; display:block; margin-bottom:4px;">📎 إرفاق صورة إيصال التحويل:</label>
             <input type="file" id="instapayReceiptFile" accept="image/*" onchange="previewReceiptImage(event)" style="font-size:0.85rem; width:100%;">
             <img id="receiptPreview" class="receipt-preview-img" alt="معاينة الإيصال">
           </div>
@@ -1458,28 +1457,46 @@
         }
       }
 
+      // التحقق مما إذا كان هناك طلب قيد التعديل لنفس رقم الطلب الحالي
+      const existingSaved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
+      const editingOrderId = localStorage.getItem("kheir_editing_order_id");
+
       const payload = {
+        action: editingOrderId ? "updateExistingOrder" : "newOrder",
+        orderId: editingOrderId || "",
         name: name, phone: phone,
         deliveryTime: timeMode === 'now' ? 'في أقرب وقت (الآن)' : (document.getElementById('custCustomTime').value || 'موعد محدد'),
         itemsDetails: itemsDetailsList.join(" | "), totalPrice: total,
-        cartItems: cartItems, paymentMethod: paymentMethod, notes: notes,
+        cartItems: cartItems, paymentMethod: paymentMethod, notes: (editingOrderId ? "معدل ⚠️: " : "") + notes,
         receiptImage: uploadedReceiptBase64 || ""
       };
 
       closeCheckout();
-      const mockOrderId = Math.floor(Math.random() * 900) + 100;
-      const orderSnapshot = { orderId: mockOrderId, timestamp: Date.now(), name: name, phone: phone, deliveryTime: payload.deliveryTime, itemsDetails: payload.itemsDetails, total: total, cartItems: cartItems };
-      localStorage.setItem("kheir_locked_order", JSON.stringify(orderSnapshot));
-      checkLockState();
-      await showCustomAlert(`تم تسجيل طلبك برقم #${mockOrderId} وجاري المتابعة فوراً بنجاح!`, "تم بنجاح ✅", "🎉");
 
-      fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(r=>r.json()).then(d=>{
-        if(d.result === "success") {
-          orderSnapshot.orderId = d.orderId;
-          localStorage.setItem("kheir_locked_order", JSON.stringify(orderSnapshot));
-          document.getElementById('lockedOrderId').innerText = `#${d.orderId}`;
-        }
-      }).catch(()=>{});
+      if (editingOrderId) {
+        // تحديث الطلب القائم مباشرة بدون إنشاء طلب جديد
+        const orderSnapshot = { orderId: editingOrderId, timestamp: existingSaved ? existingSaved.timestamp : Date.now(), name: name, phone: phone, deliveryTime: payload.deliveryTime, itemsDetails: payload.itemsDetails, total: total, cartItems: cartItems };
+        localStorage.setItem("kheir_locked_order", JSON.stringify(orderSnapshot));
+        localStorage.removeItem("kheir_editing_order_id");
+        checkLockState();
+        await showCustomAlert(`تم تعديل طلبك رقم #${editingOrderId} بنجاح وإرساله للمحل!`, "تعديل ناجح ✅", "✏️");
+
+        fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).catch(()=>{});
+      } else {
+        const mockOrderId = Math.floor(Math.random() * 900) + 100;
+        const orderSnapshot = { orderId: mockOrderId, timestamp: Date.now(), name: name, phone: phone, deliveryTime: payload.deliveryTime, itemsDetails: payload.itemsDetails, total: total, cartItems: cartItems };
+        localStorage.setItem("kheir_locked_order", JSON.stringify(orderSnapshot));
+        checkLockState();
+        await showCustomAlert(`تم تسجيل طلبك برقم #${mockOrderId} وجاري المتابعة فوراً بنجاح!`, "تم بنجاح ✅", "🎉");
+
+        fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }).then(r=>r.json()).then(d=>{
+          if(d.result === "success") {
+            orderSnapshot.orderId = d.orderId;
+            localStorage.setItem("kheir_locked_order", JSON.stringify(orderSnapshot));
+            document.getElementById('lockedOrderId').innerText = `#${d.orderId}`;
+          }
+        }).catch(()=>{});
+      }
     }
 
     function checkLockState() {
@@ -1515,7 +1532,6 @@
       cancelTimerInterval = setInterval(updateAscTimer, 1000);
     }
 
-    // تتبع حالة الطلب والتأكد إذا تم أرشفته أو حذفه من الشيت ليتم تحرير العميل لصفحة جديدة
     function trackClientLiveStatus(orderId) {
       clearInterval(clientStatusInterval);
       clientStatusInterval = setInterval(() => {
@@ -1524,7 +1540,7 @@
             if (d.orderStatus === "NOT_FOUND" || d.orderStatus === "ARCHIVED") {
               clearInterval(clientStatusInterval);
               localStorage.removeItem("kheir_locked_order");
-              location.reload(); // إعادة تحميل الصفحة لفتح صفحة جديدة للعميل
+              location.reload();
               return;
             }
 
@@ -1556,15 +1572,15 @@
       }
     }
 
+    // تعديل الطلب القائم مباشرة بدون إنشاء طلب جديد أو كتابة "تم الإلغاء"
     async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
 
-      const confirmed = await showCustomConfirm("هل تريد تعديل سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي لتعديل العناصر وإعادة الإرسال.", "تعديل الطلب ✏️", "🔄");
+      const confirmed = await showCustomConfirm("هل تريد تعديل محتويات طلبك الحالي؟ سيتم نقلك للمنيو لتحديث السلة ثم حفظ التعديل.", "تعديل الطلب ✏️", "🔄");
       if (!confirmed) return;
 
-      fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems }) }).catch(()=>{});
-      
+      localStorage.setItem("kheir_editing_order_id", saved.orderId);
       localStorage.setItem("kheir_saved_cart", JSON.stringify(cart));
       localStorage.setItem("kheir_editing_customer_name", saved.name);
       localStorage.setItem("kheir_editing_customer_phone", saved.phone);
