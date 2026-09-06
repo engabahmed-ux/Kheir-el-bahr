@@ -525,7 +525,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxHbbAA9PKpf24xiMk-P-E33sALqVKJ6_dTf-GyZ0Fbopxwy5ZNXJMW6jYAtFQfV8vmbg/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxZuYwGdRWxzWM_HvytobyTsQUQuYaJfgux0_DaGwsUzBb0R-gEtyV7OFau85DGsVdPpA/exec";
     let shopPhoneNumber = "201009204577";
 
     function handleHeaderClick(e) {
@@ -1112,7 +1112,6 @@
             };
           });
 
-          // الحفاظ على سلة المشتريات القديمة واسم العميل عند تعديل الطلب
           const savedCartJson = localStorage.getItem("kheir_saved_cart");
           if (savedCartJson) {
             try {
@@ -1141,7 +1140,9 @@
           renderExtras(data.extras || []);
           updateNetCountBadge();
         }
-      } catch(e) {}
+      } catch(e) {
+        document.getElementById('fishList').innerHTML = `<div style="text-align:center; padding:40px; color:#ef4444; grid-column: span 2;">فشل تحميل المنيو. تأكد من نشر الرابط (Deploy) وتحديث الصفحة. ⚠️</div>`;
+      }
     }
 
     function renderCategories(cats) {
@@ -1511,12 +1512,11 @@
       }
     }
 
-    // تعديل الطلب الذكي: الاحتفاظ بمحتويات السلة واسم العميل أثناء التعديل
     async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
 
-      const confirmed = await showCustomConfirm("هل تريد تعديل سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي مع الاحتفاظ بسلتك لإضافة أو تعديل العناصر.", "تعديل الطلب ✏️", "🔄");
+      const confirmed = await showCustomConfirm("هل تريد تعديل سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي لتعديل العناصر وإعادة الإرسال.", "تعديل الطلب ✏️", "🔄");
       if (!confirmed) return;
 
       fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems }) }).catch(()=>{});
