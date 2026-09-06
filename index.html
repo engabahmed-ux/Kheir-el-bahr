@@ -27,18 +27,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
     body { background-color: var(--bg); color: var(--text-main); padding-bottom: 70px; overflow-x: hidden; position: relative; }
 
-    .click-water-ripple {
-      position: fixed; border-radius: 50%; border: 2px solid rgba(56, 189, 248, 0.7);
-      background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, rgba(56, 189, 248, 0.05) 60%, transparent 100%);
-      pointer-events: none; transform: translate(-50%, -50%) scale(0);
-      animation: waterRippleAnim 0.65s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 9999;
-    }
-    @keyframes waterRippleAnim {
-      0% { width: 0px; height: 0px; opacity: 0.9; transform: translate(-50%, -50%) scale(0.2); }
-      70% { opacity: 0.5; }
-      100% { width: 140px; height: 140px; opacity: 0; transform: translate(-50%, -50%) scale(1); }
-    }
-
     .admin-gear-top-btn {
       position: absolute; top: 16px; left: 16px; width: 36px; height: 36px; border-radius: 50%;
       background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(56, 189, 248, 0.4);
@@ -180,7 +168,8 @@
     }
     .cooking-opt-btn.selected { border-color: var(--aqua-glow); background: #e0f2fe; color: #0284c7; }
 
-    .site-footer-wrapper { max-width: 680px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: flex-end; }
+    /* تعديل مكان زر المطور ليكون في المنتصف تماماً على كافة الشاشات والموبايل */
+    .site-footer-wrapper { max-width: 680px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: center; text-align: center; }
     .dev-badge-marine {
       background: rgba(5, 22, 38, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.45); backdrop-filter: blur(8px);
       padding: 6px 14px 6px 8px; border-radius: 30px; display: inline-flex; align-items: center; gap: 9px; cursor: pointer;
@@ -246,7 +235,10 @@
 
     .instapay-action-card { display: none; background: #faf5ff; border: 1px dashed #7928ca; border-radius: 10px; padding: 14px; margin-top: 10px; text-align: center; }
     .instapay-go-btn { display: inline-block; margin: 8px 0; background: #7928ca; color: white; text-decoration: none; padding: 9px 18px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
-    .receipt-upload-box { display: none; margin-top: 12px; background: #ffffff; border: 1px solid #d8b4fe; border-radius: 8px; padding: 12px; text-align: right; }
+    
+    /* تنسيق إرفاق صورة إنستاباي لتكون بجانب كلمة إنستاباي وفي بطاقة الدفع */
+    .receipt-upload-box { display: none; margin-top: 10px; background: #ffffff; border: 1px solid #d8b4fe; border-radius: 8px; padding: 10px; text-align: center; }
+    .receipt-preview-img { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; border: 2px solid #7928ca; margin-top: 6px; display: none; }
 
     .submit-order-btn { width: 100%; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 13px; border-radius: 12px; font-size: 1.15rem; font-weight: 800; margin-top: 12px; cursor: pointer; }
 
@@ -496,13 +488,13 @@
           <div class="pay-btn-opt instapay" id="payInstapay" onclick="setPaymentMethod('instapay')">🟣 إنستاباي (InstaPay)</div>
         </div>
         <div class="instapay-action-card" id="instapayCard">
-          <div>رقم إنستاباي: <strong id="instapayTargetText"></strong></div>
-          <a href="#" id="instapayAppLink" target="_blank" class="instapay-go-btn" onclick="showReceiptStep()">دفع مباشر عبر رابط إنستاباي ↗️</a>
-          <div style="margin-top:8px;">
-            <a href="https://instapay.eg" target="_blank" style="color:#7928ca; font-weight:800; font-size:0.88rem; text-decoration:underline;">موقع إنستاباي الرسمي 🌐</a>
-          </div>
-          <div class="receipt-upload-box" id="receiptBox">
-            <input type="file" id="instapayReceiptFile" accept="image/*">
+          <div style="margin-bottom:6px;">رقم إنستاباي: <strong id="instapayTargetText"></strong></div>
+          <a href="#" id="instapayAppLink" target="_blank" class="instapay-go-btn">💳 دفع مباشر عبر رابط إنستاباي ↗️</a>
+          
+          <div class="receipt-upload-box" id="receiptBox" style="display:block;">
+            <label style="font-size:0.85srem; font-weight:800; color:#7928ca; display:block; margin-bottom:4px;">📎 إرفاق صورة إيصال التحويل:</label>
+            <input type="file" id="instapayReceiptFile" accept="image/*" onchange="previewReceiptImage(event)" style="font-size:0.85rem; width:100%;">
+            <img id="receiptPreview" class="receipt-preview-img" alt="معاينة الإيصال">
           </div>
         </div>
       </div>
@@ -533,6 +525,7 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFXqtX35sJZ9UQEGArqc2RSAtxGgMqPr5t_NioszWNsvJXYlCDRX5BwjnBcgWl88Zl/exec";
     let shopPhoneNumber = "201009204577";
+    let uploadedReceiptBase64 = "";
 
     function handleHeaderClick(e) {
       if (e.target.closest('.admin-gear-top-btn')) return;
@@ -764,6 +757,19 @@
       document.getElementById('devModal').style.display = 'none';
     }
 
+    function previewReceiptImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        uploadedReceiptBase64 = e.target.result;
+        const img = document.getElementById('receiptPreview');
+        img.src = uploadedReceiptBase64;
+        img.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
     let activePopupFish = null;
     let popupSelectedMain = "";
     let popupSelectedSub = "";
@@ -984,7 +990,7 @@
     function openAdminPanel() {
       document.getElementById('marineAdminPanel').style.display = 'flex';
       clearInterval(adminInterval);
-      adminInterval = setInterval(() => fetchAdminLiveOrders(false), 3000); // تحديث لحظي في الخلفية كل 3 ثوانٍ
+      adminInterval = setInterval(() => fetchAdminLiveOrders(false), 3000);
     }
 
     function closeAdminPanel() {
@@ -1063,7 +1069,7 @@
       try {
         const url = `${SCRIPT_URL}?action=updateStatusByAdmin&password=${encodeURIComponent(adminAuthPassword)}&orderId=${orderId}&newStatus=${encodeURIComponent(newStatus)}`;
         await fetch(url);
-        fetchAdminLiveOrders(false); // تحديث صامت في الخلفية
+        fetchAdminLiveOrders(false);
       } catch(e) {}
     }
 
@@ -1419,10 +1425,6 @@
       document.getElementById('instapayCard').style.display = m === 'instapay' ? 'block' : 'none';
     }
 
-    function showReceiptStep() {
-      document.getElementById('receiptBox').style.display = 'block';
-    }
-
     async function sendOrder() {
       const nameInput = document.getElementById('custName');
       const phoneInput = document.getElementById('custPhone');
@@ -1460,7 +1462,8 @@
         name: name, phone: phone,
         deliveryTime: timeMode === 'now' ? 'في أقرب وقت (الآن)' : (document.getElementById('custCustomTime').value || 'موعد محدد'),
         itemsDetails: itemsDetailsList.join(" | "), totalPrice: total,
-        cartItems: cartItems, paymentMethod: paymentMethod, notes: notes
+        cartItems: cartItems, paymentMethod: paymentMethod, notes: notes,
+        receiptImage: uploadedReceiptBase64 || ""
       };
 
       closeCheckout();
@@ -1512,11 +1515,19 @@
       cancelTimerInterval = setInterval(updateAscTimer, 1000);
     }
 
+    // تتبع حالة الطلب والتأكد إذا تم أرشفته أو حذفه من الشيت ليتم تحرير العميل لصفحة جديدة
     function trackClientLiveStatus(orderId) {
       clearInterval(clientStatusInterval);
       clientStatusInterval = setInterval(() => {
         fetch(`${SCRIPT_URL}?action=checkStatus&orderId=${orderId}`).then(r => r.json()).then(d => {
           if (d.status === "success") {
+            if (d.orderStatus === "NOT_FOUND" || d.orderStatus === "ARCHIVED") {
+              clearInterval(clientStatusInterval);
+              localStorage.removeItem("kheir_locked_order");
+              location.reload(); // إعادة تحميل الصفحة لفتح صفحة جديدة للعميل
+              return;
+            }
+
             const box = document.getElementById('lockedOrderStatus');
             box.innerText = d.orderStatus;
 
@@ -1527,7 +1538,7 @@
             }
           }
         }).catch(()=>{});
-      }, 3000); // تتبع حالة الطلب لحظياً للعميل في الخلفية
+      }, 3000);
     }
 
     function startNewOrderAfterDelivered() {
