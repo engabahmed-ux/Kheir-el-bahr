@@ -235,6 +235,7 @@
     .form-group { margin-bottom: 13px; }
     .form-group label { display: block; font-weight: 700; margin-bottom: 5px; font-size: 0.9rem; color: #334155; }
     .form-group input, .form-group textarea { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 0.95rem; }
+    .form-group input[readonly] { background-color: #f1f5f9; color: #475569; cursor: not-allowed; }
 
     .time-toggle-box { display: flex; gap: 10px; margin-bottom: 10px; }
     .time-pill { flex: 1; padding: 10px; text-align: center; border: 2px solid #cbd5e1; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.9rem; }
@@ -1124,11 +1125,26 @@
             } catch(e) {}
           }
 
+          // قفل اسم العميل ورقم الهاتف في وضع التعديل لئلا يتم تغييرهما أثناء وجود طلب حالي
           const editingName = localStorage.getItem("kheir_editing_customer_name");
+          const editingPhone = localStorage.getItem("kheir_editing_customer_phone");
+          
           if (editingName) {
-            document.getElementById('custName').value = editingName;
+            const nameInput = document.getElementById('custName');
+            nameInput.value = editingName;
+            nameInput.setAttribute("readonly", true);
             localStorage.removeItem("kheir_editing_customer_name");
-            showCustomAlert("يمكنك تعديل سلتك الحية (إضافة أو إزالة أصناف) ثم الضغط على شبكة الصيد لإتمام التعديل.", "وضع التعديل النشط ✏️", "🔄");
+          }
+
+          if (editingPhone) {
+            const phoneInput = document.getElementById('custPhone');
+            phoneInput.value = editingPhone;
+            phoneInput.setAttribute("readonly", true);
+            localStorage.removeItem("kheir_editing_customer_phone");
+          }
+
+          if (editingName) {
+            showCustomAlert("أنت الآن في وضع تعديل الطلب. تم قفل الاسم ورقم الهاتف، ويمكنك تعديل سلتك الحية ثم الضغط على شبكة الصيد لإرسال التعديل.", "تعديل الطلب النشط ✏️", "🔄");
           }
 
           renderCategories(data.categories || []);
@@ -1399,8 +1415,10 @@
     }
 
     async function sendOrder() {
-      const name = document.getElementById('custName').value.trim();
-      const phone = document.getElementById('custPhone').value.trim();
+      const nameInput = document.getElementById('custName');
+      const phoneInput = document.getElementById('custPhone');
+      const name = nameInput.value.trim();
+      const phone = phoneInput.value.trim();
       const notes = document.getElementById('custNotes').value.trim();
       const total = calculateTotal();
 
@@ -1438,7 +1456,7 @@
 
       closeCheckout();
       const mockOrderId = Math.floor(Math.random() * 900) + 100;
-      const orderSnapshot = { orderId: mockOrderId, timestamp: Date.now(), name: name, deliveryTime: payload.deliveryTime, itemsDetails: payload.itemsDetails, total: total, cartItems: cartItems };
+      const orderSnapshot = { orderId: mockOrderId, timestamp: Date.now(), name: name, phone: phone, deliveryTime: payload.deliveryTime, itemsDetails: payload.itemsDetails, total: total, cartItems: cartItems };
       localStorage.setItem("kheir_locked_order", JSON.stringify(orderSnapshot));
       checkLockState();
       await showCustomAlert(`تم تسجيل طلبك برقم #${mockOrderId} وجاري المتابعة فوراً بنجاح!`, "تم بنجاح ✅", "🎉");
@@ -1519,6 +1537,7 @@
       
       localStorage.setItem("kheir_saved_cart", JSON.stringify(cart));
       localStorage.setItem("kheir_editing_customer_name", saved.name);
+      localStorage.setItem("kheir_editing_customer_phone", saved.phone);
       localStorage.removeItem("kheir_locked_order");
 
       location.reload();
