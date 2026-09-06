@@ -532,7 +532,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbqXgXfZ5kET0gYBKL9RiN24TIqxui2HpTNyxY5IBdDblM9qK__gC9lLksi3Fhbvoe1Q/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz1W7G7gBbSE6XoTVg5qci9V8K_-1l1RRbt8FrJQ2QcdMo-OyZYOLJgMDiq2OCmkBlDhw/exec";
     let shopPhoneNumber = "201009204577";
     let uploadedReceiptBase64 = "";
 
@@ -896,7 +896,6 @@
       document.getElementById('popupCalculatedTotal').innerText = total + " جنيه";
     }
 
-    // خصم الكمية في الشيت لحظياً بمجرد إضافتها للسلة (عبر إرسال طلب سحب مؤقت للخادم)
     async function processPopupItemAddition() {
       if (!activePopupFish) return false;
       if (popupQty > activePopupFish.remainingQty) {
@@ -917,13 +916,11 @@
       item.subCooking = popupSelectedSub;
       item.effectivePrice = finalPrice;
 
-      // خصم مباشر لحظي في المخزون
       fetch(SCRIPT_URL, {
         method: 'POST',
         body: JSON.stringify({ action: "reserveItem", cartItems: [{ id: activePopupFish.id, name: activePopupFish.name, qty: popupQty }] })
       }).catch(()=>{});
 
-      // خصم محلي فوري
       activePopupFish.remainingQty = Math.max(0, activePopupFish.remainingQty - popupQty);
       item.maxAvailable = activePopupFish.remainingQty;
 
@@ -1016,6 +1013,31 @@
       } catch(e) {}
     }
 
+    function calculateElapsedOrderTime(orderTimeStr) {
+      if (!orderTimeStr) return "0 دقيقة";
+      try {
+        const parts = orderTimeStr.split(":");
+        if (parts.length < 2) return "0 دقيقة";
+        const orderHours = parseInt(parts[0], 10);
+        const orderMinutes = parseInt(parts[1], 10);
+
+        const now = new Date();
+        const currentHours = now.getHours();
+        const currentMinutes = now.getMinutes();
+
+        let diffMins = (currentHours * 60 + currentMinutes) - (orderHours * 60 + orderMinutes);
+        if (diffMins < 0) diffMins += 24 * 60;
+
+        if (diffMins < 1) return "منذ لحظات";
+        if (diffMins < 60) return `منذ ${diffMins} دقيقة`;
+        const hrs = Math.floor(diffMins / 60);
+        const mins = diffMins % 60;
+        return `منذ ${hrs} ساعة و ${mins} دقيقة`;
+      } catch(e) {
+        return "جاري التحضير";
+      }
+    }
+
     function renderMarineOrders(orders) {
       const grid = document.getElementById('marineOrdersGrid');
       grid.innerHTML = '';
@@ -1035,11 +1057,14 @@
         if (isEdited) stateClass = "card-state-edited";
         else if (isPreparing) stateClass = "card-state-preparing";
 
+        const elapsedText = calculateElapsedOrderTime(ord.time);
+
         const card = document.createElement('div');
         card.className = `marine-order-card ${stateClass}`;
         card.innerHTML = `
           <div class="marine-card-header">
             <span class="marine-status-pill">${ord.status}</span>
+            <span class="order-timer-badge">⏱️ ${elapsedText}</span>
             <span class="marine-order-num">#${ord.orderId}</span>
           </div>
           <div class="marine-info-row"><strong>الوقت:</strong> ${ord.time}</div>
@@ -1049,7 +1074,7 @@
           <div class="marine-items-box">
             <strong>الطلب:</strong><br>
             <div style="word-break: break-word; white-space: pre-wrap;">${ord.details}</div>
-            ${ord.notes && ord.notes !== 'لا يوجد' ? `<br><span style="color:#f59e0b;">ملاحظات: ${ord.notes}</span>` : ''}
+            ${ord.notes && ord.notes !== 'لا يوجد' ? `<br><span style="color:#f59e0b;">${ord.notes}</span>` : ''}
           </div>
           <div class="marine-total-price">المبلغ: ${ord.totalPrice || 0} جنيه</div>
           <div class="marine-action-row">
@@ -1130,20 +1155,26 @@
             };
           });
 
-          const savedCartJson = localStorage.getItem("kheir_saved_cart");
-          if (savedCartJson) {
-            try {
-              const savedCart = JSON.parse(savedCartJson);
-              for (let id in savedCart) {
-                if (cart[id]) {
-                  cart[id].qty = savedCart[id].qty;
-                  cart[id].mainCooking = savedCart[id].mainCooking;
-                  cart[id].subCooking = savedCart[id].subCooking;
-                  cart[id].effectivePrice = savedCart[id].effectivePrice;
+          // عند وضع التعديل، نجعل سلة المشتريات تبدأ فارغة تماماً بحيث يضيف العميل ما يريد إضافته فقط
+          const isEditingMode = localStorage.getItem("kheir_editing_order_id");
+          if (!isEditingMode) {
+            const savedCartJson = localStorage.getItem("kheir_saved_cart");
+            if (savedCartJson) {
+              try {
+                const savedCart = JSON.parse(savedCartJson);
+                for (let id in savedCart) {
+                  if (cart[id]) {
+                    cart[id].qty = savedCart[id].qty;
+                    cart[id].mainCooking = savedCart[id].mainCooking;
+                    cart[id].subCooking = savedCart[id].subCooking;
+                    cart[id].effectivePrice = savedCart[id].effectivePrice;
+                  }
                 }
-              }
-              localStorage.removeItem("kheir_saved_cart");
-            } catch(e) {}
+                localStorage.removeItem("kheir_saved_cart");
+              } catch(e) {}
+            }
+          } else {
+            localStorage.removeItem("kheir_saved_cart");
           }
 
           const editingName = localStorage.getItem("kheir_editing_customer_name");
@@ -1164,7 +1195,7 @@
           }
 
           if (editingName) {
-            showCustomAlert("أنت الآن في وضع تعديل الطلب. تم قفل الاسم ورقم الهاتف، ويمكنك تعديل سلتك الحية ثم الضغط على شبكة الصيد لإرسال التعديل.", "تعديل الطلب النشط ✏️", "🔄");
+            showCustomAlert("أنت الآن في وضع إضافة وتعديل الطلب. اختر الأصناف الجديدة فقط التي تريد إضافتها لسلتك.", "تعديل الطلب النشط ✏️", "🔄");
           }
 
           renderCategories(data.categories || []);
@@ -1590,11 +1621,12 @@
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
 
-      const confirmed = await showCustomConfirm("هل تريد تعديل محتويات طلبك الحالي؟ سيتم نقلك للمنيو لتحديث السلة ثم حفظ التعديل.", "تعديل الطلب ✏️", "🔄");
+      const confirmed = await showCustomConfirm("هل تريد إضافة أصناف جديدة لطلبك الحالي؟ سيتم فتح المنيو لتحديد الإضافات فقط.", "تعديل وإضافة ✏️", "🔄");
       if (!confirmed) return;
 
       localStorage.setItem("kheir_editing_order_id", saved.orderId);
-      localStorage.setItem("kheir_saved_cart", JSON.stringify(cart));
+      // نجعل السلة تبدأ نظيفة في وضع التعديل ليضيف العميل الجديد فقط
+      localStorage.removeItem("kheir_saved_cart");
       localStorage.setItem("kheir_editing_customer_name", saved.name);
       localStorage.setItem("kheir_editing_customer_phone", saved.phone);
       localStorage.removeItem("kheir_locked_order");
