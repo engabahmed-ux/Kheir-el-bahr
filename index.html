@@ -100,7 +100,6 @@
     }
     .category-btn.active { background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue); }
 
-    /* زر الاتصال العائم (رمز السماعة فقط) */
     .styled-phone-call-btn {
       position: fixed; left: 18px; bottom: 105px; width: 52px; height: 52px;
       background: linear-gradient(135deg, #10b981, #059669);
@@ -112,7 +111,6 @@
     .styled-phone-call-btn:hover { transform: translateY(-2px) scale(1.08); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6); }
     .phone-icon-symbol { font-size: 1.5rem; color: white; }
 
-    /* شبكة الصيد العائمة للسلة */
     .floating-net-basket {
       position: fixed; left: 20px; bottom: 24px; width: 68px; height: 68px;
       background: radial-gradient(circle at 35% 35%, #0ea5e9, #0369a1);
@@ -279,7 +277,12 @@
     }
     .card-state-normal { border-color: rgba(56, 189, 248, 0.35); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
     .card-state-preparing { border-color: #10b981 !important; box-shadow: 0 0 25px rgba(16, 185, 129, 0.6) !important; background: rgba(16, 185, 129, 0.08) !important; }
-    .card-state-edited { border-color: #f59e0b !important; box-shadow: 0 0 25px rgba(245, 158, 11, 0.6) !important; background: rgba(245, 158, 11, 0.08) !important; }
+    .card-state-edited { border-color: #f59e0b !important; box-shadow: 0 0 30px rgba(245, 158, 11, 0.8) !important; background: rgba(245, 158, 11, 0.22) !important; animation: yellowPulseCard 1.2s infinite alternate; }
+
+    @keyframes yellowPulseCard {
+      from { border-color: #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); }
+      to { border-color: #fbbf24; box-shadow: 0 0 30px rgba(251, 191, 36, 0.9); }
+    }
 
     .marine-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
     .marine-status-pill { background: #0369a1; color: #e0f2fe; font-size: 0.78rem; font-weight: 800; padding: 3px 10px; border-radius: 14px; }
@@ -362,11 +365,11 @@
     <div class="marine-admin-topbar">
       <div class="marine-top-btns">
         <button class="marine-btn-logout" onclick="closeAdminPanel()">تسجيل الخروج</button>
-        <button class="marine-btn-refresh" onclick="fetchAdminLiveOrders()">تحديث 🔄</button>
+        <button class="marine-btn-refresh" onclick="fetchAdminLiveOrders(true)">تحديث لحظي 🔄</button>
       </div>
       <div class="marine-admin-title">
         <span>🐟</span>
-        <span>لوحة متابعة وإدارة الطلبات</span>
+        <span>لوحة متابعة وإدارة الطلبات الحية</span>
       </div>
     </div>
     <div class="marine-orders-grid" id="marineOrdersGrid">
@@ -403,7 +406,7 @@
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <h3 style="color:var(--ocean-blue); font-size:1.2rem;">طلب رقم <span id="lockedOrderId">#</span></h3>
-        <span id="lockedOrderStatus" style="font-weight:800; font-size:1rem; color:#0284c7; background:#e0f2fe; padding:4px 12px; border-radius:12px;">جديد - جاري التحضير</span>
+        <span id="lockedOrderStatus" style="font-weight:800; font-size:1rem; color:#0284c7; background:#e0f2fe; padding:4px 12px; border-radius:12px;">جديد - قيد التنفيذ 🟠</span>
       </div>
       <div id="lockedOrderDetails" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:0.92rem; line-height:1.6; margin-bottom:12px;"></div>
 
@@ -415,6 +418,12 @@
           <button onclick="openEditActiveOrderModal()" style="flex:1; background:#0284c7; color:white; border:none; padding:9px; border-radius:10px; font-weight:800; cursor:pointer;">تعديل الطلب ✏️</button>
           <button onclick="requestCancelOrder()" style="flex:1; background:#ef4444; color:white; border:none; padding:9px; border-radius:10px; font-weight:800; cursor:pointer;">إلغاء الطلب 🗑️</button>
         </div>
+      </div>
+
+      <div id="newOrderButtonArea" style="display:none; text-align:center; margin-top:14px;">
+        <button onclick="startNewOrderAfterDelivered()" style="width:100%; background:linear-gradient(135deg, #10b981, #059669); color:white; border:none; padding:14px; border-radius:12px; font-size:1.15rem; font-weight:900; cursor:pointer; box-shadow:0 6px 20px rgba(16,185,129,0.4);">
+          🛒 طلب جديد (بالهناء والشفاء)
+        </button>
       </div>
     </div>
 
@@ -958,7 +967,7 @@
         localStorage.removeItem("admin_lock_until");
         adminAuthPassword = pass.trim();
         openAdminPanel();
-        fetchAdminLiveOrders();
+        fetchAdminLiveOrders(true);
       } else {
         let failedAttempts = Number(localStorage.getItem("admin_failed_attempts") || 0) + 1;
         localStorage.setItem("admin_failed_attempts", failedAttempts);
@@ -975,7 +984,7 @@
     function openAdminPanel() {
       document.getElementById('marineAdminPanel').style.display = 'flex';
       clearInterval(adminInterval);
-      adminInterval = setInterval(fetchAdminLiveOrders, 10000);
+      adminInterval = setInterval(() => fetchAdminLiveOrders(false), 3000); // تحديث لحظي في الخلفية كل 3 ثوانٍ
     }
 
     function closeAdminPanel() {
@@ -983,7 +992,7 @@
       clearInterval(adminInterval);
     }
 
-    async function fetchAdminLiveOrders() {
+    async function fetchAdminLiveOrders(showAlert = false) {
       try {
         const res = await fetch(`${SCRIPT_URL}?action=adminFetchOrders&password=${encodeURIComponent(adminAuthPassword)}`);
         const d = await res.json();
@@ -1054,7 +1063,7 @@
       try {
         const url = `${SCRIPT_URL}?action=updateStatusByAdmin&password=${encodeURIComponent(adminAuthPassword)}&orderId=${orderId}&newStatus=${encodeURIComponent(newStatus)}`;
         await fetch(url);
-        fetchAdminLiveOrders();
+        fetchAdminLiveOrders(false); // تحديث صامت في الخلفية
       } catch(e) {}
     }
 
@@ -1073,6 +1082,7 @@
     let timeMode = "now";
     let paymentMethod = "cash";
     let cancelTimerInterval = null;
+    let clientStatusInterval = null;
 
     async function loadMenu() {
       checkLockState();
@@ -1125,7 +1135,6 @@
             } catch(e) {}
           }
 
-          // قفل اسم العميل ورقم الهاتف في وضع التعديل لئلا يتم تغييرهما أثناء وجود طلب حالي
           const editingName = localStorage.getItem("kheir_editing_customer_name");
           const editingPhone = localStorage.getItem("kheir_editing_customer_phone");
           
@@ -1482,7 +1491,7 @@
       document.getElementById('lockedOrderDetails').innerHTML = `<strong>الاسم:</strong> ${saved.name}<br><strong>الطلب:</strong> ${saved.itemsDetails}<br><strong>الإجمالي:</strong> ${saved.total} جنيه`;
 
       startAscendingCancelTimer(saved.timestamp);
-      trackLiveStatus(saved.orderId);
+      trackClientLiveStatus(saved.orderId);
     }
 
     function startAscendingCancelTimer(timestamp) {
@@ -1503,17 +1512,27 @@
       cancelTimerInterval = setInterval(updateAscTimer, 1000);
     }
 
-    function trackLiveStatus(orderId) {
-      fetch(`${SCRIPT_URL}?action=checkStatus&orderId=${orderId}`).then(r => r.json()).then(d => {
-        if (d.status === "success") {
-          const box = document.getElementById('lockedOrderStatus');
-          box.innerText = d.orderStatus;
-          if (d.orderStatus.includes("تم التسليم")) {
-            localStorage.removeItem("kheir_locked_order");
-            showCustomAlert("بالهناء والشفاء! تم تسليم طلبك بنجاح.", "تم التسليم ✅").then(() => location.reload());
+    function trackClientLiveStatus(orderId) {
+      clearInterval(clientStatusInterval);
+      clientStatusInterval = setInterval(() => {
+        fetch(`${SCRIPT_URL}?action=checkStatus&orderId=${orderId}`).then(r => r.json()).then(d => {
+          if (d.status === "success") {
+            const box = document.getElementById('lockedOrderStatus');
+            box.innerText = d.orderStatus;
+
+            if (d.orderStatus.includes("تم التسليم")) {
+              clearInterval(clientStatusInterval);
+              document.getElementById('cancelAreaWrapper').style.display = 'none';
+              document.getElementById('newOrderButtonArea').style.display = 'block';
+            }
           }
-        }
-      }).catch(()=>{});
+        }).catch(()=>{});
+      }, 3000); // تتبع حالة الطلب لحظياً للعميل في الخلفية
+    }
+
+    function startNewOrderAfterDelivered() {
+      localStorage.removeItem("kheir_locked_order");
+      location.reload();
     }
 
     async function requestCancelOrder() {
