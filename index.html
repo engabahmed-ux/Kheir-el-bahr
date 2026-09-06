@@ -116,6 +116,7 @@
     }
     .phone-num-text { color: #ffffff; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.5px; direction: ltr; }
 
+    /* شبكة الصيد السلة العائمة */
     .floating-net-basket {
       position: fixed; left: 20px; bottom: 24px; width: 68px; height: 68px;
       background: radial-gradient(circle at 35% 35%, #0ea5e9, #0369a1);
@@ -174,7 +175,7 @@
     }
     .cooking-modal-box {
       background: white; border-radius: 22px; max-width: 420px; width: 100%; padding: 22px;
-      box-shadow: 0 15px 40px rgba(5, 22, 38, 0.3); border: 2px solid #38bdf8;
+      box-shadow: 0 15px 40px rgba(5, 22, 38, 0.3); border: 2px solid #38bdf8; position: relative; max-height: 90vh; overflow-y: auto;
     }
     .cooking-section-title { font-size: 0.95rem; font-weight: 900; color: var(--ocean-blue); margin-bottom: 8px; margin-top: 14px; }
     .cooking-options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
@@ -184,6 +185,7 @@
     }
     .cooking-opt-btn.selected { border-color: var(--aqua-glow); background: #e0f2fe; color: #0284c7; }
 
+    /* شارة المطور في أقصى اليمين الفوتر */
     .site-footer-wrapper { max-width: 680px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: flex-end; }
     .dev-badge-marine {
       background: rgba(5, 22, 38, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.45); backdrop-filter: blur(8px);
@@ -278,7 +280,6 @@
       background: rgba(14, 45, 78, 0.7); border: 1.5px solid rgba(56, 189, 248, 0.35); border-radius: 18px; padding: 18px; width: 100%; max-width: 360px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); display: flex; flex-direction: column; gap: 8px; backdrop-filter: blur(6px); 
       transition: all 0.3s ease;
     }
-    /* إضاءة البطاقات في الإدارة حسب الحالة */
     .card-state-normal { border-color: rgba(56, 189, 248, 0.35); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
     .card-state-preparing { border-color: #10b981 !important; box-shadow: 0 0 25px rgba(16, 185, 129, 0.6) !important; background: rgba(16, 185, 129, 0.08) !important; }
     .card-state-edited { border-color: #f59e0b !important; box-shadow: 0 0 25px rgba(245, 158, 11, 0.6) !important; background: rgba(245, 158, 11, 0.08) !important; }
@@ -324,7 +325,7 @@
         <button onclick="closeCookingModal()" style="background:#f1f5f9; border:none; font-size:1.2rem; width:28px; height:28px; border-radius:50%; cursor:pointer;">&times;</button>
       </div>
 
-      <div class="cooking-section-title">1. الكمية المطلوبة:</div>
+      <div class="cooking-section-title">1. الكمية المطلوبة (كيلو):</div>
       <div style="display:flex; align-items:center; justify-content:center; gap:14px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; padding:8px; margin-bottom:12px;">
         <button class="card-qty-btn" onclick="changePopupQty(-0.5)" style="width:36px; height:36px; font-size:1.2rem;">-</button>
         <span id="popupQtyDisplay" style="font-size:1.2rem; font-weight:900; color:var(--ocean-blue); min-width:80px; text-align:center;">1 كيلو</span>
@@ -333,9 +334,12 @@
       
       <div id="popupCookingOptionsContainer"></div>
 
-      <div style="margin-top:16px; border-top:1px dashed #cbd5e1; padding-top:12px;">
-        <button class="card-action-btn" onclick="confirmPopupAddItem()" style="width:100%; font-size:0.95rem; padding:12px;">
-          إضافة 🛒
+      <div style="margin-top:16px; border-top:1px dashed #cbd5e1; padding-top:12px; display:flex; gap:8px;">
+        <button class="card-action-btn" onclick="confirmPopupAddItemAndContinue()" style="flex:1; font-size:0.88rem; padding:10px; background:#0284c7;">
+          إضافة صنف جديد ➕
+        </button>
+        <button class="card-action-btn" onclick="confirmPopupAddItemAndClose()" style="flex:1; font-size:0.88rem; padding:10px; background:#10b981;">
+          إضافة وإنهاء 🛒
         </button>
       </div>
     </div>
@@ -425,7 +429,6 @@
         <button class="category-btn active" onclick="selectCategory('all', this)">الكل 🌊</button>
       </div>
 
-      <!-- المنيو بعمودين Grid -->
       <div class="fish-grid-container" id="fishList">
         <div style="text-align:center; padding:40px; color:#64748b; grid-column: span 2;">جاري تحميل الأسماك والسندوتشات الطازجة... 🐟</div>
       </div>
@@ -473,8 +476,8 @@
           <div class="time-pill active" id="pillNow" onclick="setTimeMode('now')">⚡ الآن (في أقرب وقت)</div>
           <div class="time-pill" id="pillLater" onclick="setTimeMode('later')">🕒 تحديد موعد لاحق</div>
         </div>
-        <div id="laterInputBox" style="display:none;">
-          <input type="time" id="custCustomTime">
+        <div id="laterInputBox" style="display:none; margin-top:8px;">
+          <input type="time" id="custCustomTime" style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; width:100%; font-size:1rem;">
         </div>
       </div>
 
@@ -517,7 +520,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyW1QVzud1-K4RDDgvnQ7yDhOaqXwcmlk3MMxd5xd-wAoJfzGhxS6eUMVWMbQm2jO4M0A/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxG9ysVD2NrNIeHfGHGRDhXDwsmQ66cuO87iNUjCZEYV1Zsp-c0_ns8AqOCopEa2tHamA/exec";
     const WHATSAPP_NUM = "201009204577";
 
     function handleHeaderClick(e) {
@@ -718,9 +721,6 @@
       document.getElementById('devModal').style.display = 'none';
     }
 
-    // =======================================================
-    // النافذة المنبثقة لاختيار الكمية أولاً ثم الطهي مع عرض (كيلو)
-    // =======================================================
     let activePopupFish = null;
     let popupSelectedMain = "";
     let popupSelectedSub = "";
@@ -835,27 +835,36 @@
       document.getElementById('popupQtyDisplay').innerText = popupQty + " كيلو";
     }
 
-    async function confirmPopupAddItem() {
-      if (!activePopupFish) return;
-
+    async function processPopupItemAddition() {
+      if (!activePopupFish) return false;
       if (popupQty > activePopupFish.remainingQty) {
         await showCustomAlert(`عفواً، الكمية المتبقية لليوم من [${activePopupFish.name}] هي ${activePopupFish.remainingQty} كيلو فقط!`, "الكمية غير متاحة ⚠️", "🐟");
-        return;
+        return false;
       }
 
       const item = cart[activePopupFish.id];
-      item.qty = popupQty;
+      item.qty = (item.qty || 0) + popupQty;
       item.mainCooking = popupSelectedMain;
       item.subCooking = popupSelectedSub;
 
-      closeCookingModal();
       updateNetCountBadge();
       animateFishToNetBasket(document.getElementById('floatingNetBasket'));
+      return true;
     }
 
-    // =======================================================
-    // لوحة إدارة الطلبات مع الإضاءة (أخضر للتجهيز، أصفر للتعديل)
-    // =======================================================
+    async function confirmPopupAddItemAndContinue() {
+      const success = await processPopupItemAddition();
+      if (success) closeCookingModal();
+    }
+
+    async function confirmPopupAddItemAndClose() {
+      const success = await processPopupItemAddition();
+      if (success) {
+        closeCookingModal();
+        openCheckout();
+      }
+    }
+
     let adminAuthPassword = "";
     let cachedAdminPass = "";
     let adminInterval = null;
@@ -932,7 +941,6 @@
       const grid = document.getElementById('marineOrdersGrid');
       grid.innerHTML = '';
 
-      // الطلبات التي تم تسليمها تختفي فوراً من لوحة الإدارة
       const activeOrders = orders.filter(ord => !ord.status.includes("تم التسليم"));
 
       if (activeOrders.length === 0) {
@@ -945,8 +953,8 @@
         const isPreparing = ord.status.includes("تحضير") || ord.status.includes("تجهيز");
 
         let stateClass = "card-state-normal";
-        if (isEdited) stateClass = "card-state-edited"; // أصفر للتعديل
-        else if (isPreparing) stateClass = "card-state-preparing"; // أخضر للتجهيز
+        if (isEdited) stateClass = "card-state-edited";
+        else if (isPreparing) stateClass = "card-state-preparing";
 
         const card = document.createElement('div');
         card.className = `marine-order-card ${stateClass}`;
@@ -1382,7 +1390,6 @@
       }).catch(()=>{});
     }
 
-    // مسح الطلب دون كلمة سر خلال الـ 10 دقائق الأولى
     async function requestCancelOrder() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
@@ -1393,7 +1400,6 @@
       }
     }
 
-    // تعديل الطلب دون كلمة سر وإعادة التوجيه للصفحة الرئيسية مع الطلب المعدل
     async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
@@ -1408,7 +1414,7 @@
       fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ name: saved.name, phone: '01000000000', deliveryTime: saved.deliveryTime, itemsDetails: saved.itemsDetails, totalPrice: saved.total, cartItems: saved.cartItems, paymentMethod: 'cash', notes: '[تعديل جديد نشط]' }) }).catch(()=>{});
 
       await showCustomAlert("تم تعديل الطلب وإرساله للإدارة بنجاح!", "تعديل ناجح ✅", "✏️");
-      location.reload(); // العودة للصفحة الرئيسية مع الطلب المُحدث
+      location.reload();
     }
 
     loadMenu();
