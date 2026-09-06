@@ -525,7 +525,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1B2HgFa5yy9db2X6hXRTasxYSThTUG1rCQ_-mp6znAdqy-JnIfihZYLPQI5CjIsqHeA/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxHbbAA9PKpf24xiMk-P-E33sALqVKJ6_dTf-GyZ0Fbopxwy5ZNXJMW6jYAtFQfV8vmbg/exec";
     let shopPhoneNumber = "201009204577";
 
     function handleHeaderClick(e) {
@@ -1112,7 +1112,7 @@
             };
           });
 
-          // استعادة سلة المشتريات القديمة واسم العميل عند تعديل الطلب دون مسح السلة
+          // الحفاظ على سلة المشتريات القديمة واسم العميل عند تعديل الطلب
           const savedCartJson = localStorage.getItem("kheir_saved_cart");
           if (savedCartJson) {
             try {
@@ -1133,7 +1133,7 @@
           if (editingName) {
             document.getElementById('custName').value = editingName;
             localStorage.removeItem("kheir_editing_customer_name");
-            showCustomAlert("يمكنك الآن تعديل سلتك الحية (إضافة أو إزالة أصناف) ثم الضغط على شبكة الصيد لإتمام التعديل.", "وضع التعديل النشط ✏️", "🔄");
+            showCustomAlert("يمكنك تعديل سلتك الحية (إضافة أو إزالة أصناف) ثم الضغط على شبكة الصيد لإتمام التعديل.", "وضع التعديل النشط ✏️", "🔄");
           }
 
           renderCategories(data.categories || []);
@@ -1265,7 +1265,6 @@
       for (let idx in selectedExtras) {
         if (selectedExtras[idx].count > 0) count++;
       }
-      document.getElementById('netCountBadge') ? document.getElementById('netCountBadge').innerText = count : null;
       const badge = document.getElementById('netCartCount');
       if (badge) badge.innerText = count;
     }
@@ -1512,7 +1511,7 @@
       }
     }
 
-    // تعديل الطلب: حفظ سلة المشتريات واسم العميل والعودة للمنيو دون مسح سلة العميل
+    // تعديل الطلب الذكي: الاحتفاظ بمحتويات السلة واسم العميل أثناء التعديل
     async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
@@ -1520,10 +1519,8 @@
       const confirmed = await showCustomConfirm("هل تريد تعديل سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي مع الاحتفاظ بسلتك لإضافة أو تعديل العناصر.", "تعديل الطلب ✏️", "🔄");
       if (!confirmed) return;
 
-      // إلغاء الطلب في الشيت ورد المخزون مؤقتاً لتعديله
       fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems }) }).catch(()=>{});
       
-      // حفظ عناصر السلة الحالية في الذاكرة لتظل محملة للعميل
       localStorage.setItem("kheir_saved_cart", JSON.stringify(cart));
       localStorage.setItem("kheir_editing_customer_name", saved.name);
       localStorage.removeItem("kheir_locked_order");
