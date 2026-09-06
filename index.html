@@ -532,7 +532,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAeUnHihSvMvYFHo4Ac6z_hcteYQcVC9uErdmHXucMe6JCMa2odZ8mgbIB6_3puCt-_g/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbqXgXfZ5kET0gYBKL9RiN24TIqxui2HpTNyxY5IBdDblM9qK__gC9lLksi3Fhbvoe1Q/exec";
     let shopPhoneNumber = "201009204577";
     let uploadedReceiptBase64 = "";
 
@@ -896,6 +896,7 @@
       document.getElementById('popupCalculatedTotal').innerText = total + " جنيه";
     }
 
+    // خصم الكمية في الشيت لحظياً بمجرد إضافتها للسلة (عبر إرسال طلب سحب مؤقت للخادم)
     async function processPopupItemAddition() {
       if (!activePopupFish) return false;
       if (popupQty > activePopupFish.remainingQty) {
@@ -915,6 +916,16 @@
       item.mainCooking = popupSelectedMain;
       item.subCooking = popupSelectedSub;
       item.effectivePrice = finalPrice;
+
+      // خصم مباشر لحظي في المخزون
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: "reserveItem", cartItems: [{ id: activePopupFish.id, name: activePopupFish.name, qty: popupQty }] })
+      }).catch(()=>{});
+
+      // خصم محلي فوري
+      activePopupFish.remainingQty = Math.max(0, activePopupFish.remainingQty - popupQty);
+      item.maxAvailable = activePopupFish.remainingQty;
 
       updateNetCountBadge();
       return true;
@@ -1005,32 +1016,6 @@
       } catch(e) {}
     }
 
-    // دالة لحساب الوقت المنقضي (عداد تصاعدي منذ وقت إنشاء الطلب)
-    function calculateElapsedOrderTime(orderTimeStr) {
-      if (!orderTimeStr) return "0 دقيقة";
-      try {
-        const parts = orderTimeStr.split(":");
-        if (parts.length < 2) return "0 دقيقة";
-        const orderHours = parseInt(parts[0], 10);
-        const orderMinutes = parseInt(parts[1], 10);
-
-        const now = new Date();
-        const currentHours = now.getHours();
-        const currentMinutes = now.getMinutes();
-
-        let diffMins = (currentHours * 60 + currentMinutes) - (orderHours * 60 + orderMinutes);
-        if (diffMins < 0) diffMins += 24 * 60; // لو الطلب من اليوم السابق
-
-        if (diffMins < 1) return "منذ لحظات";
-        if (diffMins < 60) return `منذ ${diffMins} دقيقة`;
-        const hrs = Math.floor(diffMins / 60);
-        const mins = diffMins % 60;
-        return `منذ ${hrs} ساعة و ${mins} دقيقة`;
-      } catch(e) {
-        return "جاري التحضير";
-      }
-    }
-
     function renderMarineOrders(orders) {
       const grid = document.getElementById('marineOrdersGrid');
       grid.innerHTML = '';
@@ -1050,14 +1035,11 @@
         if (isEdited) stateClass = "card-state-edited";
         else if (isPreparing) stateClass = "card-state-preparing";
 
-        const elapsedText = calculateElapsedOrderTime(ord.time);
-
         const card = document.createElement('div');
         card.className = `marine-order-card ${stateClass}`;
         card.innerHTML = `
           <div class="marine-card-header">
             <span class="marine-status-pill">${ord.status}</span>
-            <span class="order-timer-badge">⏱️ ${elapsedText}</span>
             <span class="marine-order-num">#${ord.orderId}</span>
           </div>
           <div class="marine-info-row"><strong>الوقت:</strong> ${ord.time}</div>
@@ -1569,7 +1551,6 @@
             const box = document.getElementById('lockedOrderStatus');
             box.innerText = d.orderStatus;
 
-            // تحديث تفاصيل الطلب الحية لو حصل دمج للتعديل في الشيت
             if (d.details && document.getElementById('lockedOrderDetails')) {
               const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
               if (saved) {
