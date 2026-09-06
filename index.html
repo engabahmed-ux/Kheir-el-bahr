@@ -155,7 +155,7 @@
     .fish-name { font-weight: 900; font-size: 1.15rem; color: var(--ocean-blue); margin-bottom: 4px; }
     .fish-category-badge { font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 8px; font-weight: 800; display: inline-block; }
     .fish-price { font-weight: 900; color: #0284c7; font-size: 1.05rem; background: #e0f2fe; padding: 6px 10px; border-radius: 10px; text-align: center; }
-    .fish-grill-price { font-size: 0.78rem; color: #64748b; font-weight: 700; text-align: center; margin-top: 4px; }
+    .fish-cooking-prices { font-size: 0.76rem; color: #64748b; font-weight: 700; text-align: center; margin-top: 4px; line-height: 1.4; }
     .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.75rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; display: inline-block; }
     .badge-status { font-size: 0.78rem; padding: 3px 8px; border-radius: 8px; font-weight: 800; display: inline-block; }
 
@@ -332,7 +332,7 @@
 
       <div style="background:#e0f2fe; border:1px solid #bae6fd; border-radius:12px; padding:10px 14px; margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
         <span style="font-weight:800; color:var(--ocean-blue); font-size:0.92rem;">الإجمالي المتوقع (مع التسوية):</span>
-        <span id="popupCalculatedTotal" style="font-weight:900; color:#0284c7; font-size:1.1rem;">0 ج.م</span>
+        <span id="popupCalculatedTotal" style="font-weight:900; color:#0284c7; font-size:1.1rem;">0 جنيه</span>
       </div>
 
       <div style="margin-top:16px; border-top:1px dashed #cbd5e1; padding-top:12px; display:flex; gap:8px;">
@@ -506,7 +506,7 @@
         <textarea id="custNotes" rows="2" placeholder="عيش زيادة، طحينة زيادة، تسوية خاصة..."></textarea>
       </div>
 
-      <div style="font-size:1.3rem; font-weight:900; color:var(--ocean-blue); margin:10px 0;" id="totalAmountModal">الإجمالي: 0 ج.م</div>
+      <div style="font-size:1.3rem; font-weight:900; color:var(--ocean-blue); margin:10px 0;" id="totalAmountModal">الإجمالي: 0 جنيه</div>
 
       <button class="submit-order-btn" id="submitBtn" onclick="sendOrder()">تأكيد وإرسال الطلب للمحل ✅</button>
     </div>
@@ -525,7 +525,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0zEBBTpqF3fTqs8oKv5tj3bdufyMMIwlaaR_mMxDYmO1s1PPFZFg6Ct34RC4HyCurfw/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_ShaGUizWUTIw_FrA17j8kXE6aCLakxRY0otQD4io8b2v8JQpeooY17R5wlh7Q4IBsQ/exec";
     let shopPhoneNumber = "201009204577";
 
     function handleHeaderClick(e) {
@@ -555,9 +555,9 @@
 
         const actions = document.getElementById('dialogActions');
         actions.innerHTML = `
-          <button class="dialog-btn dialog-btn-primary" id="dialogCall" style="background:#0284c7; flex:1;">اتصال هاتفى 📞</button>
-          <button class="dialog-btn" id="dialogWa" style="background:#10b981; color:white; flex:1;">مراسلة واتساب 💬</button>
-          <button class="dialog-btn dialog-btn-cancel" id="dialogCancel" style="background:#64748b; color:white; flex:0.8;">إلغاء ❌</button>
+          <button class="dialog-btn dialog-btn-primary" id="dialogCall" style="background:#0284c7; flex:1;">اتصال 📞</button>
+          <button class="dialog-btn" id="dialogWa" style="background:#10b981; color:white; flex:1;">واتساب 💬</button>
+          <button class="dialog-btn dialog-btn-cancel" id="dialogCancel" style="background:#ef4444; color:white; flex:0.8;">إلغاء ❌</button>
         `;
         dialog.style.display = 'flex';
 
@@ -858,6 +858,7 @@
       const parent = btnElement.parentNode;
       parent.querySelectorAll('.cooking-opt-btn').forEach(b => b.classList.remove('selected'));
       btnElement.classList.add('selected');
+      updatePopupTotalDisplay();
     }
 
     function closeCookingModal() {
@@ -879,11 +880,14 @@
     function updatePopupTotalDisplay() {
       if (!activePopupFish) return;
       let unitPrice = activePopupFish.price;
+      // إضافة سعر الشوي أو القلي طبقاً لاختيار العميل
       if (popupSelectedMain === "مشوي" && activePopupFish.grillPrice) {
         unitPrice += Number(activePopupFish.grillPrice);
+      } else if (popupSelectedMain === "مقلي" && activePopupFish.fryPrice) {
+        unitPrice += Number(activePopupFish.fryPrice);
       }
       const total = popupQty * unitPrice;
-      document.getElementById('popupCalculatedTotal').innerText = total + " ج.م";
+      document.getElementById('popupCalculatedTotal').innerText = total + " جنيه";
     }
 
     async function processPopupItemAddition() {
@@ -896,6 +900,8 @@
       let finalPrice = activePopupFish.price;
       if (popupSelectedMain === "مشوي" && activePopupFish.grillPrice) {
         finalPrice += Number(activePopupFish.grillPrice);
+      } else if (popupSelectedMain === "مقلي" && activePopupFish.fryPrice) {
+        finalPrice += Number(activePopupFish.fryPrice);
       }
 
       const item = cart[activePopupFish.id];
@@ -1030,7 +1036,7 @@
             ${ord.details}
             ${ord.notes && ord.notes !== 'لا يوجد' ? `<br><span style="color:#f59e0b;">ملاحظات: ${ord.notes}</span>` : ''}
           </div>
-          <div class="marine-total-price">المبلغ: ${ord.totalPrice || 0} ج.م</div>
+          <div class="marine-total-price">المبلغ: ${ord.totalPrice || 0} جنيه</div>
           <div class="marine-action-row">
             ${isEdited ? `<button class="marine-act-btn" style="background:#f59e0b; color:#051626;" onclick="acknowledgeEdit(${ord.orderId})">✔ تم الاطلاع على التعديل</button>` : ''}
             <button class="marine-act-btn marine-btn-prepare" onclick="updateOrderStatusByAdmin(${ord.orderId}, 'تم تحضير الطلب 🟢')">✔ تجهيز</button>
@@ -1084,7 +1090,7 @@
           fryTypesList = data.fryTypes || ["زيت", "زيت وليمون"];
           soupTypesList = data.soupTypes || ["مخلية", "بريميوم"];
 
-          // جلب بيانات إنستاباي ورقم المحل من B2, B3, B4 في الشيت
+          // جلب رقم إنستاباي ورابط إنستاباي ورقم المحل من الشيت
           document.getElementById('instapayTargetText').innerText = data.instapayPhone || "";
           if (data.instapayUrl) {
             document.getElementById('instapayAppLink').href = data.instapayUrl;
@@ -1109,6 +1115,7 @@
             };
           });
 
+          // الحفاظ على سلة العميل عند العودة للتعديل
           const editingName = localStorage.getItem("kheir_editing_customer_name");
           if (editingName) {
             document.getElementById('custName').value = editingName;
@@ -1174,6 +1181,15 @@
           statusBadgeHtml = `<span class="badge-status" style="background:#ecfdf5; color:#059669;">متوفر ✅</span>`;
         }
 
+        // عرض أسعار الشوي والقلي بصيغة (جنيه / كيلو)
+        let cookingPricesText = '';
+        if (fish.grillPrice > 0 || fish.fryPrice > 0) {
+          let parts = [];
+          if (fish.grillPrice > 0) parts.push(`شوي: +${fish.grillPrice} جنيه / كيلو`);
+          if (fish.fryPrice > 0) parts.push(`قلي: +${fish.fryPrice} جنيه / كيلو`);
+          cookingPricesText = `<div class="fish-cooking-prices">${parts.join(' | ')}</div>`;
+        }
+
         const card = document.createElement('div');
         card.className = `fish-card ${isDisabled ? 'sold-out' : ''}`;
 
@@ -1186,8 +1202,8 @@
             <div class="fish-name">${fish.name}</div>
           </div>
           <div>
-            <div class="fish-price" style="margin-bottom:4px;">${fish.price} ج.م ${isSandwich ? '/ سندوتش' : '/ كيلو'}</div>
-            ${fish.grillPrice > 0 ? `<div class="fish-grill-price">سعر الشوي: +${fish.grillPrice} ج.م/ك</div>` : ''}
+            <div class="fish-price" style="margin-bottom:2px;">${fish.price} جنيه / كيلو ${isSandwich ? 'سندوتش' : ''}</div>
+            ${cookingPricesText}
             <button class="card-action-btn" ${isDisabled ? 'disabled' : ''} onclick="openCookingModal(${fish.id})" style="margin-top:8px; width:100%;">
               🛒 إضافة
             </button>
@@ -1208,7 +1224,7 @@
         grid.innerHTML += `
           <div class="extra-card" id="extra-${idx}" onclick="toggleExtra(${idx})">
             <div class="extra-name">${ext.name}</div>
-            <div class="extra-price">+ ${ext.price} ج.م</div>
+            <div class="extra-price">+ ${ext.price} جنيه</div>
           </div>
         `;
       });
@@ -1270,7 +1286,7 @@
           row.innerHTML = `
             <div>
               <div class="cart-item-title">${item.data.name} [${cook}]</div>
-              <div class="cart-item-desc">${item.qty} كيلو × ${unitPrice} = ${rowTotal} ج.م</div>
+              <div class="cart-item-desc">${item.qty} كيلو × ${unitPrice} = ${rowTotal} جنيه</div>
             </div>
             <div class="cart-item-controls">
               <button class="cart-sm-btn" onclick="modifyCartItemQty(${id}, -0.5)">-</button>
@@ -1292,7 +1308,7 @@
           row.innerHTML = `
             <div>
               <div class="cart-item-title">إضافة: ${ext.data.name}</div>
-              <div class="cart-item-desc">${ext.data.price} ج.م</div>
+              <div class="cart-item-desc">${ext.data.price} جنيه</div>
             </div>
             <div class="cart-item-controls">
               <button class="cart-sm-btn cart-del-btn" title="حذف" onclick="removeExtraItem(${idx})">🗑️</button>
@@ -1303,7 +1319,7 @@
       }
 
       const total = calculateTotal();
-      document.getElementById('totalAmountModal').innerText = `الإجمالي: ${total} ج.م`;
+      document.getElementById('totalAmountModal').innerText = `الإجمالي: ${total} جنيه`;
       updateNetCountBadge();
 
       if (!hasItems) {
@@ -1434,7 +1450,7 @@
       document.getElementById('menuMainArea').style.display = 'none';
       document.getElementById('floatingNetBasket').style.display = 'none';
       document.getElementById('lockedOrderId').innerText = `#${saved.orderId}`;
-      document.getElementById('lockedOrderDetails').innerHTML = `<strong>الاسم:</strong> ${saved.name}<br><strong>الطلب:</strong> ${saved.itemsDetails}<br><strong>الإجمالي:</strong> ${saved.total} ج.م`;
+      document.getElementById('lockedOrderDetails').innerHTML = `<strong>الاسم:</strong> ${saved.name}<br><strong>الطلب:</strong> ${saved.itemsDetails}<br><strong>الإجمالي:</strong> ${saved.total} جنيه`;
 
       startAscendingCancelTimer(saved.timestamp);
       trackLiveStatus(saved.orderId);
@@ -1481,12 +1497,12 @@
       }
     }
 
-    // تعديل الطلب دون فتح نافذة الاتصال، والانتقال مباشرة للمنيو الرئيسي لتعديل العناصر
+    // تعديل الطلب: يوديه للمنيو الرئيسي مع الاحتفاظ بما في السلة الحالية
     async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
 
-      const confirmed = await showCustomConfirm("هل تريد تعديل محتويات سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي لتعديل العناصر وإعادة الإرسال.", "تعديل الطلب ✏️", "🔄");
+      const confirmed = await showCustomConfirm("هل تريد تعديل سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي لتعديل العناصر وإعادة الإرسال.", "تعديل الطلب ✏️", "🔄");
       if (!confirmed) return;
 
       fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems }) }).catch(()=>{});
