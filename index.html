@@ -1529,12 +1529,14 @@
       cancelTimerInterval = setInterval(updateAscTimer, 1000);
     }
 
+    // تتبع حالة الطلب: لا يتم الخروج إلا إذا تم حذف الطلب أو إزالته تماماً من شيت الطلبات (وليس مجرد أرشفته)
     function trackClientLiveStatus(orderId) {
       clearInterval(clientStatusInterval);
       clientStatusInterval = setInterval(() => {
         fetch(`${SCRIPT_URL}?action=checkStatus&orderId=${orderId}`).then(r => r.json()).then(d => {
           if (d.status === "success") {
-            if (d.orderStatus === "NOT_FOUND" || d.orderStatus === "ARCHIVED") {
+            // الخروج وإعادة التحميل فقط لو تم مسحه تماماً من شيت الطلبات النشطة (NOT_FOUND)
+            if (d.orderStatus === "NOT_FOUND") {
               clearInterval(clientStatusInterval);
               localStorage.removeItem("kheir_locked_order");
               location.reload();
