@@ -296,12 +296,10 @@
 </head>
 <body>
 
-  <!-- زر الاتصال العائم (رمز السماعة فقط) -->
   <div class="styled-phone-call-btn" onclick="openContactOptions()" title="تواصل معنا">
     <span class="phone-icon-symbol">📞</span>
   </div>
 
-  <!-- شبكة الصيد العائمة للسلة -->
   <div class="floating-net-basket" id="floatingNetBasket" onclick="openCheckout()">
     <span class="net-mesh-icon">🕸️</span>
     <span class="net-count-badge" id="netCartCount">0</span>
@@ -313,7 +311,6 @@
     <div class="beach-surf-layer surf-foam-front"></div>
   </div>
 
-  <!-- نافذة منبثقة لاختيار الكمية والطاهي -->
   <div class="cooking-modal-overlay" id="cookingPopupModal" onclick="closeCookingModalOnOutside(event)">
     <div class="cooking-modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -399,7 +396,6 @@
   </header>
 
   <div class="container">
-    <!-- كارت تتبع الطلب النشط مع زر إلغاء وتعديل متحرك وثابت (Sticky) -->
     <div class="order-lock-screen" id="orderLockCard" style="display:none; background:white; border-radius:16px; border:2px solid #38bdf8; padding:20px; margin-bottom:20px;">
       <div class="lock-badge" style="display:inline-flex; align-items:center; gap:6px; background:#e0f2fe; color:#0369a1; padding:4px 12px; border-radius:20px; font-weight:800; font-size:0.85rem; margin-bottom:12px;">
         <span style="width:10px; height:10px; background:#10b981; border-radius:50%; animation:blink 1.5s infinite;"></span> طلبك قيد المتابعة الحية
@@ -525,7 +521,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxZuYwGdRWxzWM_HvytobyTsQUQuYaJfgux0_DaGwsUzBb0R-gEtyV7OFau85DGsVdPpA/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFXqtX35sJZ9UQEGArqc2RSAtxGgMqPr5t_NioszWNsvJXYlCDRX5BwjnBcgWl88Zl/exec";
     let shopPhoneNumber = "201009204577";
 
     function handleHeaderClick(e) {
