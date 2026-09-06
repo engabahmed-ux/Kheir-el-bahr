@@ -89,7 +89,7 @@
       font-size: 0.95rem; background: white; box-shadow: var(--shadow); outline: none;
     }
     .search-input:focus { border-color: var(--sea-cyan); }
-    .search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 1.1rem; color: var(--text-muted); pointer-events: none; }
+    .search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 1.1.rem; color: var(--text-muted); pointer-events: none; }
 
     .categories-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 14px; scrollbar-width: none; }
     .categories-bar::-webkit-scrollbar { display: none; }
@@ -100,21 +100,17 @@
     }
     .category-btn.active { background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue); }
 
+    /* زر الاتصال الجديد (رمز السماعة فقط بدون الرقم) */
     .styled-phone-call-btn {
-      position: fixed; left: 18px; bottom: 105px;
-      background: linear-gradient(135deg, #0b2545 0%, #0369a1 100%);
-      border: 1.5px solid rgba(56, 189, 248, 0.7); border-radius: 26px; padding: 6px 14px 6px 10px;
-      display: flex; align-items: center; gap: 8px; text-decoration: none;
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35); z-index: 180; backdrop-filter: blur(8px);
+      position: fixed; left: 18px; bottom: 105px; width: 52px; height: 52px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; text-decoration: none;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45); z-index: 180; backdrop-filter: blur(8px);
       transition: all 0.2s ease;
     }
-    .styled-phone-call-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5); }
-    .phone-icon-bubble {
-      width: 28px; height: 28px; background: linear-gradient(135deg, #10b981, #059669);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 0.95rem; color: white; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
-    }
-    .phone-num-text { color: #ffffff; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.5px; direction: ltr; }
+    .styled-phone-call-btn:hover { transform: translateY(-2px) scale(1.08); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6); }
+    .phone-icon-symbol { font-size: 1.5rem; color: white; }
 
     /* شبكة الصيد العائمة للسلة */
     .floating-net-basket {
@@ -300,12 +296,12 @@
 </head>
 <body>
 
-  <a href="tel:01009204577" class="styled-phone-call-btn">
-    <div class="phone-icon-bubble">📞</div>
-    <span class="phone-num-text">01009204577</span>
-  </a>
+  <!-- زر الاتصال برمز السماعة فقط مع خيارات الاتصال المباشر أو الواتساب -->
+  <div class="styled-phone-call-btn" onclick="openContactOptions()" title="تواصل معنا">
+    <span class="phone-icon-symbol">📞</span>
+  </div>
 
-  <!-- شبكة الصيد الحقيقية للسلة -->
+  <!-- شبكة الصيد العائمة للسلة -->
   <div class="floating-net-basket" id="floatingNetBasket" onclick="openCheckout()">
     <span class="net-mesh-icon">🕸️</span>
     <span class="net-count-badge" id="netCartCount">0</span>
@@ -317,7 +313,7 @@
     <div class="beach-surf-layer surf-foam-front"></div>
   </div>
 
-  <!-- نافذة منبثقة تفاعلية لاختيار الكمية والطاهي مع عرض الإجمالي وحساب سعر الشوي -->
+  <!-- نافذة منبثقة لاختيار الكمية والطاهي مع زر (الذهاب إلى السلة) -->
   <div class="cooking-modal-overlay" id="cookingPopupModal" onclick="closeCookingModalOnOutside(event)">
     <div class="cooking-modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -334,7 +330,6 @@
       
       <div id="popupCookingOptionsContainer"></div>
 
-      <!-- عرض الإجمالي المتوقع شامل سعر الكيلو والشوي -->
       <div style="background:#e0f2fe; border:1px solid #bae6fd; border-radius:12px; padding:10px 14px; margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
         <span style="font-weight:800; color:var(--ocean-blue); font-size:0.92rem;">الإجمالي المتوقع (مع التسوية):</span>
         <span id="popupCalculatedTotal" style="font-weight:900; color:#0284c7; font-size:1.1rem;">0 ج.م</span>
@@ -345,7 +340,7 @@
           إضافة سمك جديد الي السلة ➕
         </button>
         <button class="card-action-btn" onclick="confirmPopupAddItemAndClose()" style="flex:1; font-size:0.85rem; padding:10px; background:#10b981;">
-          إناهاء 🛒
+          الذهاب إلى السلة 🛒
         </button>
       </div>
     </div>
@@ -415,7 +410,6 @@
       </div>
       <div id="lockedOrderDetails" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:0.92rem; line-height:1.6; margin-bottom:12px;"></div>
 
-      <!-- زر إلغاء وتعديل متحرك وثابت يسهل الوصول إليه أثناء التمرير -->
       <div id="cancelAreaWrapper" style="background:#fef2f2; border:1px dashed #fca5a5; border-radius:12px; padding:12px; text-align:center; position: sticky; top: 10px; z-index: 50; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);">
         <div id="countdownTimerText" style="font-weight:800; color:#dc2626; font-size:0.92rem; margin-bottom:6px;">
           متاح تعديل أو إلغاء الطلب خلال: <span id="cancelTimer">00:00</span> / 10:00 دقيقة
@@ -531,13 +525,24 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNeLzAfswIouehuLPnGj9pJl9Lhec8itJATLGD1NME4GjJKDPQd8tPOZyTXO5iibGWIA/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxG9ysVD2NrNIeHfGHGRDhXDwsmQ66cuO87iNUjCZEYV1Zsp-c0_ns8AqOCopEa2tHamA/exec";
     const WHATSAPP_NUM = "201009204577";
 
     function handleHeaderClick(e) {
       if (e.target.closest('.admin-gear-top-btn')) return;
       playBubbleSound();
       location.reload();
+    }
+
+    // خيارات الاتصال الهاتفي أو الواتساب عند الضغط على رمز السماعة
+    async function openContactOptions() {
+      playBubbleSound();
+      const choice = await showCustomConfirm("اختر طريقة التواصل مع محل «خير البحر»:", "اتصال ودعم 📞", "☎️");
+      if (choice) {
+        window.location.href = `tel:${WHATSAPP_NUM}`;
+      } else {
+        window.open(`https://wa.me/20${WHATSAPP_NUM}`, '_blank');
+      }
     }
 
     function showCustomAlert(message, title = "خير البحر 🐟", icon = "🌊") {
@@ -569,8 +574,8 @@
 
         const actions = document.getElementById('dialogActions');
         actions.innerHTML = `
-          <button class="dialog-btn dialog-btn-primary" id="dialogYes">نعم ✅</button>
-          <button class="dialog-btn dialog-btn-cancel" id="dialogNo">إلغاء ❌</button>
+          <button class="dialog-btn dialog-btn-primary" id="dialogYes">اتصال هاتفى 📞</button>
+          <button class="dialog-btn dialog-btn-cancel" id="dialogNo" style="background:#10b981; color:white;">مراسلة واتساب 💬</button>
         `;
         dialog.style.display = 'flex';
 
@@ -733,7 +738,7 @@
     }
 
     // =======================================================
-    // النافذة المنبثقة وحساب الإجمالي اللحظي شامل سعر الشوي
+    // النافذة المنبثقة
     // =======================================================
     let activePopupFish = null;
     let popupSelectedMain = "";
@@ -855,7 +860,6 @@
     function updatePopupTotalDisplay() {
       if (!activePopupFish) return;
       let unitPrice = activePopupFish.price;
-      // إضافة سعر الشوي إذا تم اختيار طريقة الشوي
       if (popupSelectedMain === "مشوي" && activePopupFish.grillPrice) {
         unitPrice += Number(activePopupFish.grillPrice);
       }
@@ -879,7 +883,7 @@
       item.qty = (item.qty || 0) + popupQty;
       item.mainCooking = popupSelectedMain;
       item.subCooking = popupSelectedSub;
-      item.effectivePrice = finalPrice; // السعر شامل التسوية والشوي
+      item.effectivePrice = finalPrice;
 
       updateNetCountBadge();
       animateFishToNetBasket(document.getElementById('floatingNetBasket'));
@@ -1076,6 +1080,14 @@
               isAvailable: !(isSoldOut || isUnavailable)
             };
           });
+
+          // استعادة بيانات العميل أو السلة القديمة عند التعديل
+          const editingName = localStorage.getItem("kheir_editing_customer_name");
+          if (editingName) {
+            document.getElementById('custName').value = editingName;
+            localStorage.removeItem("kheir_editing_customer_name");
+            showCustomAlert("يمكنك تعديل كميات سلتك الحية الآن وإتمام الطلب.", "وضع التعديل النشط ✏️", "🔄");
+          }
 
           renderCategories(data.categories || []);
           renderMenu(allMenuItems);
@@ -1442,7 +1454,7 @@
       }
     }
 
-    // تعديل الطلب الذكي: إعادة العميل للصفحة الرئيسية مع حفظ بياناته والسلة ليضيف/يحذف ثم يعود تلقائياً لصفحة الحالة
+    // تعديل الطلب الذكي: الاحتفاظ ببيانات العميل والسلة وإتاحة التعديل عليها بسلاسة
     async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
@@ -1450,14 +1462,11 @@
       const confirmed = await showCustomConfirm("هل تريد تعديل محتويات سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي لتعديل العناصر.", "تعديل الطلب ✏️", "🔄");
       if (!confirmed) return;
 
-      // إلغاء الطلب القديم مؤقتاً لتعديل المخزون في الخلفية
       fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems }) }).catch(()=>{});
       
-      // حفظ بيانات العميل في الذاكرة المؤقتة لملئها تلقائياً لاحقاً
       localStorage.setItem("kheir_editing_customer_name", saved.name);
       localStorage.removeItem("kheir_locked_order");
 
-      // إرجاع الصفحة للرئيسية
       location.reload();
     }
 
