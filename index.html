@@ -168,7 +168,6 @@
     }
     .cooking-opt-btn.selected { border-color: var(--aqua-glow); background: #e0f2fe; color: #0284c7; }
 
-    /* إعادة زر المطور ليصبح في الأسفل على اليمين تماماً كما طلبته */
     .site-footer-wrapper { max-width: 680px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: flex-end; text-align: right; }
     .dev-badge-marine {
       background: rgba(5, 22, 38, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.45); backdrop-filter: blur(8px);
@@ -1457,7 +1456,6 @@
         }
       }
 
-      // التحقق مما إذا كان هناك طلب قيد التعديل لنفس رقم الطلب الحالي
       const existingSaved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       const editingOrderId = localStorage.getItem("kheir_editing_order_id");
 
@@ -1474,7 +1472,6 @@
       closeCheckout();
 
       if (editingOrderId) {
-        // تحديث الطلب القائم مباشرة بدون إنشاء طلب جديد
         const orderSnapshot = { orderId: editingOrderId, timestamp: existingSaved ? existingSaved.timestamp : Date.now(), name: name, phone: phone, deliveryTime: payload.deliveryTime, itemsDetails: payload.itemsDetails, total: total, cartItems: cartItems };
         localStorage.setItem("kheir_locked_order", JSON.stringify(orderSnapshot));
         localStorage.removeItem("kheir_editing_order_id");
@@ -1572,7 +1569,6 @@
       }
     }
 
-    // تعديل الطلب القائم مباشرة بدون إنشاء طلب جديد أو كتابة "تم الإلغاء"
     async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
