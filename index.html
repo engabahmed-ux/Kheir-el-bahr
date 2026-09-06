@@ -525,7 +525,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_ShaGUizWUTIw_FrA17j8kXE6aCLakxRY0otQD4io8b2v8JQpeooY17R5wlh7Q4IBsQ/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1B2HgFa5yy9db2X6hXRTasxYSThTUG1rCQ_-mp6znAdqy-JnIfihZYLPQI5CjIsqHeA/exec";
     let shopPhoneNumber = "201009204577";
 
     function handleHeaderClick(e) {
@@ -534,7 +534,6 @@
       location.reload();
     }
 
-    // خيارات الاتصال الهاتفي أو الواتساب أو الإلغاء
     async function openContactOptions() {
       playBubbleSound();
       const choice = await showCustomConfirmContact("اختر طريقة التواصل مع محل «خير البحر»:", "اتصال ودعم 📞", "☎️");
@@ -880,7 +879,6 @@
     function updatePopupTotalDisplay() {
       if (!activePopupFish) return;
       let unitPrice = activePopupFish.price;
-      // إضافة سعر الشوي أو القلي طبقاً لاختيار العميل
       if (popupSelectedMain === "مشوي" && activePopupFish.grillPrice) {
         unitPrice += Number(activePopupFish.grillPrice);
       } else if (popupSelectedMain === "مقلي" && activePopupFish.fryPrice) {
@@ -1090,7 +1088,6 @@
           fryTypesList = data.fryTypes || ["زيت", "زيت وليمون"];
           soupTypesList = data.soupTypes || ["مخلية", "بريميوم"];
 
-          // جلب رقم إنستاباي ورابط إنستاباي ورقم المحل من الشيت
           document.getElementById('instapayTargetText').innerText = data.instapayPhone || "";
           if (data.instapayUrl) {
             document.getElementById('instapayAppLink').href = data.instapayUrl;
@@ -1115,17 +1112,34 @@
             };
           });
 
-          // الحفاظ على سلة العميل عند العودة للتعديل
+          // استعادة سلة المشتريات القديمة واسم العميل عند تعديل الطلب دون مسح السلة
+          const savedCartJson = localStorage.getItem("kheir_saved_cart");
+          if (savedCartJson) {
+            try {
+              const savedCart = JSON.parse(savedCartJson);
+              for (let id in savedCart) {
+                if (cart[id]) {
+                  cart[id].qty = savedCart[id].qty;
+                  cart[id].mainCooking = savedCart[id].mainCooking;
+                  cart[id].subCooking = savedCart[id].subCooking;
+                  cart[id].effectivePrice = savedCart[id].effectivePrice;
+                }
+              }
+              localStorage.removeItem("kheir_saved_cart");
+            } catch(e) {}
+          }
+
           const editingName = localStorage.getItem("kheir_editing_customer_name");
           if (editingName) {
             document.getElementById('custName').value = editingName;
             localStorage.removeItem("kheir_editing_customer_name");
-            showCustomAlert("أضف أو احذف ما تريد من السلة ثم اضغط على شبكة الصيد لإتمام التعديل.", "وضع التعديل النشط ✏️", "🔄");
+            showCustomAlert("يمكنك الآن تعديل سلتك الحية (إضافة أو إزالة أصناف) ثم الضغط على شبكة الصيد لإتمام التعديل.", "وضع التعديل النشط ✏️", "🔄");
           }
 
           renderCategories(data.categories || []);
           renderMenu(allMenuItems);
           renderExtras(data.extras || []);
+          updateNetCountBadge();
         }
       } catch(e) {}
     }
@@ -1181,7 +1195,6 @@
           statusBadgeHtml = `<span class="badge-status" style="background:#ecfdf5; color:#059669;">متوفر ✅</span>`;
         }
 
-        // عرض أسعار الشوي والقلي بصيغة (جنيه / كيلو)
         let cookingPricesText = '';
         if (fish.grillPrice > 0 || fish.fryPrice > 0) {
           let parts = [];
@@ -1252,7 +1265,9 @@
       for (let idx in selectedExtras) {
         if (selectedExtras[idx].count > 0) count++;
       }
-      document.getElementById('netCartCount').innerText = count;
+      document.getElementById('netCountBadge') ? document.getElementById('netCountBadge').innerText = count : null;
+      const badge = document.getElementById('netCartCount');
+      if (badge) badge.innerText = count;
     }
 
     function calculateTotal() {
@@ -1497,16 +1512,19 @@
       }
     }
 
-    // تعديل الطلب: يوديه للمنيو الرئيسي مع الاحتفاظ بما في السلة الحالية
+    // تعديل الطلب: حفظ سلة المشتريات واسم العميل والعودة للمنيو دون مسح سلة العميل
     async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
 
-      const confirmed = await showCustomConfirm("هل تريد تعديل سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي لتعديل العناصر وإعادة الإرسال.", "تعديل الطلب ✏️", "🔄");
+      const confirmed = await showCustomConfirm("هل تريد تعديل سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي مع الاحتفاظ بسلتك لإضافة أو تعديل العناصر.", "تعديل الطلب ✏️", "🔄");
       if (!confirmed) return;
 
+      // إلغاء الطلب في الشيت ورد المخزون مؤقتاً لتعديله
       fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems }) }).catch(()=>{});
       
+      // حفظ عناصر السلة الحالية في الذاكرة لتظل محملة للعميل
+      localStorage.setItem("kheir_saved_cart", JSON.stringify(cart));
       localStorage.setItem("kheir_editing_customer_name", saved.name);
       localStorage.removeItem("kheir_locked_order");
 
