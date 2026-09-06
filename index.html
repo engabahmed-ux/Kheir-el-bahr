@@ -116,7 +116,7 @@
     }
     .phone-num-text { color: #ffffff; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.5px; direction: ltr; }
 
-    /* شبكة الصيد السلة العائمة */
+    /* شبكة الصيد العائمة (السلة) */
     .floating-net-basket {
       position: fixed; left: 20px; bottom: 24px; width: 68px; height: 68px;
       background: radial-gradient(circle at 35% 35%, #0ea5e9, #0369a1);
@@ -305,7 +305,7 @@
     <span class="phone-num-text">01009204577</span>
   </a>
 
-  <!-- شبكة صيد حقيقية في أيقونة السلة العائمة -->
+  <!-- شبكة الصيد الحقيقية للسلة -->
   <div class="floating-net-basket" id="floatingNetBasket" onclick="openCheckout()">
     <span class="net-mesh-icon">🕸️</span>
     <span class="net-count-badge" id="netCartCount">0</span>
@@ -317,7 +317,7 @@
     <div class="beach-surf-layer surf-foam-front"></div>
   </div>
 
-  <!-- نافذة منبثقة تفاعلية لاختيار الكمية أولاً ثم الطهي -->
+  <!-- نافذة منبثقة تفاعلية لاختيار الكمية ثم الطهي مع عرض الإجمالي اللحظي -->
   <div class="cooking-modal-overlay" id="cookingPopupModal" onclick="closeCookingModalOnOutside(event)">
     <div class="cooking-modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -334,12 +334,18 @@
       
       <div id="popupCookingOptionsContainer"></div>
 
+      <!-- عرض الإجمالي المتوقع قبل الإضافة -->
+      <div style="background:#e0f2fe; border:1px solid #bae6fd; border-radius:12px; padding:10px 14px; margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-weight:800; color:var(--ocean-blue); font-size:0.92rem;">الإجمالي المتوقع للصنف:</span>
+        <span id="popupCalculatedTotal" style="font-weight:900; color:#0284c7; font-size:1.1rem;">0 ج.م</span>
+      </div>
+
       <div style="margin-top:16px; border-top:1px dashed #cbd5e1; padding-top:12px; display:flex; gap:8px;">
-        <button class="card-action-btn" onclick="confirmPopupAddItemAndContinue()" style="flex:1; font-size:0.88rem; padding:10px; background:#0284c7;">
-          إضافة صنف جديد ➕
+        <button class="card-action-btn" onclick="confirmPopupAddItemAndContinue()" style="flex:1; font-size:0.85rem; padding:10px; background:#0284c7;">
+          إضافة سمك جديد الي السلة ➕
         </button>
-        <button class="card-action-btn" onclick="confirmPopupAddItemAndClose()" style="flex:1; font-size:0.88rem; padding:10px; background:#10b981;">
-          إضافة وإنهاء 🛒
+        <button class="card-action-btn" onclick="confirmPopupAddItemAndClose()" style="flex:1; font-size:0.85rem; padding:10px; background:#10b981;">
+          إناهاء 🛒
         </button>
       </div>
     </div>
@@ -398,6 +404,7 @@
   </header>
 
   <div class="container">
+    <!-- كارت تتبع الطلب النشط مع زر إلغاء ثابت ومتحرك للأعلى -->
     <div class="order-lock-screen" id="orderLockCard" style="display:none; background:white; border-radius:16px; border:2px solid #38bdf8; padding:20px; margin-bottom:20px;">
       <div class="lock-badge" style="display:inline-flex; align-items:center; gap:6px; background:#e0f2fe; color:#0369a1; padding:4px 12px; border-radius:20px; font-weight:800; font-size:0.85rem; margin-bottom:12px;">
         <span style="width:10px; height:10px; background:#10b981; border-radius:50%; animation:blink 1.5s infinite;"></span> طلبك قيد المتابعة الحية
@@ -408,13 +415,14 @@
       </div>
       <div id="lockedOrderDetails" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:0.92rem; line-height:1.6; margin-bottom:12px;"></div>
 
-      <div id="cancelAreaWrapper" style="background:#fef2f2; border:1px dashed #fca5a5; border-radius:12px; padding:12px; text-align:center;">
-        <div id="countdownTimerText" style="font-weight:800; color:#dc2626; font-size:0.92rem; margin-bottom:8px;">
+      <!-- زر إلغاء وتعديل متحرك وثابت يسهل الوصول إليه -->
+      <div id="cancelAreaWrapper" style="background:#fef2f2; border:1px dashed #fca5a5; border-radius:12px; padding:12px; text-align:center; position: sticky; top: 10px; z-index: 50; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);">
+        <div id="countdownTimerText" style="font-weight:800; color:#dc2626; font-size:0.92rem; margin-bottom:6px;">
           متاح تعديل أو إلغاء الطلب خلال: <span id="cancelTimer">00:00</span> / 10:00 دقيقة
         </div>
-        <div style="display:flex; gap:8px; margin-top:8px;">
-          <button onclick="openEditActiveOrderModal()" style="flex:1; background:#0284c7; color:white; border:none; padding:8px; border-radius:10px; font-weight:800; cursor:pointer;">تعديل الطلب ✏️</button>
-          <button onclick="requestCancelOrder()" style="flex:1; background:#ef4444; color:white; border:none; padding:8px; border-radius:10px; font-weight:800; cursor:pointer;">إلغاء الطلب 🗑️</button>
+        <div style="display:flex; gap:8px;">
+          <button onclick="openEditActiveOrderModal()" style="flex:1; background:#0284c7; color:white; border:none; padding:9px; border-radius:10px; font-weight:800; cursor:pointer;">تعديل الطلب ✏️</button>
+          <button onclick="requestCancelOrder()" style="flex:1; background:#ef4444; color:white; border:none; padding:9px; border-radius:10px; font-weight:800; cursor:pointer;">إلغاء الطلب 🗑️</button>
         </div>
       </div>
     </div>
@@ -451,6 +459,7 @@
     </div>
   </div>
 
+  <!-- نافذة إتمام الطلب مع دعم زر وزر رابط إنستاباي -->
   <div class="modal" id="checkoutModal">
     <div class="modal-content">
       <div class="modal-title">
@@ -485,11 +494,14 @@
         <label>طريقة الدفع:</label>
         <div class="payment-box">
           <div class="pay-btn-opt active" id="payCash" onclick="setPaymentMethod('cash')">💵 كاش عند الاستلام</div>
-          <div class="pay-btn-opt instapay" id="payInstapay" onclick="setPaymentMethod('instapay')">⚡ إنستاباي (InstaPay)</div>
+          <div class="pay-btn-opt instapay" id="payInstapay" onclick="setPaymentMethod('instapay')">🟣 إنستاباي (InstaPay)</div>
         </div>
         <div class="instapay-action-card" id="instapayCard">
           <div>حساب المحل: <strong id="instapayTargetText"></strong></div>
-          <a href="instapay://" id="instapayAppUrl" target="_blank" class="instapay-go-btn" onclick="showReceiptStep()">فتح إنستاباي للتحويل ↗️</a>
+          <a href="instapay://" id="instapayAppUrl" target="_blank" class="instapay-go-btn" onclick="showReceiptStep()">فتح تطبيق إنستاباي للتحويل ↗️</a>
+          <div style="margin-top:8px;">
+            <a href="https://instapay.eg" target="_blank" style="color:#7928ca; font-weight:800; font-size:0.88rem; text-decoration:underline;">موقع إنستاباي الرسمي 🌐</a>
+          </div>
           <div class="receipt-upload-box" id="receiptBox">
             <input type="file" id="instapayReceiptFile" accept="image/*">
           </div>
@@ -721,6 +733,9 @@
       document.getElementById('devModal').style.display = 'none';
     }
 
+    // =======================================================
+    // النافذة المنبثقة لاختيار الكمية وحساب الإجمالي اللحظي
+    // =======================================================
     let activePopupFish = null;
     let popupSelectedMain = "";
     let popupSelectedSub = "";
@@ -777,6 +792,7 @@
       }
 
       document.getElementById('popupCookingOptionsContainer').innerHTML = html;
+      updatePopupTotalDisplay();
       document.getElementById('cookingPopupModal').style.display = 'flex';
     }
 
@@ -833,6 +849,13 @@
       popupQty += delta;
       if (popupQty < 0.5) popupQty = 0.5;
       document.getElementById('popupQtyDisplay').innerText = popupQty + " كيلو";
+      updatePopupTotalDisplay();
+    }
+
+    function updatePopupTotalDisplay() {
+      if (!activePopupFish) return;
+      const total = popupQty * activePopupFish.price;
+      document.getElementById('popupCalculatedTotal').innerText = total + " ج.م";
     }
 
     async function processPopupItemAddition() {
