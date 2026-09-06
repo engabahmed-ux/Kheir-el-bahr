@@ -70,7 +70,7 @@
     header h1 { font-size: 1.8rem; font-weight: 900; }
     .sub-slogan { font-size: 0.9rem; color: var(--sea-cyan); font-weight: 700; }
 
-    .container { max-width: 680px; margin: auto; padding: 16px 14px; }
+    .container { max-width: 820px; margin: auto; padding: 16px 14px; }
     .search-box-wrapper { position: relative; margin-bottom: 14px; }
     .search-input {
       width: 100%; padding: 12px 42px 12px 14px; border-radius: 14px; border: 1px solid #cbd5e1;
@@ -116,39 +116,49 @@
     }
     .net-open { transform: scale(1.22); box-shadow: 0 0 30px #38bdf8; border-color: #fef08a; }
 
-    .swimming-3d-fish {
-      position: fixed; width: 44px; height: 32px; pointer-events: none; z-index: 9998; font-size: 2rem;
-      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.35)); transition: all 0.85s cubic-bezier(0.2, 0.8, 0.25, 1);
-      animation: fishTailWiggle 0.18s infinite alternate ease-in-out;
+    .jumping-fish-bullet {
+      position: fixed; width: 38px; height: 38px; pointer-events: none; z-index: 99998; font-size: 1.6rem;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4));
+      animation: fishJumpArc 0.75s cubic-bezier(0.15, 0.85, 0.35, 1.1) forwards;
     }
-    @keyframes fishTailWiggle {
-      0% { transform: rotate(8deg) scaleY(0.95); }
-      100% { transform: rotate(-8deg) scaleY(1.05); }
+    @keyframes fishJumpArc {
+      0% { transform: translate(0, 0) scale(0.6) rotate(0deg); opacity: 1; }
+      50% { transform: translate(calc(var(--dx) * 0.5px), calc(var(--dy) * 0.5px - 90px)) scale(1.2) rotate(-25deg); opacity: 1; }
+      100% { transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px)) scale(0.4) rotate(-70deg); opacity: 0; }
     }
 
     .fish-grid-container {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
     }
-    @media (max-width: 480px) { .fish-grid-container { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) {
+      .fish-grid-container { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .fish-card { padding: 10px !important; gap: 6px !important; }
+      .fish-name { font-size: 0.9rem !important; }
+      .fish-price { font-size: 0.8rem !important; padding: 4px 6px !important; }
+      .fish-cooking-prices { font-size: 0.62rem !important; }
+      .card-action-btn { padding: 6px !important; font-size: 0.75rem !important; border-radius: 8px !important; }
+      .fish-category-badge { font-size: 0.6rem !important; padding: 2px 6px !important; }
+      .badge-status, .stock-badge-low { font-size: 0.6rem !important; padding: 2px 4px !important; }
+    }
 
     .fish-card {
-      background: var(--card-bg); border-radius: 18px; padding: 16px;
+      background: var(--card-bg); border-radius: 14px; padding: 14px;
       box-shadow: 0 4px 15px rgba(11, 37, 69, 0.05); border: 1px solid #e2edf5; display: flex; flex-direction: column;
-      justify-content: space-between; gap: 12px; position: relative;
+      justify-content: space-between; gap: 10px; position: relative;
     }
     .fish-card.sold-out { opacity: 0.55; background: #f1f5f9; border-style: dashed; }
     
-    .fish-name { font-weight: 900; font-size: 1.15rem; color: var(--ocean-blue); margin-bottom: 4px; }
-    .fish-category-badge { font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 8px; font-weight: 800; display: inline-block; }
-    .fish-price { font-weight: 900; color: #0284c7; font-size: 1.05rem; background: #e0f2fe; padding: 6px 10px; border-radius: 10px; text-align: center; }
-    .fish-cooking-prices { font-size: 0.76rem; color: #64748b; font-weight: 700; text-align: center; margin-top: 4px; line-height: 1.4; }
-    .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.75rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; display: inline-block; }
-    .badge-status { font-size: 0.78rem; padding: 3px 8px; border-radius: 8px; font-weight: 800; display: inline-block; }
+    .fish-name { font-weight: 900; font-size: 1.05rem; color: var(--ocean-blue); margin-bottom: 2px; }
+    .fish-category-badge { font-size: 0.72rem; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 6px; font-weight: 800; display: inline-block; }
+    .fish-price { font-weight: 900; color: #0284c7; font-size: 0.95rem; background: #e0f2fe; padding: 5px 8px; border-radius: 8px; text-align: center; }
+    .fish-cooking-prices { font-size: 0.7rem; color: #64748b; font-weight: 700; text-align: center; margin-top: 2px; line-height: 1.3; }
+    .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 6px; display: inline-block; }
+    .badge-status { font-size: 0.72rem; padding: 2px 6px; border-radius: 6px; font-weight: 800; display: inline-block; }
 
     .card-action-btn {
       background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; border: none;
-      padding: 10px; border-radius: 12px; font-weight: 800; font-size: 0.88rem; text-align: center;
-      display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.35); cursor: pointer;
+      padding: 8px; border-radius: 10px; font-weight: 800; font-size: 0.82rem; text-align: center;
+      display: flex; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); cursor: pointer;
     }
     .card-action-btn:active { transform: scale(0.96); }
 
@@ -168,7 +178,7 @@
     }
     .cooking-opt-btn.selected { border-color: var(--aqua-glow); background: #e0f2fe; color: #0284c7; }
 
-    .site-footer-wrapper { max-width: 680px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: flex-end; text-align: right; }
+    .site-footer-wrapper { max-width: 820px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: flex-end; text-align: right; }
     .dev-badge-marine {
       background: rgba(5, 22, 38, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.45); backdrop-filter: blur(8px);
       padding: 6px 14px 6px 8px; border-radius: 30px; display: inline-flex; align-items: center; gap: 9px; cursor: pointer;
@@ -286,9 +296,10 @@
     .marine-btn-prepare { background: linear-gradient(135deg, #10b981, #059669); color: white; }
     .marine-btn-deliver { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; }
     .edited-badge { background: #f59e0b; color: #051626; font-weight: 900; font-size: 0.75rem; padding: 2px 8px; border-radius: 8px; animation: pulse 1s infinite; }
+    .order-timer-badge { background: #0284c7; color: white; font-size: 0.78rem; font-weight: 800; padding: 2px 8px; border-radius: 8px; display: inline-block; }
   </style>
 </head>
-<body>
+<body onclick="triggerJumpingFish(event)">
 
   <div class="styled-phone-call-btn" onclick="openContactOptions()" title="تواصل معنا">
     <span class="phone-icon-symbol">📞</span>
@@ -428,7 +439,7 @@
       </div>
 
       <div class="fish-grid-container" id="fishList">
-        <div style="text-align:center; padding:40px; color:#64748b; grid-column: span 2;">جاري تحميل الأسماك والسندوتشات الطازجة... 🐟</div>
+        <div style="text-align:center; padding:40px; color:#64748b; grid-column: span 3;">جاري تحميل الأسماك والسندوتشات الطازجة... 🐟</div>
       </div>
 
       <div class="extras-section" id="extrasArea" style="display:none;">
@@ -521,7 +532,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw7exaq_pgtSUEytzoZed19_kAILnrWlifsZmwmECyYsS74aaqa9e-TJ7txAFSnE4DcTg/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmwjx1nKFS5sfd6BGinHlzctTuViiwgKr70K1sbWmALAsILzoCT06er1AOeT6YZcR62w/exec";
     let shopPhoneNumber = "201009204577";
     let uploadedReceiptBase64 = "";
 
@@ -529,6 +540,37 @@
       if (e.target.closest('.admin-gear-top-btn')) return;
       playBubbleSound();
       location.reload();
+    }
+
+    function triggerJumpingFish(e) {
+      if (e.target.closest('header') || e.target.closest('.modal-content') || e.target.closest('.marine-admin-screen')) return;
+      playWaterSplash();
+      const net = document.getElementById('floatingNetBasket');
+      if (!net) return;
+      const netRect = net.getBoundingClientRect();
+
+      const startX = e.clientX;
+      const startY = e.clientY;
+
+      const fish = document.createElement('div');
+      fish.className = 'jumping-fish-bullet';
+      fish.innerText = '🐟';
+      fish.style.left = startX + 'px';
+      fish.style.top = startY + 'px';
+
+      const dx = (netRect.left + 24) - startX;
+      const dy = (netRect.top + 24) - startY;
+      fish.style.setProperty('--dx', dx);
+      fish.style.setProperty('--dy', dy);
+
+      document.body.appendChild(fish);
+
+      setTimeout(() => { net.classList.add('net-open'); }, 550);
+      setTimeout(() => {
+        fish.remove();
+        net.classList.remove('net-open');
+        playBubbleSound();
+      }, 750);
     }
 
     async function openContactOptions() {
@@ -711,50 +753,6 @@
       } catch(e) {}
     }
 
-    function animateFishToNetBasket(sourceElement) {
-      playWaterSplash();
-      const rect = sourceElement.getBoundingClientRect();
-      const net = document.getElementById('floatingNetBasket');
-      const netRect = net.getBoundingClientRect();
-
-      const fish = document.createElement('div');
-      fish.className = 'swimming-3d-fish';
-      fish.innerText = '🐟';
-      fish.style.left = rect.left + 'px';
-      fish.style.top = rect.top + 'px';
-      document.body.appendChild(fish);
-
-      requestAnimationFrame(() => {
-        fish.style.left = (netRect.left + 12) + 'px';
-        fish.style.top = (netRect.top + 10) + 'px';
-        fish.style.transform = 'scale(0.7) rotate(-45deg)';
-      });
-
-      setTimeout(() => { net.classList.add('net-open'); }, 550);
-      setTimeout(() => {
-        fish.remove();
-        net.classList.remove('net-open');
-        playBubbleSound();
-        updateNetCountBadge();
-      }, 900);
-    }
-
-    function triggerRealisticBeachWave() {
-      playRealisticOceanSurfSound();
-      const waveOverlay = document.getElementById('realisticBeachWave');
-      waveOverlay.classList.remove('wave-stage-active');
-      void waveOverlay.offsetWidth;
-      waveOverlay.classList.add('wave-stage-active');
-
-      setTimeout(() => { document.getElementById('devModal').style.display = 'flex'; }, 1100);
-      setTimeout(() => { waveOverlay.classList.remove('wave-stage-active'); }, 2400);
-    }
-
-    function closeDevModal() {
-      playBubbleSound();
-      document.getElementById('devModal').style.display = 'none';
-    }
-
     function previewReceiptImage(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -919,7 +917,6 @@
       item.effectivePrice = finalPrice;
 
       updateNetCountBadge();
-      animateFishToNetBasket(document.getElementById('floatingNetBasket'));
       return true;
     }
 
@@ -1008,6 +1005,32 @@
       } catch(e) {}
     }
 
+    // دالة لحساب الوقت المنقضي (عداد تصاعدي منذ وقت إنشاء الطلب)
+    function calculateElapsedOrderTime(orderTimeStr) {
+      if (!orderTimeStr) return "0 دقيقة";
+      try {
+        const parts = orderTimeStr.split(":");
+        if (parts.length < 2) return "0 دقيقة";
+        const orderHours = parseInt(parts[0], 10);
+        const orderMinutes = parseInt(parts[1], 10);
+
+        const now = new Date();
+        const currentHours = now.getHours();
+        const currentMinutes = now.getMinutes();
+
+        let diffMins = (currentHours * 60 + currentMinutes) - (orderHours * 60 + orderMinutes);
+        if (diffMins < 0) diffMins += 24 * 60; // لو الطلب من اليوم السابق
+
+        if (diffMins < 1) return "منذ لحظات";
+        if (diffMins < 60) return `منذ ${diffMins} دقيقة`;
+        const hrs = Math.floor(diffMins / 60);
+        const mins = diffMins % 60;
+        return `منذ ${hrs} ساعة و ${mins} دقيقة`;
+      } catch(e) {
+        return "جاري التحضير";
+      }
+    }
+
     function renderMarineOrders(orders) {
       const grid = document.getElementById('marineOrdersGrid');
       grid.innerHTML = '';
@@ -1027,12 +1050,14 @@
         if (isEdited) stateClass = "card-state-edited";
         else if (isPreparing) stateClass = "card-state-preparing";
 
+        const elapsedText = calculateElapsedOrderTime(ord.time);
+
         const card = document.createElement('div');
         card.className = `marine-order-card ${stateClass}`;
         card.innerHTML = `
           <div class="marine-card-header">
             <span class="marine-status-pill">${ord.status}</span>
-            ${isEdited ? '<span class="edited-badge">تعديل جديد ⚠️</span>' : ''}
+            <span class="order-timer-badge">⏱️ ${elapsedText}</span>
             <span class="marine-order-num">#${ord.orderId}</span>
           </div>
           <div class="marine-info-row"><strong>الوقت:</strong> ${ord.time}</div>
@@ -1041,7 +1066,7 @@
           <div class="marine-info-row"><strong>موعد الاستلام:</strong> ${ord.deliveryTime}</div>
           <div class="marine-items-box">
             <strong>الطلب:</strong><br>
-            ${ord.details}
+            <div style="word-break: break-word; white-space: pre-wrap;">${ord.details}</div>
             ${ord.notes && ord.notes !== 'لا يوجد' ? `<br><span style="color:#f59e0b;">ملاحظات: ${ord.notes}</span>` : ''}
           </div>
           <div class="marine-total-price">المبلغ: ${ord.totalPrice || 0} جنيه</div>
@@ -1166,7 +1191,7 @@
           updateNetCountBadge();
         }
       } catch(e) {
-        document.getElementById('fishList').innerHTML = `<div style="text-align:center; padding:40px; color:#ef4444; grid-column: span 2;">فشل تحميل المنيو. تأكد من نشر الرابط (Deploy) وتحديث الصفحة. ⚠️</div>`;
+        document.getElementById('fishList').innerHTML = `<div style="text-align:center; padding:40px; color:#ef4444; grid-column: span 3;">فشل تحميل المنيو. تأكد من نشر الرابط (Deploy) وتحديث الصفحة. ⚠️</div>`;
       }
     }
 
@@ -1201,7 +1226,7 @@
       container.innerHTML = '';
 
       if (items.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); font-weight:700; grid-column: span 2;">لا توجد أصناف مطابقة لبحثك 🔍</div>`;
+        container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); font-weight:700; grid-column: span 3;">لا توجد أصناف مطابقة لبحثك 🔍</div>`;
         return;
       }
 
@@ -1216,7 +1241,7 @@
         } else if (fish.status === "خلص" || itemState.maxAvailable <= 0) {
           statusBadgeHtml = `<span class="badge-status" style="background:#fee2e2; color:#ef4444;">نفد لليوم ❌</span>`;
         } else if (itemState.maxAvailable <= 5) {
-          statusBadgeHtml = `<div class="stock-badge-low">⚠️ متبقي ${itemState.maxAvailable} كيلو</div>`;
+          statusBadgeHtml = `<div class="stock-badge-low">⚠️ متبقي ${itemState.maxAvailable}</div>`;
         } else {
           statusBadgeHtml = `<span class="badge-status" style="background:#ecfdf5; color:#059669;">متوفر ✅</span>`;
         }
@@ -1224,8 +1249,8 @@
         let cookingPricesText = '';
         if (fish.grillPrice > 0 || fish.fryPrice > 0) {
           let parts = [];
-          if (fish.grillPrice > 0) parts.push(`شوي: +${fish.grillPrice} جنيه / كيلو`);
-          if (fish.fryPrice > 0) parts.push(`قلي: +${fish.fryPrice} جنيه / كيلو`);
+          if (fish.grillPrice > 0) parts.push(`شوي: +${fish.grillPrice}`);
+          if (fish.fryPrice > 0) parts.push(`قلي: +${fish.fryPrice}`);
           cookingPricesText = `<div class="fish-cooking-prices">${parts.join(' | ')}</div>`;
         }
 
@@ -1234,16 +1259,16 @@
 
         card.innerHTML = `
           <div>
-            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
               <span class="fish-category-badge">${fish.category}</span>
               <div>${statusBadgeHtml}</div>
             </div>
             <div class="fish-name">${fish.name}</div>
           </div>
           <div>
-            <div class="fish-price" style="margin-bottom:2px;">${fish.price} جنيه / كيلو ${isSandwich ? 'سندوتش' : ''}</div>
+            <div class="fish-price" style="margin-bottom:2px;">${fish.price} ج / ك ${isSandwich ? 'سندوتش' : ''}</div>
             ${cookingPricesText}
-            <button class="card-action-btn" ${isDisabled ? 'disabled' : ''} onclick="openCookingModal(${fish.id})" style="margin-top:8px; width:100%;">
+            <button class="card-action-btn" ${isDisabled ? 'disabled' : ''} onclick="openCookingModal(${fish.id})" style="margin-top:6px; width:100%;">
               🛒 إضافة
             </button>
           </div>
@@ -1472,7 +1497,7 @@
       closeCheckout();
 
       if (editingOrderId) {
-        const orderSnapshot = { orderId: editingOrderId, timestamp: existingSaved ? existingSaved.timestamp : Date.now(), name: name, phone: phone, deliveryTime: payload.deliveryTime, itemsDetails: payload.itemsDetails, total: total, cartItems: cartItems };
+        const orderSnapshot = { orderId: editingOrderId, timestamp: existingSaved ? existingSaved.timestamp : Date.now(), name: name, phone: phone, deliveryTime: payload.deliveryTime, itemsDetails: existingSaved ? (existingSaved.itemsDetails + " + " + payload.itemsDetails) : payload.itemsDetails, total: (existingSaved ? existingSaved.total : 0) + total, cartItems: cartItems };
         localStorage.setItem("kheir_locked_order", JSON.stringify(orderSnapshot));
         localStorage.removeItem("kheir_editing_order_id");
         checkLockState();
@@ -1543,6 +1568,17 @@
 
             const box = document.getElementById('lockedOrderStatus');
             box.innerText = d.orderStatus;
+
+            // تحديث تفاصيل الطلب الحية لو حصل دمج للتعديل في الشيت
+            if (d.details && document.getElementById('lockedOrderDetails')) {
+              const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
+              if (saved) {
+                saved.itemsDetails = d.details;
+                saved.total = d.total || saved.total;
+                localStorage.setItem("kheir_locked_order", JSON.stringify(saved));
+                document.getElementById('lockedOrderDetails').innerHTML = `<strong>الاسم:</strong> ${saved.name}<br><strong>الطلب:</strong> ${saved.itemsDetails}<br><strong>الإجمالي:</strong> ${saved.total} جنيه`;
+              }
+            }
 
             if (d.orderStatus.includes("تم التسليم")) {
               clearInterval(clientStatusInterval);
