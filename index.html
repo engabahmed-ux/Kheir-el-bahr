@@ -89,7 +89,7 @@
       font-size: 0.95rem; background: white; box-shadow: var(--shadow); outline: none;
     }
     .search-input:focus { border-color: var(--sea-cyan); }
-    .search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 1.1.rem; color: var(--text-muted); pointer-events: none; }
+    .search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 1.1rem; color: var(--text-muted); pointer-events: none; }
 
     .categories-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 14px; scrollbar-width: none; }
     .categories-bar::-webkit-scrollbar { display: none; }
@@ -100,14 +100,14 @@
     }
     .category-btn.active { background: linear-gradient(135deg, var(--ocean-blue), #0e3860); color: white; border-color: var(--ocean-blue); }
 
-    /* زر الاتصال الجديد (رمز السماعة فقط بدون الرقم) */
+    /* زر الاتصال العائم (رمز السماعة فقط) */
     .styled-phone-call-btn {
       position: fixed; left: 18px; bottom: 105px; width: 52px; height: 52px;
       background: linear-gradient(135deg, #10b981, #059669);
       border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 50%;
       display: flex; align-items: center; justify-content: center; text-decoration: none;
       box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45); z-index: 180; backdrop-filter: blur(8px);
-      transition: all 0.2s ease;
+      cursor: pointer; transition: all 0.2s ease;
     }
     .styled-phone-call-btn:hover { transform: translateY(-2px) scale(1.08); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6); }
     .phone-icon-symbol { font-size: 1.5rem; color: white; }
@@ -296,7 +296,7 @@
 </head>
 <body>
 
-  <!-- زر الاتصال برمز السماعة فقط مع خيارات الاتصال المباشر أو الواتساب -->
+  <!-- زر الاتصال العائم (رمز السماعة فقط) -->
   <div class="styled-phone-call-btn" onclick="openContactOptions()" title="تواصل معنا">
     <span class="phone-icon-symbol">📞</span>
   </div>
@@ -313,7 +313,7 @@
     <div class="beach-surf-layer surf-foam-front"></div>
   </div>
 
-  <!-- نافذة منبثقة لاختيار الكمية والطاهي مع زر (الذهاب إلى السلة) -->
+  <!-- نافذة منبثقة لاختيار الكمية والطاهي -->
   <div class="cooking-modal-overlay" id="cookingPopupModal" onclick="closeCookingModalOnOutside(event)">
     <div class="cooking-modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -490,8 +490,8 @@
           <div class="pay-btn-opt instapay" id="payInstapay" onclick="setPaymentMethod('instapay')">🟣 إنستاباي (InstaPay)</div>
         </div>
         <div class="instapay-action-card" id="instapayCard">
-          <div>حساب المحل: <strong id="instapayTargetText"></strong></div>
-          <a href="instapay://" id="instapayAppUrl" target="_blank" class="instapay-go-btn" onclick="showReceiptStep()">فتح تطبيق إنستاباي للتحويل ↗️</a>
+          <div>رقم إنستاباي: <strong id="instapayTargetText"></strong></div>
+          <a href="#" id="instapayAppLink" target="_blank" class="instapay-go-btn" onclick="showReceiptStep()">دفع مباشر عبر رابط إنستاباي ↗️</a>
           <div style="margin-top:8px;">
             <a href="https://instapay.eg" target="_blank" style="color:#7928ca; font-weight:800; font-size:0.88rem; text-decoration:underline;">موقع إنستاباي الرسمي 🌐</a>
           </div>
@@ -525,8 +525,8 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxG9ysVD2NrNIeHfGHGRDhXDwsmQ66cuO87iNUjCZEYV1Zsp-c0_ns8AqOCopEa2tHamA/exec";
-    const WHATSAPP_NUM = "201009204577";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0zEBBTpqF3fTqs8oKv5tj3bdufyMMIwlaaR_mMxDYmO1s1PPFZFg6Ct34RC4HyCurfw/exec";
+    let shopPhoneNumber = "201009204577";
 
     function handleHeaderClick(e) {
       if (e.target.closest('.admin-gear-top-btn')) return;
@@ -534,15 +534,37 @@
       location.reload();
     }
 
-    // خيارات الاتصال الهاتفي أو الواتساب عند الضغط على رمز السماعة
+    // خيارات الاتصال الهاتفي أو الواتساب أو الإلغاء
     async function openContactOptions() {
       playBubbleSound();
-      const choice = await showCustomConfirm("اختر طريقة التواصل مع محل «خير البحر»:", "اتصال ودعم 📞", "☎️");
-      if (choice) {
-        window.location.href = `tel:${WHATSAPP_NUM}`;
-      } else {
-        window.open(`https://wa.me/20${WHATSAPP_NUM}`, '_blank');
+      const choice = await showCustomConfirmContact("اختر طريقة التواصل مع محل «خير البحر»:", "اتصال ودعم 📞", "☎️");
+      if (choice === 'call') {
+        window.location.href = `tel:${shopPhoneNumber}`;
+      } else if (choice === 'wa') {
+        window.open(`https://wa.me/${shopPhoneNumber}`, '_blank');
       }
+    }
+
+    function showCustomConfirmContact(message, title = "اتصال ودعم 📞", icon = "☎️") {
+      return new Promise((resolve) => {
+        const dialog = document.getElementById('customDialog');
+        document.getElementById('dialogIcon').innerText = icon;
+        document.getElementById('dialogTitle').innerText = title;
+        document.getElementById('dialogMessage').innerText = message;
+        document.getElementById('dialogInput').style.display = 'none';
+
+        const actions = document.getElementById('dialogActions');
+        actions.innerHTML = `
+          <button class="dialog-btn dialog-btn-primary" id="dialogCall" style="background:#0284c7; flex:1;">اتصال هاتفى 📞</button>
+          <button class="dialog-btn" id="dialogWa" style="background:#10b981; color:white; flex:1;">مراسلة واتساب 💬</button>
+          <button class="dialog-btn dialog-btn-cancel" id="dialogCancel" style="background:#64748b; color:white; flex:0.8;">إلغاء ❌</button>
+        `;
+        dialog.style.display = 'flex';
+
+        document.getElementById('dialogCall').onclick = () => { dialog.style.display = 'none'; resolve('call'); };
+        document.getElementById('dialogWa').onclick = () => { dialog.style.display = 'none'; resolve('wa'); };
+        document.getElementById('dialogCancel').onclick = () => { dialog.style.display = 'none'; resolve('cancel'); };
+      });
     }
 
     function showCustomAlert(message, title = "خير البحر 🐟", icon = "🌊") {
@@ -574,8 +596,8 @@
 
         const actions = document.getElementById('dialogActions');
         actions.innerHTML = `
-          <button class="dialog-btn dialog-btn-primary" id="dialogYes">اتصال هاتفى 📞</button>
-          <button class="dialog-btn dialog-btn-cancel" id="dialogNo" style="background:#10b981; color:white;">مراسلة واتساب 💬</button>
+          <button class="dialog-btn dialog-btn-primary" id="dialogYes">موافق ✅</button>
+          <button class="dialog-btn dialog-btn-cancel" id="dialogNo">إلغاء ❌</button>
         `;
         dialog.style.display = 'flex';
 
@@ -737,9 +759,6 @@
       document.getElementById('devModal').style.display = 'none';
     }
 
-    // =======================================================
-    // النافذة المنبثقة
-    // =======================================================
     let activePopupFish = null;
     let popupSelectedMain = "";
     let popupSelectedSub = "";
@@ -1064,7 +1083,16 @@
           grillTypesList = data.grillTypes || ["مقفول", "سنجاري"];
           fryTypesList = data.fryTypes || ["زيت", "زيت وليمون"];
           soupTypesList = data.soupTypes || ["مخلية", "بريميوم"];
-          document.getElementById('instapayTargetText').innerText = data.instapayTarget || "";
+
+          // جلب بيانات إنستاباي ورقم المحل من B2, B3, B4 في الشيت
+          document.getElementById('instapayTargetText').innerText = data.instapayPhone || "";
+          if (data.instapayUrl) {
+            document.getElementById('instapayAppLink').href = data.instapayUrl;
+          }
+          if (data.shopPhone) {
+            shopPhoneNumber = data.shopPhone;
+          }
+
           cachedAdminPass = data.adminToken || "";
 
           allMenuItems.forEach(fish => {
@@ -1081,12 +1109,11 @@
             };
           });
 
-          // استعادة بيانات العميل أو السلة القديمة عند التعديل
           const editingName = localStorage.getItem("kheir_editing_customer_name");
           if (editingName) {
             document.getElementById('custName').value = editingName;
             localStorage.removeItem("kheir_editing_customer_name");
-            showCustomAlert("يمكنك تعديل كميات سلتك الحية الآن وإتمام الطلب.", "وضع التعديل النشط ✏️", "🔄");
+            showCustomAlert("أضف أو احذف ما تريد من السلة ثم اضغط على شبكة الصيد لإتمام التعديل.", "وضع التعديل النشط ✏️", "🔄");
           }
 
           renderCategories(data.categories || []);
@@ -1424,7 +1451,7 @@
           if (cb) cb.style.display = 'none';
         } else {
           const m = Math.floor(passed / 60000), s = Math.floor((passed % 60000) / 1000);
-          document.getElementById('cancelTimer').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+          document.getElementById('countdownTimerText').innerHTML = `متاح تعديل أو إلغاء الطلب خلال: <span id="cancelTimer">${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}</span> / 10:00 دقيقة`;
         }
       }
       updateAscTimer();
@@ -1454,12 +1481,12 @@
       }
     }
 
-    // تعديل الطلب الذكي: الاحتفاظ ببيانات العميل والسلة وإتاحة التعديل عليها بسلاسة
+    // تعديل الطلب دون فتح نافذة الاتصال، والانتقال مباشرة للمنيو الرئيسي لتعديل العناصر
     async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
 
-      const confirmed = await showCustomConfirm("هل تريد تعديل محتويات سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي لتعديل العناصر.", "تعديل الطلب ✏️", "🔄");
+      const confirmed = await showCustomConfirm("هل تريد تعديل محتويات سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي لتعديل العناصر وإعادة الإرسال.", "تعديل الطلب ✏️", "🔄");
       if (!confirmed) return;
 
       fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems }) }).catch(()=>{});
