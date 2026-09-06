@@ -116,7 +116,7 @@
     }
     .phone-num-text { color: #ffffff; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.5px; direction: ltr; }
 
-    /* شبكة الصيد العائمة (السلة) */
+    /* شبكة الصيد العائمة للسلة */
     .floating-net-basket {
       position: fixed; left: 20px; bottom: 24px; width: 68px; height: 68px;
       background: radial-gradient(circle at 35% 35%, #0ea5e9, #0369a1);
@@ -159,6 +159,7 @@
     .fish-name { font-weight: 900; font-size: 1.15rem; color: var(--ocean-blue); margin-bottom: 4px; }
     .fish-category-badge { font-size: 0.75rem; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 8px; font-weight: 800; display: inline-block; }
     .fish-price { font-weight: 900; color: #0284c7; font-size: 1.05rem; background: #e0f2fe; padding: 6px 10px; border-radius: 10px; text-align: center; }
+    .fish-grill-price { font-size: 0.78rem; color: #64748b; font-weight: 700; text-align: center; margin-top: 4px; }
     .stock-badge-low { background: #ffedd5; color: var(--warning-orange); font-size: 0.75rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; display: inline-block; }
     .badge-status { font-size: 0.78rem; padding: 3px 8px; border-radius: 8px; font-weight: 800; display: inline-block; }
 
@@ -185,7 +186,6 @@
     }
     .cooking-opt-btn.selected { border-color: var(--aqua-glow); background: #e0f2fe; color: #0284c7; }
 
-    /* شارة المطور في أقصى اليمين الفوتر */
     .site-footer-wrapper { max-width: 680px; margin: 40px auto 16px; padding: 0 16px; display: flex; justify-content: flex-end; }
     .dev-badge-marine {
       background: rgba(5, 22, 38, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.45); backdrop-filter: blur(8px);
@@ -317,7 +317,7 @@
     <div class="beach-surf-layer surf-foam-front"></div>
   </div>
 
-  <!-- نافذة منبثقة تفاعلية لاختيار الكمية ثم الطهي مع عرض الإجمالي اللحظي -->
+  <!-- نافذة منبثقة تفاعلية لاختيار الكمية والطاهي مع عرض الإجمالي وحساب سعر الشوي -->
   <div class="cooking-modal-overlay" id="cookingPopupModal" onclick="closeCookingModalOnOutside(event)">
     <div class="cooking-modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -334,9 +334,9 @@
       
       <div id="popupCookingOptionsContainer"></div>
 
-      <!-- عرض الإجمالي المتوقع قبل الإضافة -->
+      <!-- عرض الإجمالي المتوقع شامل سعر الكيلو والشوي -->
       <div style="background:#e0f2fe; border:1px solid #bae6fd; border-radius:12px; padding:10px 14px; margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-weight:800; color:var(--ocean-blue); font-size:0.92rem;">الإجمالي المتوقع للصنف:</span>
+        <span style="font-weight:800; color:var(--ocean-blue); font-size:0.92rem;">الإجمالي المتوقع (مع التسوية):</span>
         <span id="popupCalculatedTotal" style="font-weight:900; color:#0284c7; font-size:1.1rem;">0 ج.م</span>
       </div>
 
@@ -404,7 +404,7 @@
   </header>
 
   <div class="container">
-    <!-- كارت تتبع الطلب النشط مع زر إلغاء ثابت ومتحرك للأعلى -->
+    <!-- كارت تتبع الطلب النشط مع زر إلغاء وتعديل متحرك وثابت (Sticky) -->
     <div class="order-lock-screen" id="orderLockCard" style="display:none; background:white; border-radius:16px; border:2px solid #38bdf8; padding:20px; margin-bottom:20px;">
       <div class="lock-badge" style="display:inline-flex; align-items:center; gap:6px; background:#e0f2fe; color:#0369a1; padding:4px 12px; border-radius:20px; font-weight:800; font-size:0.85rem; margin-bottom:12px;">
         <span style="width:10px; height:10px; background:#10b981; border-radius:50%; animation:blink 1.5s infinite;"></span> طلبك قيد المتابعة الحية
@@ -415,7 +415,7 @@
       </div>
       <div id="lockedOrderDetails" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:0.92rem; line-height:1.6; margin-bottom:12px;"></div>
 
-      <!-- زر إلغاء وتعديل متحرك وثابت يسهل الوصول إليه -->
+      <!-- زر إلغاء وتعديل متحرك وثابت يسهل الوصول إليه أثناء التمرير -->
       <div id="cancelAreaWrapper" style="background:#fef2f2; border:1px dashed #fca5a5; border-radius:12px; padding:12px; text-align:center; position: sticky; top: 10px; z-index: 50; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);">
         <div id="countdownTimerText" style="font-weight:800; color:#dc2626; font-size:0.92rem; margin-bottom:6px;">
           متاح تعديل أو إلغاء الطلب خلال: <span id="cancelTimer">00:00</span> / 10:00 دقيقة
@@ -459,7 +459,6 @@
     </div>
   </div>
 
-  <!-- نافذة إتمام الطلب مع دعم زر وزر رابط إنستاباي -->
   <div class="modal" id="checkoutModal">
     <div class="modal-content">
       <div class="modal-title">
@@ -532,7 +531,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxG9ysVD2NrNIeHfGHGRDhXDwsmQ66cuO87iNUjCZEYV1Zsp-c0_ns8AqOCopEa2tHamA/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNeLzAfswIouehuLPnGj9pJl9Lhec8itJATLGD1NME4GjJKDPQd8tPOZyTXO5iibGWIA/exec";
     const WHATSAPP_NUM = "201009204577";
 
     function handleHeaderClick(e) {
@@ -734,7 +733,7 @@
     }
 
     // =======================================================
-    // النافذة المنبثقة لاختيار الكمية وحساب الإجمالي اللحظي
+    // النافذة المنبثقة وحساب الإجمالي اللحظي شامل سعر الشوي
     // =======================================================
     let activePopupFish = null;
     let popupSelectedMain = "";
@@ -826,6 +825,7 @@
           popupSelectedSub = fryTypesList[0] || "";
         }
       }
+      updatePopupTotalDisplay();
     }
 
     function selectPopupSub(btnElement, subVal) {
@@ -854,7 +854,12 @@
 
     function updatePopupTotalDisplay() {
       if (!activePopupFish) return;
-      const total = popupQty * activePopupFish.price;
+      let unitPrice = activePopupFish.price;
+      // إضافة سعر الشوي إذا تم اختيار طريقة الشوي
+      if (popupSelectedMain === "مشوي" && activePopupFish.grillPrice) {
+        unitPrice += Number(activePopupFish.grillPrice);
+      }
+      const total = popupQty * unitPrice;
       document.getElementById('popupCalculatedTotal').innerText = total + " ج.م";
     }
 
@@ -865,10 +870,16 @@
         return false;
       }
 
+      let finalPrice = activePopupFish.price;
+      if (popupSelectedMain === "مشوي" && activePopupFish.grillPrice) {
+        finalPrice += Number(activePopupFish.grillPrice);
+      }
+
       const item = cart[activePopupFish.id];
       item.qty = (item.qty || 0) + popupQty;
       item.mainCooking = popupSelectedMain;
       item.subCooking = popupSelectedSub;
+      item.effectivePrice = finalPrice; // السعر شامل التسوية والشوي
 
       updateNetCountBadge();
       animateFishToNetBasket(document.getElementById('floatingNetBasket'));
@@ -1136,8 +1147,9 @@
             <div class="fish-name">${fish.name}</div>
           </div>
           <div>
-            <div class="fish-price" style="margin-bottom:10px;">${fish.price} ج.م ${isSandwich ? '/ سندوتش' : '/ كيلو'}</div>
-            <button class="card-action-btn" ${isDisabled ? 'disabled' : ''} onclick="openCookingModal(${fish.id})">
+            <div class="fish-price" style="margin-bottom:4px;">${fish.price} ج.م ${isSandwich ? '/ سندوتش' : '/ كيلو'}</div>
+            ${fish.grillPrice > 0 ? `<div class="fish-grill-price">سعر الشوي: +${fish.grillPrice} ج.م/ك</div>` : ''}
+            <button class="card-action-btn" ${isDisabled ? 'disabled' : ''} onclick="openCookingModal(${fish.id})" style="margin-top:8px; width:100%;">
               🛒 إضافة
             </button>
           </div>
@@ -1190,7 +1202,13 @@
 
     function calculateTotal() {
       let total = 0;
-      for (let id in cart) total += cart[id].qty * cart[id].data.price;
+      for (let id in cart) {
+        const item = cart[id];
+        if (item.qty > 0) {
+          let unitPrice = item.effectivePrice || item.data.price;
+          total += item.qty * unitPrice;
+        }
+      }
       for (let idx in selectedExtras) total += selectedExtras[idx].count * selectedExtras[idx].data.price;
       return total;
     }
@@ -1205,14 +1223,15 @@
         if (item.qty > 0) {
           hasItems = true;
           const cook = item.subCooking ? `${item.mainCooking} (${item.subCooking})` : item.mainCooking;
-          const rowTotal = item.qty * item.data.price;
+          let unitPrice = item.effectivePrice || item.data.price;
+          const rowTotal = item.qty * unitPrice;
 
           const row = document.createElement('div');
           row.className = 'cart-item-row';
           row.innerHTML = `
             <div>
               <div class="cart-item-title">${item.data.name} [${cook}]</div>
-              <div class="cart-item-desc">${item.qty} كيلو × ${item.data.price} = ${rowTotal} ج.م</div>
+              <div class="cart-item-desc">${item.qty} كيلو × ${unitPrice} = ${rowTotal} ج.م</div>
             </div>
             <div class="cart-item-controls">
               <button class="cart-sm-btn" onclick="modifyCartItemQty(${id}, -0.5)">-</button>
@@ -1423,20 +1442,22 @@
       }
     }
 
+    // تعديل الطلب الذكي: إعادة العميل للصفحة الرئيسية مع حفظ بياناته والسلة ليضيف/يحذف ثم يعود تلقائياً لصفحة الحالة
     async function openEditActiveOrderModal() {
       const saved = JSON.parse(localStorage.getItem("kheir_locked_order") || "null");
       if (!saved) return;
-      const newNotes = await showCustomPrompt("اكتب تفاصيل التعديل المطلوب على طلبك:", "تعديل الطلب ✏️", "text", "📝");
-      if (!newNotes) return;
 
+      const confirmed = await showCustomConfirm("هل تريد تعديل محتويات سلة طلبك الحالي؟ سيتم نقلك للمنيو الرئيسي لتعديل العناصر.", "تعديل الطلب ✏️", "🔄");
+      if (!confirmed) return;
+
+      // إلغاء الطلب القديم مؤقتاً لتعديل المخزون في الخلفية
       fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "cancelOrder", orderId: saved.orderId, cartItems: saved.cartItems }) }).catch(()=>{});
       
-      saved.itemsDetails += ` | [تعديل العميل: ${newNotes}]`;
-      localStorage.setItem("kheir_locked_order", JSON.stringify(saved));
-      
-      fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ name: saved.name, phone: '01000000000', deliveryTime: saved.deliveryTime, itemsDetails: saved.itemsDetails, totalPrice: saved.total, cartItems: saved.cartItems, paymentMethod: 'cash', notes: '[تعديل جديد نشط]' }) }).catch(()=>{});
+      // حفظ بيانات العميل في الذاكرة المؤقتة لملئها تلقائياً لاحقاً
+      localStorage.setItem("kheir_editing_customer_name", saved.name);
+      localStorage.removeItem("kheir_locked_order");
 
-      await showCustomAlert("تم تعديل الطلب وإرساله للإدارة بنجاح!", "تعديل ناجح ✅", "✏️");
+      // إرجاع الصفحة للرئيسية
       location.reload();
     }
 
